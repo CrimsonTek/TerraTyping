@@ -1,0 +1,12 @@
+Terramon, created by CrimsonTek.
+
+What does it do?
+
+Terramon adds Pokemon-esque types to Terraria! Every vanilla weapon and enemy is given a type, and types that are effective will deal more damage. I included the 18 types found in Pokemon, as well as Blood and Bone to round out the Crimson and Dungeon biomes respectively. 
+
+This mod adds no items or enemies yet, only functionality. This means you can try it in a world you've already started, and it won't mess up your game!
+
+
+Special Thanks to all the people that helped me with this mod.
+
+Github: https://github.com/CrimsonTek/Terramon

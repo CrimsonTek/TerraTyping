@@ -1,0 +1,50 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.5": {}
+  },
+  "libraries": {},
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.5": []
+  },
+  "packageFolders": {
+    "C:\\Users\\Jack\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\Terramon.csproj",
+      "projectName": "TerramonTyping",
+      "projectPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\Terramon.csproj",
+      "packagesPath": "C:\\Users\\Jack\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Jack\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net45"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net45": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net45": {}
+    }
+  }
+}

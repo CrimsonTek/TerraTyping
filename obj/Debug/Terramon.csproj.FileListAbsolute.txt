@@ -1,0 +1,7 @@
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\obj\Debug\Terramon.csprojAssemblyReference.cache
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\obj\Debug\Terramon.csproj.CoreCompileInputs.cache
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\obj\Debug\Terramon.csproj.CopyComplete
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\bin\Debug\Terramon.dll
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\bin\Debug\Terramon.pdb
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\obj\Debug\Terramon.dll
+C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\Terramon\obj\Debug\Terramon.pdb
