@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,45 +14,51 @@ namespace TerraTyping.Items
     {
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
-            if (Items.Type.ContainsKey(item.type))
+            if (Main.expertMode)
             {
-                if (Main.bloodMoon && player.ZoneOverworldHeight || player.ZoneSkyHeight)
+                if (Items.Type.ContainsKey(item.type))
                 {
-                    if (Items.Type[item.type] == Element.Type.blood)
+                    if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
                     {
-                        mult = Config.RainMultiplier;
-                    }
-                }
-                if (Main.eclipse && player.ZoneOverworldHeight || player.ZoneSkyHeight)
-                {
-                    if (Items.Type[item.type] == Element.Type.dark)
-                    {
-                        mult = Config.RainMultiplier;
-                    }
-                }
-                if (player.ZoneRain)
-                {
-                    if (Items.Type[item.type] == Element.Type.water)
-                    {
-                        mult = Config.RainMultiplier;
-                    }
-                    if (Items.Type[item.type] == Element.Type.fire)
-                    {
-                        mult = 1 / Config.RainMultiplier;
-                    }
-                }
-                if (player.ZoneSnow)
-                {
-                    if (Items.Type[item.type] == Element.Type.ice)
-                    {
-                        mult = Config.RainMultiplier;
-                    }
-                }
-                if (player.ZoneSandstorm)
-                {
-                    if (Items.Type[item.type] == Element.Type.ground || Items.Type[item.type] == Element.Type.rock || Items.Type[item.type] == Element.Type.steel)
-                    {
-                        mult = Config.RainMultiplier;
+                        if (Main.bloodMoon)
+                        {
+                            if (Items.Type[item.type] == Element.Type.blood)
+                            {
+                                mult = Config.RainMultiplier;
+                            }
+                        }
+                        if (Main.eclipse)
+                        {
+                            if (Items.Type[item.type] == Element.Type.dark)
+                            {
+                                mult = Config.RainMultiplier;
+                            }
+                        }
+                        if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
+                        {
+                            if (Items.Type[item.type] == Element.Type.water)
+                            {
+                                mult = Config.RainMultiplier;
+                            }
+                            if (Items.Type[item.type] == Element.Type.fire)
+                            {
+                                mult = 1 / Config.RainMultiplier;
+                            }
+                        }
+                        if (player.ZoneSnow && player.ZoneSnow)
+                        {
+                            if (Items.Type[item.type] == Element.Type.ice)
+                            {
+                                mult = Config.RainMultiplier;
+                            }
+                        }
+                        if (player.ZoneSandstorm)
+                        {
+                            if (Items.Type[item.type] == Element.Type.ground || Items.Type[item.type] == Element.Type.rock || Items.Type[item.type] == Element.Type.steel)
+                            {
+                                mult = Config.RainMultiplier;
+                            }
+                        }
                     }
                 }
             }
