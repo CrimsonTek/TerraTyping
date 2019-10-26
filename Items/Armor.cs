@@ -16,17 +16,6 @@ namespace TerraTyping.Items
     {
         public override void UpdateEquip(Item item, Player player)
         {
-            //if (Armors.Type.ContainsKey(item.type)) { ArmorPlayer.typeHead = Armors.Type[item.type]; }
-            //if (Armors.Type.ContainsKey(item.type)) { ArmorPlayer.typeBody = Armors.Type[item.type]; }
-            //if (Armors.Type.ContainsKey(item.type)) { ArmorPlayer.typeLegs = Armors.Type[item.type]; }
-            //if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-            //{
-            //    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-            //}
-            //else
-            //{
-            //    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-            //};
             if (Armors.Helmet.ContainsKey(item.type)) { ArmorPlayer.typeHead = Armors.Type[item.type]; }
             else if (Armors.Chest.ContainsKey(item.type)) { ArmorPlayer.typeBody = Armors.Type[item.type]; }
             else if (Armors.Leggings.ContainsKey(item.type)) { ArmorPlayer.typeLegs = Armors.Type[item.type]; }
@@ -52,11 +41,11 @@ namespace TerraTyping.Items
             {
                 if (typeHead.Item1 == typeBody.Item1 && typeBody.Item1 == typeLegs.Item1 && typeHead.Item2 == typeBody.Item2 && typeBody.Item2 == typeLegs.Item2)
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
+                    typeSet = new Tuple<Element.Type, Element.Type>(typeBody.Item1, typeBody.Item2);
                 }
                 else
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
+                    typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
                 };
                 if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
                 {
@@ -89,13 +78,13 @@ namespace TerraTyping.Items
         {
             if (Enemies.Type.ContainsKey(npc.type))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
+                if (typeHead.Item1 == typeBody.Item1 && typeBody.Item1 == typeLegs.Item1 && typeHead.Item2 == typeBody.Item2 && typeBody.Item2 == typeLegs.Item2)
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
+                    typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
                 }
                 else
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
+                    typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
                 };
                 if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
                 {
@@ -124,13 +113,13 @@ namespace TerraTyping.Items
         {
             if (Projectiles.Type.ContainsKey(proj.type))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
+                if (typeHead.Item1 == typeBody.Item1 && typeBody.Item1 == typeLegs.Item1 && typeHead.Item2 == typeBody.Item2 && typeBody.Item2 == typeLegs.Item2)
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
+                    typeSet = new Tuple<Element.Type, Element.Type>(typeBody.Item1, typeBody.Item2);
                 }
                 else
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
+                    typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
                 };
                 float multiplier1 = Table.Effectiveness[(int)Projectiles.Type[proj.type], (int)typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Projectiles.Type[proj.type], (int)typeSet.Item2];
@@ -143,13 +132,13 @@ namespace TerraTyping.Items
         {
             if (Projectiles.Type.ContainsKey(proj.type))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
+                if (typeHead.Item1 == typeBody.Item1 && typeBody.Item1 == typeLegs.Item1 && typeHead.Item2 == typeBody.Item2 && typeBody.Item2 == typeLegs.Item2)
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
+                    typeSet = new Tuple<Element.Type, Element.Type>(typeBody.Item1, typeBody.Item2);
                 }
                 else
                 {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
+                    typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
                 };
                 float multiplier1 = Table.Effectiveness[(int)Projectiles.Type[proj.type], (int)typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Projectiles.Type[proj.type], (int)typeSet.Item2];

@@ -17,8 +17,11 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.0.3:
+ - Fixed issues with rain affecting weapons everywhere in the world.
+
 v0.1.0.2:
- - Minor Update
+ - Minor update.
 
 v0.1.0.1:
- - Official Release
+ - Official release.
