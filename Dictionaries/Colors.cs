@@ -30,6 +30,8 @@ namespace TerraTyping.Items
             {Element.Type.fairy, new Tuple<int, int, int>(244, 108, 218) },
             {Element.Type.blood, new Tuple<int, int, int>(214, 54, 54) },
             {Element.Type.bone, new Tuple<int, int, int>(242, 242, 242) },
+            {Element.Type.none, new Tuple<int, int, int>(255, 255, 255) },
+            {Element.Type.levitate, new Tuple<int, int, int>(255, 255, 255) }
         };
     }
 }
