@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class Element
     {

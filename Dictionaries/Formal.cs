@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class Formal
     {
@@ -29,7 +29,9 @@ namespace Terramon.Items
             {Element.Type.steel, "Steel" },
             {Element.Type.fairy, "Fairy" },
             {Element.Type.blood, "Blood" },
-            {Element.Type.bone, "Bone" }
+            {Element.Type.bone, "Bone" },
+            {Element.Type.none, "None" },
+            {Element.Type.levitate, "Levitate" }
         };
     }
 }

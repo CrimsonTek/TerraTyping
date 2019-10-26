@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class NPCTyping : GlobalNPC
     {

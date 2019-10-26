@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class EffectivenessIcon : GlobalNPC
     {

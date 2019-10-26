@@ -1,4 +1,5 @@
 author = CrimsonTek
-version = 0.1
-displayName = Terramon Typing
-homepage = https://github.com/CrimsonTek/Terramon
+version = 0.1.0.2
+displayName = TerraTyping
+homepage = https://discord.gg/RvPGKwz
+buildIgnore= *.sln, *csproj, *.user, obj\*, bin\*, .vs\*

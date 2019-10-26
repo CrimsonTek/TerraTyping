@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class STAB : GlobalItem
     {

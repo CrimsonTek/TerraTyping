@@ -9,7 +9,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class Buffs
     {
@@ -51,7 +51,9 @@ namespace Terramon.Items
             {169, Element.Type.bone }, // penetrated
             {BuffID.WindPushed, Element.Type.flying },
             {BuffID.WitheredArmor, Element.Type.dark },
-            {BuffID.WitheredWeapon, Element.Type.dark }
+            {BuffID.WitheredWeapon, Element.Type.dark },
+            {BuffID.Venom, Element.Type.poison },
+            {BuffID.Frostburn, Element.Type.ice }
         };
     }
 }

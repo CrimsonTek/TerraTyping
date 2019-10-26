@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Terramon.Items
+namespace TerraTyping.Items
 {
     public class Config
     {
@@ -21,5 +21,9 @@ namespace Terramon.Items
         // don't go less than 1.0f
 
         public static float Knockback { get; } = 1f;
+
+        public static float RainMultiplier { get; } = 1.25f;
+        // the multiplier of water type moves during rain, blood type moves during blood moons, etc
+        // don't go less than 1.0f;
     }
 }
