@@ -39,7 +39,7 @@ namespace TerraTyping.Items
 
             /* Gho */ { 0f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f, Config.Multiplier,  1f,   1f,Config.Multiplier,   1f,Config.Divisor,   1f,  1f,Config.Divisor,  1f,   1f,  1f},
 
-            /* Dra */ { 1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f, Config.Multiplier,  1f,Config.Divisor,  1f,   1f,Config.Multiplier,   1f,  1f},
+            /* Dra */ { 1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f,   1f,  1f, Config.Multiplier,  1f,Config.Divisor,  0f,   1f,Config.Multiplier,   1f,  1f},
 
             /* Dar */ { 1f,  1f,   1f,  1f,   1f,  1f,Config.Divisor,  1f,   1f,  1f, Config.Multiplier,  1f,   1f,Config.Multiplier,   1f,Config.Divisor,   1f,Config.Divisor,Config.Divisor,  1f,   1f,  1f},
 

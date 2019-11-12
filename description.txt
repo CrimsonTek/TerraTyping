@@ -17,6 +17,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.0.5
+ - Made Fairy immune to Dragon, and made the King Slime Water/Dark.
+
 v0.1.0.4
  - Fixed an issue where looking at a few armor types would crash your game.
 

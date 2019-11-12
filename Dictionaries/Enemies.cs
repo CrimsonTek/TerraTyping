@@ -13,12 +13,6 @@ namespace TerraTyping.Items
 {
     public class Enemies
     {
-        //public static Dictionary<int, Element.Type> Primary = new Dictionary<int, Element.Type>
-        //{
-        //    {NPCID.None , Element.Type.none },
-        //    {NPCID.BigHornetFatty , Element.Type.poison },
-        //};
-        //First type, Second type, Levitate?, Melee Type
         public readonly static Dictionary<int, Tuple<Element.Type, Element.Type, Element.Type, Element.Type>> Type = new Dictionary<int, Tuple<Element.Type, Element.Type, Element.Type, Element.Type>>
         {
             //{NPCID.None, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.none, Element.Type.none, Element.Type.none, Element.Type.none) },
@@ -160,7 +154,7 @@ namespace TerraTyping.Items
             {NPCID.Harpy, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.normal, Element.Type.flying, Element.Type.none, Element.Type.flying) },
             {NPCID.CaveBat, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.normal, Element.Type.flying, Element.Type.none, Element.Type.flying) },
 
-            {NPCID.KingSlime, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.water, Element.Type.ghost, Element.Type.none, Element.Type.water) },
+            {NPCID.KingSlime, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.water, Element.Type.dark, Element.Type.none, Element.Type.water) },
 
             {NPCID.JungleBat, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.normal, Element.Type.flying, Element.Type.none, Element.Type.normal) },
 
@@ -272,7 +266,7 @@ namespace TerraTyping.Items
             {NPCID.IceBat, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.ice, Element.Type.flying, Element.Type.none, Element.Type.ice) },
             {NPCID.Lavabat, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.fire, Element.Type.flying, Element.Type.none, Element.Type.fire) },
             {NPCID.GiantFlyingFox, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.grass, Element.Type.flying, Element.Type.none, Element.Type.grass) },
-            {NPCID.GiantTortoise, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.grass, Element.Type.none, Element.Type.none, Element.Type.grass) },
+            {NPCID.GiantTortoise, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.grass, Element.Type.rock, Element.Type.none, Element.Type.grass) },
             {NPCID.IceTortoise, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.ice, Element.Type.rock, Element.Type.none, Element.Type.ice) },
             {NPCID.Wolf, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.normal, Element.Type.dark, Element.Type.none, Element.Type.normal) },
             {NPCID.RedDevil, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.dark, Element.Type.fire, Element.Type.levitate, Element.Type.dark) },
@@ -733,6 +727,14 @@ namespace TerraTyping.Items
             //{1025, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.none, Element.Type.none, Element.Type.none, Element.Type.none) },
             //{1026, new Tuple<Element.Type, Element.Type, Element.Type, Element.Type>(Element.Type.none, Element.Type.none, Element.Type.none, Element.Type.none) },
         };
+        //public static void Adding()
+        //{
+        //    Mod calamity = ModLoader.GetMod("CalamityMod");
+        //    if (calamity != null)
+        //    {
+        //        Enemies.Type.Add()
+        //    }
+        //}
     }
 }
 
