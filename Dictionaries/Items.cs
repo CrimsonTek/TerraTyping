@@ -13,6 +13,7 @@ namespace TerraTyping.Items
 {
     public class Items
     {
+
         public static Dictionary<int, Element.Type> Type = new Dictionary<int, Element.Type>
         {
             // rainbow
@@ -503,7 +504,73 @@ namespace TerraTyping.Items
             {ItemID.Flamethrower , Element.Type.fire },
             {ItemID.PiranhaGun , Element.Type.grass },
             {1910 , Element.Type.fire }, // elf melter
-
         };
+
+        static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        public static Dictionary<int, Element.Type> WeaponOut = new Dictionary<int, Element.Type>()
+        {
+            //{weaponOut.ItemType("BoneZone") , Element.Type.bone},
+
+            //{weaponOut.ItemType("FistsBoxing") , Element.Type.fighting },
+            //{weaponOut.ItemType("FistsGranite") , Element.Type.ground },
+            //{weaponOut.ItemType("FistsSlime") , Element.Type.water },
+            //{weaponOut.ItemType("FistsOfFury") , Element.Type.rock },
+            //{weaponOut.ItemType("FistsJungleClaws") , Element.Type.grass },
+            //{weaponOut.ItemType("FistsBone") , Element.Type.bone },
+            //{weaponOut.ItemType("FistsMolten") , Element.Type.fire },
+            //{weaponOut.ItemType("GlovesWooden") , Element.Type.fighting },
+            //{weaponOut.ItemType("GlovesPalm") , Element.Type.fighting },
+            //{weaponOut.ItemType("GlovesCaestus") , Element.Type.fighting },
+            //{weaponOut.ItemType("GlovesCaestusCrimson") , Element.Type.blood },
+            //{weaponOut.ItemType("GlovesObsidian") , Element.Type.rock },
+            //{weaponOut.ItemType("GlovesFossil") , Element.Type.bone },
+            //{weaponOut.ItemType("GlovesBee") , Element.Type.bug },
+            //{weaponOut.ItemType("KnucklesIron") , Element.Type.steel },
+            //{weaponOut.ItemType("KnucklesLead") , Element.Type.steel },
+            //{weaponOut.ItemType("KnucklesGold") , Element.Type.steel },
+            //{weaponOut.ItemType("KnucklesPlat") , Element.Type.steel },
+            //{weaponOut.ItemType("KnucklesFlintlock") , Element.Type.fighting },
+            //{weaponOut.ItemType("KnucklesMeteor") , Element.Type.rock },
+            //{weaponOut.ItemType("KnucklesDungeon") , Element.Type.dark },
+            //{weaponOut.ItemType("KnucklesDemon") , Element.Type.dark },
+            //{weaponOut.ItemType("FistsSparring") , Element.Type.fairy },
+            //{weaponOut.ItemType("FistsAdamant") , Element.Type.dragon },
+            //{weaponOut.ItemType("FistsTitanium") , Element.Type.steel },
+            //{weaponOut.ItemType("FistsCursed") , Element.Type.ghost },
+            //{weaponOut.ItemType("FistsForbidden") , Element.Type.ground },
+            //{weaponOut.ItemType("FistsLihzarhd") , Element.Type.fighting },
+            //{weaponOut.ItemType("FistsFrozen") , Element.Type.ice },
+            //{weaponOut.ItemType("FistsBetsy") , Element.Type.dragon },
+            //{weaponOut.ItemType("FistsMartian") , Element.Type.electric },
+            //{weaponOut.ItemType("GlovesCobalt") , Element.Type.steel },
+            //{weaponOut.ItemType("GlovesOrich") , Element.Type.fairy },
+            //{weaponOut.ItemType("GlovesCrystal") , Element.Type.fairy },
+            //{weaponOut.ItemType("GlovesHallow") , Element.Type.fighting },
+            //{weaponOut.ItemType("GlovesButterfly") , Element.Type.bug },
+            //{weaponOut.ItemType("GlovesLee") , Element.Type.fighting },
+            //{weaponOut.ItemType("GlovesPumpkin") , Element.Type.fighting },
+            //{weaponOut.ItemType("KncuklesPalladium") , Element.Type.fighting },
+            //{weaponOut.ItemType("KnucklesMithril") , Element.Type.dragon },
+            //{weaponOut.ItemType("KnucklesShotty") , Element.Type.fighting },
+            //{weaponOut.ItemType("KnucklesIchor") , Element.Type.blood },
+            //{weaponOut.ItemType("KnucklesFrost") , Element.Type.ice },
+            //{weaponOut.ItemType("KnucklesPlantera") , Element.Type.poison },
+            //{weaponOut.ItemType("KnucklesDuke") , Element.Type.water },
+            ///*{weaponOut.ItemType("") , Element.Type.none },*/
+        };
+
+
+
+        public static void ModCompatibility()
+        {
+            if (weaponOut != null)
+            {
+                //foreach (var index in WeaponOut)
+                //{
+                //    if (!Type.ContainsKey(index.Key))
+                //        Type.Add(index.Key, index.Value);
+                //}
+            }
+        }
     }
 }

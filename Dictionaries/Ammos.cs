@@ -68,6 +68,8 @@ namespace TerraTyping.Items
             {ItemID.ChlorophyteArrow, Element.Type.grass },
             {ItemID.EndlessMusketPouch, Element.Type.normal },
             {ItemID.EndlessQuiver, Element.Type.normal },
+            {ItemID.MoonlordBullet, Element.Type.electric },
+            {ItemID.MoonlordArrow, Element.Type.electric }
         };
     }
 }

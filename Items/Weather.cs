@@ -68,45 +68,48 @@ namespace TerraTyping.Items
     {
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
-            if (Enemies.Type.ContainsKey(npc.type))
+            if (Main.expertMode)
             {
-                if (Main.bloodMoon && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
+                if (Enemies.Type.ContainsKey(npc.type))
                 {
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.blood)
+                    if (Main.bloodMoon && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.blood)
+                        {
+                            damage = (int)(damage * Config.RainMultiplier);
+                        }
                     }
-                }
-                if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
-                {
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.dark)
+                    if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.dark)
+                        {
+                            damage = (int)(damage * Config.RainMultiplier);
+                        }
                     }
-                }
-                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
-                {
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.water)
+                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.water)
+                        {
+                            damage = (int)(damage * Config.RainMultiplier);
+                        }
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.fire)
+                        {
+                            damage = (int)(damage * (1 / Config.RainMultiplier));
+                        }
                     }
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.fire)
+                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
                     {
-                        damage = (int)(damage * (1 / Config.RainMultiplier));
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.ice)
+                        {
+                            damage = (int)(damage * Config.RainMultiplier);
+                        }
                     }
-                }
-                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
-                {
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.ice)
+                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
-                    }
-                }
-                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
-                {
-                    if (Enemies.Type[npc.type].Item4 == Element.Type.ground || Enemies.Type[npc.type].Item4 == Element.Type.rock || Enemies.Type[npc.type].Item4 == Element.Type.steel)
-                    {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        if (Enemies.Type[npc.type].Item4 == Element.Type.ground || Enemies.Type[npc.type].Item4 == Element.Type.rock || Enemies.Type[npc.type].Item4 == Element.Type.steel)
+                        {
+                            damage = (int)(damage * Config.RainMultiplier);
+                        }
                     }
                 }
             }

@@ -18,84 +18,36 @@ namespace TerraTyping.Items
         {
             if (player.HasBuff(BuffID.OnFire))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.OnFire], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.OnFire], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
             }
             if (player.HasBuff(BuffID.Venom))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
             }
             if (player.HasBuff(BuffID.CursedInferno))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
             }
             if (player.HasBuff(BuffID.Burning))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
             }
             if (player.HasBuff(BuffID.Frostburn))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
             }
             if (player.HasBuff(BuffID.ShadowFlame))
             {
-                if (ArmorPlayer.typeHead.Item1 == ArmorPlayer.typeBody.Item1 && ArmorPlayer.typeBody.Item1 == ArmorPlayer.typeLegs.Item1 && ArmorPlayer.typeHead.Item2 == ArmorPlayer.typeBody.Item2 && ArmorPlayer.typeBody.Item2 == ArmorPlayer.typeLegs.Item2)
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(ArmorPlayer.typeBody.Item1, ArmorPlayer.typeBody.Item2);
-                }
-                else
-                {
-                    ArmorPlayer.typeSet = new Tuple<Element.Type, Element.Type>(Element.Type.normal, Element.Type.none);
-                };
                 float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item1];
                 float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item2];
                 player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));

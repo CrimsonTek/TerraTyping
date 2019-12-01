@@ -98,7 +98,7 @@ namespace TerraTyping.Items
             {ItemID.BeeBreastplate, new Tuple<Element.Type, Element.Type>(Element.Type.bug, Element.Type.flying) },
             {ItemID.BeeGreaves, new Tuple<Element.Type, Element.Type>(Element.Type.bug, Element.Type.flying) },
             {ItemID.JungleHat, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
-            {ItemID.JungleChest, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
+            {ItemID.JungleShirt, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
             {ItemID.JunglePants, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
             {ItemID.AncientCobaltHelmet, new Tuple<Element.Type, Element.Type>(Element.Type.steel, Element.Type.none) },
             {ItemID.AncientCobaltBreastplate, new Tuple<Element.Type, Element.Type>(Element.Type.steel, Element.Type.none) },
@@ -371,7 +371,7 @@ namespace TerraTyping.Items
             {ItemID.FossilShirt, new Tuple<Element.Type, Element.Type>(Element.Type.bone, Element.Type.ground) },
             {ItemID.ObsidianChest, new Tuple<Element.Type, Element.Type>(Element.Type.fire, Element.Type.water) },
             {ItemID.BeeBreastplate, new Tuple<Element.Type, Element.Type>(Element.Type.bug, Element.Type.flying) },
-            {ItemID.JungleChest, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
+            {ItemID.JungleShirt, new Tuple<Element.Type, Element.Type>(Element.Type.grass, Element.Type.none) },
             {ItemID.AncientCobaltBreastplate, new Tuple<Element.Type, Element.Type>(Element.Type.steel, Element.Type.none) },
 
             {ItemID.MeteorSuit, new Tuple<Element.Type, Element.Type>(Element.Type.fire, Element.Type.rock) },
