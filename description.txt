@@ -9,13 +9,16 @@ This mod adds no items or enemies yet, only functionality. This means you can tr
 
 Special Thanks to all the people that helped me with this mod.
 
-Github: https://github.com/CrimsonTek/Terramon
+Github: https://github.com/CrimsonTek/TerraTyping
  > My GitHub repository for the mod.
 
 Mod Homepage: https://discord.gg/RvPGKwz
  > My public Discord server for reports, suggestions, or anything else.
 
 Version History:
+
+v0.1.0.6
+ - Made lava, vines, and fall damage all affected by type effectiveness.
 
 v0.1.0.5
  - Made Fairy immune to Dragon, and made the King Slime Water/Dark.
