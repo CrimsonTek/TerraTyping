@@ -9,51 +9,52 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
     public class Buffs
     {
-        public static Dictionary<int, Element.Type> Type = new Dictionary<int, Element.Type>
+        public static Dictionary<int, Element> Type = new Dictionary<int, Element>
         {
-            {BuffID.Poisoned, Element.Type.poison },
-            {BuffID.Darkness, Element.Type.dark },
-            {BuffID.Cursed, Element.Type.ghost },
-            {BuffID.OnFire, Element.Type.fire },
-            {BuffID.Bleeding, Element.Type.blood },
-            {BuffID.Confused, Element.Type.psychic },
-            {BuffID.Slow, Element.Type.normal },
-            {BuffID.Weak, Element.Type.normal },
-            {BuffID.Silenced, Element.Type.normal },
-            {BuffID.BrokenArmor, Element.Type.normal },
-            {BuffID.Horrified, Element.Type.psychic },
-            {BuffID.TheTongue, Element.Type.blood },
-            {BuffID.CursedInferno, Element.Type.fire },
-            {BuffID.Chilled, Element.Type.ice },
-            {BuffID.Frozen, Element.Type.ice },
-            {BuffID.Burning, Element.Type.fire },
-            {BuffID.Suffocation, Element.Type.normal },
-            {BuffID.Ichor, Element.Type.blood },
-            {BuffID.Blackout, Element.Type.dark },
-            {BuffID.WaterCandle, Element.Type.water },
-            {BuffID.ChaosState, Element.Type.fairy },
-            {BuffID.Wet, Element.Type.water },
-            {BuffID.Stinky, Element.Type.normal },
-            {BuffID.Slimed, Element.Type.water },
-            {BuffID.Electrified, Element.Type.electric },
-            {BuffID.MoonLeech, Element.Type.dark },
-            {148, Element.Type.normal }, // feral bite
-            {BuffID.Webbed, Element.Type.normal },
-            {BuffID.ShadowFlame, Element.Type.fire },
-            {BuffID.Stoned, Element.Type.rock },
-            {BuffID.Dazed, Element.Type.psychic },
-            {BuffID.Obstructed, Element.Type.psychic },
-            {164, Element.Type.flying }, // distorted
-            {169, Element.Type.bone }, // penetrated
-            {BuffID.WindPushed, Element.Type.flying },
-            {BuffID.WitheredArmor, Element.Type.dark },
-            {BuffID.WitheredWeapon, Element.Type.dark },
-            {BuffID.Venom, Element.Type.poison },
-            {BuffID.Frostburn, Element.Type.ice }
+            //BuffID, Element, DrainsHealth?, HealthDrain
+            {BuffID.Poisoned, Element.poison },
+            {BuffID.Darkness, Element.dark },
+            {BuffID.Cursed, Element.ghost },
+            {BuffID.OnFire, Element.fire },
+            {BuffID.Bleeding, Element.blood },
+            {BuffID.Confused, Element.psychic },
+            {BuffID.Slow, Element.normal },
+            {BuffID.Weak, Element.normal },
+            {BuffID.Silenced, Element.normal },
+            {BuffID.BrokenArmor, Element.normal },
+            {BuffID.Horrified, Element.psychic },
+            {BuffID.TheTongue, Element.blood },
+            {BuffID.CursedInferno, Element.fire },
+            {BuffID.Chilled, Element.ice },
+            {BuffID.Frozen, Element.ice },
+            {BuffID.Burning, Element.fire },
+            {BuffID.Suffocation, Element.normal },
+            {BuffID.Ichor, Element.blood },
+            {BuffID.Blackout, Element.dark },
+            {BuffID.WaterCandle, Element.water },
+            {BuffID.ChaosState, Element.fairy },
+            {BuffID.Wet, Element.water },
+            {BuffID.Stinky, Element.normal },
+            {BuffID.Slimed, Element.water },
+            {BuffID.Electrified, Element.electric },
+            {BuffID.MoonLeech, Element.dark },
+            {148, Element.normal }, // feral bite
+            {BuffID.Webbed, Element.normal },
+            {BuffID.ShadowFlame, Element.fire },
+            {BuffID.Stoned, Element.rock },
+            {BuffID.Dazed, Element.psychic },
+            {BuffID.Obstructed, Element.psychic },
+            {164, Element.flying }, // distorted
+            {169, Element.bone }, // penetrated
+            {BuffID.WindPushed, Element.flying },
+            {BuffID.WitheredArmor, Element.dark },
+            {BuffID.WitheredWeapon, Element.dark },
+            {BuffID.Venom, Element.poison },
+            {BuffID.Frostburn, Element.ice },
         };
     }
 }

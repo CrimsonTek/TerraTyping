@@ -25,23 +25,22 @@ namespace TerraTyping
         }
         public override void Load()
         {
+            Mod weaponOut = ModLoader.GetMod("WeaponOut");
+            if (weaponOut != null)
+            {
+                foreach (KeyValuePair<string, Element> index in Items.newWeaponOut)
+                {
+                    Items.WeaponOut.Add(weaponOut.ItemType(index.Key), index.Value);
+                }
+            }
         }
         public override void Unload()
         {
-            Mod weaponOut = ModLoader.GetMod("WeaponOut");
-            if (Items.Items.WeaponOut.Count > 0)
-            {
-                foreach (var index in Items.Items.WeaponOut)
-                {
-                    if (Items.Items.Type.ContainsKey(index.Key))
-                        Items.Items.Type.Remove(index.Key);
-                }
-            }
+            Items.WeaponOut.Clear();
         }
 
         public override void PostSetupContent()
         {
-            Items.Items.ModCompatibility();
         }
     }
 }

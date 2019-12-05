@@ -10,48 +10,71 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
+    //public class Buffy : GlobalBuff
+    //{
+    //    public override void Update(int type, Player player, ref int buffIndex)
+    //    {
+    //        if (type == BuffID.OnFire)
+    //            player.lifeRegen = 
+    //    }
+    //}
+
     public class PlayerBuffHandling : ModPlayer
     {
         public override void UpdateBadLifeRegen()
         {
-            if (player.HasBuff(BuffID.OnFire))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.OnFire], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.OnFire], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
-            if (player.HasBuff(BuffID.Venom))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
-            if (player.HasBuff(BuffID.CursedInferno))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
-            if (player.HasBuff(BuffID.Burning))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
-            if (player.HasBuff(BuffID.Frostburn))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
-            if (player.HasBuff(BuffID.ShadowFlame))
-            {
-                float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item1];
-                float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item2];
-                player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
-            }
+            //Tuple<Element, Element, Element> typeSet = ArmorPlayer.typeSet;
+            //foreach (var buff in Buffs.Type)
+            //{
+            //    if (player.HasBuff(buff.Key) && !player.buffImmune[buff.Key])
+            //        player.lifeRegen -= Calc.LifeRegen(buff.Key, ArmorPlayer.typeSet, );
+            //}
+
+            //if (player.HasBuff(BuffID.Poisoned) && !player.buffImmune[BuffID.Poisoned])
+            //{
+            //    player.lifeRegen -= Calc.BadRegen(BuffID.Poisoned, typeSet, 4);
+            //}
+            //if (player.HasBuff(BuffID.Venom) && !player.buffImmune[BuffID.Venom])
+            //{
+            //    player.lifeRegen -= Calc.BadRegen(BuffID.Venom, typeSet, 12);
+            //}
+            //if (player.HasBuff(BuffID.OnFire) && !player.buffImmune[BuffID.OnFire])
+            //{
+            //    player.lifeRegen -= Calc.BadRegen(BuffID.OnFire, typeSet, 8);
+            //}
+            //if (player.HasBuff(BuffID.Burning) && !player.buffImmune[BuffID.Burning])
+            //if (player.HasBuff(BuffID.Venom))
+            //{
+            //    float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item1];
+            //    float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Venom], (int)ArmorPlayer.typeSet.Item2];
+            //    player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
+            //}
+            //if (player.HasBuff(BuffID.CursedInferno))
+            //{
+            //    float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item1];
+            //    float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.CursedInferno], (int)ArmorPlayer.typeSet.Item2];
+            //    player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
+            //}
+            //if (player.HasBuff(BuffID.Burning))
+            //{
+            //    float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item1];
+            //    float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Burning], (int)ArmorPlayer.typeSet.Item2];
+            //    player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
+            //}
+            //if (player.HasBuff(BuffID.Frostburn))
+            //{
+            //    float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item1];
+            //    float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.Frostburn], (int)ArmorPlayer.typeSet.Item2];
+            //    player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
+            //}
+            //if (player.HasBuff(BuffID.ShadowFlame))
+            //{
+            //    float multiplier1 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item1];
+            //    float multiplier2 = Table.Effectiveness[(int)Buffs.Type[BuffID.ShadowFlame], (int)ArmorPlayer.typeSet.Item2];
+            //    player.lifeRegen = (int)(player.lifeRegen * (multiplier1 * multiplier2));
+            //}
         }
     }
     public class NPCBuffHandling : GlobalNPC

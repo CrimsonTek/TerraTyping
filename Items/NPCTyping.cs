@@ -14,24 +14,37 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
     public class NPCTyping : GlobalNPC
     {
-        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit) {
-            //if (item.modItem.mod == ModLoader.GetMod("WeaponOut"))
-            //{ }
+        //public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        //{
+        //    damage = (int)(damage * Calc.Damage(item.type, npc.type, npc.ai[0], dict.Item(item), dict.NPC(npc)));
+        //}
 
-            damage = (int)(damage * Calc.Damage(item.type, npc.type, npc.ai[0], Items.Type, Enemies.Type));
+        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        {
+            damage = Calc.Damage(item, npc, damage);
         }
-        public override bool? CanBeHitByItem(NPC npc, Player player, Item item) {
-            return Calc.CanBeHit(item.type, npc.type, npc.ai[0], Items.Type, Enemies.Type);
+
+        public override bool? CanBeHitByItem(NPC npc, Player player, Item item)
+        {
+            if (Calc.Damage(item, npc) == 0)
+                return false;
+            else
+                return base.CanBeHitByItem(npc, player, item);
         }
-        public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-            damage = (int)(damage * Calc.Damage(projectile.type, npc.type, npc.ai[0], Projectiles.Type, Enemies.Type));
+        public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            damage = Calc.Damage(projectile, npc, damage);
         }
-        public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile) {
-            return Calc.CanBeHit(projectile.type, npc.type, npc.ai[0], Projectiles.Type, Enemies.Type);
+        public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+        {
+            if (Calc.Damage(projectile, npc) == 0)
+                return false;
+            else
+                return base.CanBeHitByProjectile(npc, projectile);
         }
     }
 }

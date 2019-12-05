@@ -9,15 +9,15 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
-    public class Other
+    public class OtherDict
     {
-        public static Dictionary<int, Element.Type> Type = new Dictionary<int, Element.Type>
+        public static Dictionary<int, Element> Type = new Dictionary<int, Element>
         {
-            {0, Element.Type.ground }, // falling
-            {2, Element.Type.fire }, // lava
-            {3, Element.Type.grass }, // vines
+            {0, Element.ground }, // falling
+            {2, Element.fire }, // lava
+            {3, Element.grass }, // vines
         };
     }
 }

@@ -19,6 +19,7 @@
     <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Dictionaries\WeaponOut\" />
     <Folder Include="Types\" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
 //using Terraria.ID;
 //using Terraria.ModLoader;
 
-//namespace TerraTyping.Items
+//namespace TerraTyping
 //{
 //    public class EffectivenessIcon : GlobalNPC
 //    {

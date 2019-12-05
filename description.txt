@@ -17,6 +17,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.0.7
+ - Major code rework. Fixed enemies from other mods disappearing, and removed effective debuffs doing way too much damage when stacked.
+
 v0.1.0.6
  - Made lava, vines, and fall damage all affected by type effectiveness.
 

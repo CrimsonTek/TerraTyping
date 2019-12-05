@@ -8,10 +8,12 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
     class Weather : GlobalItem
     {
+        public override bool InstancePerEntity => true;
+
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
             if (Main.expertMode)
@@ -22,39 +24,39 @@ namespace TerraTyping.Items
                     {
                         if (Main.bloodMoon)
                         {
-                            if (Items.Type[item.type] == Element.Type.blood)
+                            if (Items.Type[item.type] == Element.blood)
                             {
                                 mult = Config.RainMultiplier;
                             }
                         }
                         if (Main.eclipse)
                         {
-                            if (Items.Type[item.type] == Element.Type.dark)
+                            if (Items.Type[item.type] == Element.dark)
                             {
                                 mult = Config.RainMultiplier;
                             }
                         }
                         if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
                         {
-                            if (Items.Type[item.type] == Element.Type.water)
+                            if (Items.Type[item.type] == Element.water)
                             {
                                 mult = Config.RainMultiplier;
                             }
-                            if (Items.Type[item.type] == Element.Type.fire)
+                            if (Items.Type[item.type] == Element.fire)
                             {
                                 mult = 1 / Config.RainMultiplier;
                             }
                         }
                         if (player.ZoneSnow && player.ZoneSnow)
                         {
-                            if (Items.Type[item.type] == Element.Type.ice)
+                            if (Items.Type[item.type] == Element.ice)
                             {
                                 mult = Config.RainMultiplier;
                             }
                         }
                         if (player.ZoneSandstorm)
                         {
-                            if (Items.Type[item.type] == Element.Type.ground || Items.Type[item.type] == Element.Type.rock || Items.Type[item.type] == Element.Type.steel)
+                            if (Items.Type[item.type] == Element.ground || Items.Type[item.type] == Element.rock || Items.Type[item.type] == Element.steel)
                             {
                                 mult = Config.RainMultiplier;
                             }
@@ -74,39 +76,39 @@ namespace TerraTyping.Items
                 {
                     if (Main.bloodMoon && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.blood)
+                        if (Enemies.Type[npc.type].Item4 == Element.blood)
                         {
                             damage = (int)(damage * Config.RainMultiplier);
                         }
                     }
                     if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.dark)
+                        if (Enemies.Type[npc.type].Item4 == Element.dark)
                         {
                             damage = (int)(damage * Config.RainMultiplier);
                         }
                     }
                     if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.water)
+                        if (Enemies.Type[npc.type].Item4 == Element.water)
                         {
                             damage = (int)(damage * Config.RainMultiplier);
                         }
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.fire)
+                        if (Enemies.Type[npc.type].Item4 == Element.fire)
                         {
                             damage = (int)(damage * (1 / Config.RainMultiplier));
                         }
                     }
                     if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.ice)
+                        if (Enemies.Type[npc.type].Item4 == Element.ice)
                         {
                             damage = (int)(damage * Config.RainMultiplier);
                         }
                     }
                     if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.Type.ground || Enemies.Type[npc.type].Item4 == Element.Type.rock || Enemies.Type[npc.type].Item4 == Element.Type.steel)
+                        if (Enemies.Type[npc.type].Item4 == Element.ground || Enemies.Type[npc.type].Item4 == Element.rock || Enemies.Type[npc.type].Item4 == Element.steel)
                         {
                             damage = (int)(damage * Config.RainMultiplier);
                         }

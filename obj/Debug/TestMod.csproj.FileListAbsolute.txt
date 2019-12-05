@@ -1,7 +1,0 @@
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\bin\Debug\TestMod.dll
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\bin\Debug\TestMod.pdb
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\obj\Debug\TestMod.csprojAssemblyReference.cache
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\obj\Debug\TestMod.csproj.CoreCompileInputs.cache
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\obj\Debug\TestMod.csproj.CopyComplete
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\obj\Debug\TestMod.dll
-C:\Users\Jack\Documents\My games\Terraria\ModLoader\Mod Sources\TestMod\obj\Debug\TestMod.pdb

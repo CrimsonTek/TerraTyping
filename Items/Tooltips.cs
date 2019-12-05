@@ -9,10 +9,11 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.Items
+namespace TerraTyping
 {
     public class Tooltips : GlobalItem
     {
+        public override bool InstancePerEntity => true;
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             if (Items.Type.ContainsKey(item.type))
@@ -21,8 +22,8 @@ namespace TerraTyping.Items
                 {
                     overrideColor = new Color
                     (
-                        Colors.Type[Items.Type[item.type]].Item1, 
-                        Colors.Type[Items.Type[item.type]].Item2, 
+                        Colors.Type[Items.Type[item.type]].Item1,
+                        Colors.Type[Items.Type[item.type]].Item2,
                         Colors.Type[Items.Type[item.type]].Item3
                     )
                 };
@@ -54,7 +55,7 @@ namespace TerraTyping.Items
                 };
                 tooltips.Add(firstline);
 
-                if (Armors.Type[item.type].Item2 != Element.Type.none)
+                if (Armors.Type[item.type].Item2 != Element.none)
                 {
                     var secondline = new TooltipLine(mod, "Type", Formal.Name[Armors.Type[item.type].Item2])
                     {

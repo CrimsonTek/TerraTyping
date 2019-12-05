@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\Terramon.csproj",
-      "projectName": "TerramonTyping",
-      "projectPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\Terramon.csproj",
+      "projectUniqueName": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\TerraTyping.csproj",
+      "projectName": "TerraTyping",
+      "projectPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\TerraTyping.csproj",
       "packagesPath": "C:\\Users\\Jack\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\Terramon\\obj\\",
+      "outputPath": "C:\\Users\\Jack\\Documents\\My games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,7 +30,8 @@
         "net45"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.myget.org/F/discord-net/api/v3/index.json": {}
       },
       "frameworks": {
         "net45": {
@@ -44,7 +45,9 @@
       }
     },
     "frameworks": {
-      "net45": {}
+      "net45": {
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+      }
     }
   }
 }
