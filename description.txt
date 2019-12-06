@@ -17,6 +17,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.0.8
+ - Fixed guide telling you your life regen.
+
 v0.1.0.7
  - Major code rework. Fixed enemies from other mods disappearing, and removed effective debuffs doing way too much damage when stacked.
 
