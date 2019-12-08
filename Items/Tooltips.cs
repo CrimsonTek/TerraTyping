@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,7 +19,8 @@ namespace TerraTyping
         {
             if (Items.Type.ContainsKey(item.type))
             {
-                var line = new TooltipLine(mod, "Type", Formal.Name[Items.Type[item.type]])
+                Lang.GetItemNameValue(1);
+                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Items.Type[item.type]))
                 {
                     overrideColor = new Color
                     (
@@ -31,7 +33,7 @@ namespace TerraTyping
             }
             else if (Ammos.Type.ContainsKey(item.type))
             {
-                var line = new TooltipLine(mod, "Type", Formal.Name[Ammos.Type[item.type]])
+                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Ammos.Type[item.type]))
                 {
                     overrideColor = new Color
                       (
@@ -44,7 +46,7 @@ namespace TerraTyping
             }
             else if (Armors.Type.ContainsKey(item.type))
             {
-                var firstline = new TooltipLine(mod, "Type", Formal.Name[Armors.Type[item.type].Item1])
+                var firstline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Armors.Type[item.type].Item1))
                 {
                     overrideColor = new Color
                     (
@@ -57,7 +59,7 @@ namespace TerraTyping
 
                 if (Armors.Type[item.type].Item2 != Element.none)
                 {
-                    var secondline = new TooltipLine(mod, "Type", Formal.Name[Armors.Type[item.type].Item2])
+                    var secondline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Armors.Type[item.type].Item2))
                     {
                         overrideColor = new Color
                         (
