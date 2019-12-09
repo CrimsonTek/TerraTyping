@@ -9,7 +9,10 @@ This mod adds no items or enemies yet, only functionality. This means you can tr
 
 Special Thanks to all the people that helped me with this mod.
 
- /\/\ Translation on Russian: Rostya
+Translations
+ |%| Russian: Rostya
+ |%| French: LyDek
+ |%| German: Feutor
 
 Github: https://github.com/CrimsonTek/TerraTyping
  > My GitHub repository for the mod.
@@ -20,6 +23,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 ######## ######## ######## ########
 
 Version History:
+
+v0.1.0.10
+ - Added localization for French and German
 
 v0.1.0.9
  - Added localization for Russian.
