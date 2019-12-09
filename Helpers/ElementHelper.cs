@@ -12,8 +12,8 @@ namespace TerraTyping
 {
     public class ElementHelper
     {
-        static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
-        static readonly DictionaryHelper dictionaryHelper = new DictionaryHelper();
+        readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        readonly DictionaryHelper dictionaryHelper = new DictionaryHelper();
 
         public Element Primary(object obj)
         {

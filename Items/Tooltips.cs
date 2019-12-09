@@ -14,58 +14,58 @@ namespace TerraTyping
 {
     public class Tooltips : GlobalItem
     {
+        static readonly DictionaryHelper dictionaryHelper = new DictionaryHelper();
         public override bool InstancePerEntity => true;
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (Items.Type.ContainsKey(item.type))
+            if (dictionaryHelper.Item(item).ContainsKey(item.type))
             {
-                Lang.GetItemNameValue(1);
-                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Items.Type[item.type]))
+                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(dictionaryHelper.Item(item)[item.type]))
                 {
                     overrideColor = new Color
                     (
-                        Colors.Type[Items.Type[item.type]].Item1,
-                        Colors.Type[Items.Type[item.type]].Item2,
-                        Colors.Type[Items.Type[item.type]].Item3
+                        Colors.Type[dictionaryHelper.Item(item)[item.type]].Item1,
+                        Colors.Type[dictionaryHelper.Item(item)[item.type]].Item2,
+                        Colors.Type[dictionaryHelper.Item(item)[item.type]].Item3
                     )
                 };
                 tooltips.Add(line);
             }
-            else if (Ammos.Type.ContainsKey(item.type))
+            else if (dictionaryHelper.Ammo(item).ContainsKey(item.type))
             {
-                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Ammos.Type[item.type]))
+                var line = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(dictionaryHelper.Ammo(item)[item.type]))
                 {
                     overrideColor = new Color
                       (
-                          Colors.Type[Ammos.Type[item.type]].Item1,
-                          Colors.Type[Ammos.Type[item.type]].Item2,
-                          Colors.Type[Ammos.Type[item.type]].Item3
+                          Colors.Type[dictionaryHelper.Ammo(item)[item.type]].Item1,
+                          Colors.Type[dictionaryHelper.Ammo(item)[item.type]].Item2,
+                          Colors.Type[dictionaryHelper.Ammo(item)[item.type]].Item3
                       )
                 };
                 tooltips.Add(line);
             }
-            else if (Armors.Type.ContainsKey(item.type))
+            else if (dictionaryHelper.Armor(item).ContainsKey(item.type))
             {
-                var firstline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Armors.Type[item.type].Item1))
+                var firstline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(dictionaryHelper.Armor(item)[item.type].Item1))
                 {
                     overrideColor = new Color
                     (
-                        Colors.Type[Armors.Type[item.type].Item1].Item1,
-                        Colors.Type[Armors.Type[item.type].Item1].Item2,
-                        Colors.Type[Armors.Type[item.type].Item1].Item3
+                        Colors.Type[dictionaryHelper.Armor(item)[item.type].Item1].Item1,
+                        Colors.Type[dictionaryHelper.Armor(item)[item.type].Item1].Item2,
+                        Colors.Type[dictionaryHelper.Armor(item)[item.type].Item1].Item3
                     )
                 };
                 tooltips.Add(firstline);
 
-                if (Armors.Type[item.type].Item2 != Element.none)
+                if (dictionaryHelper.Armor(item)[item.type].Item2 != Element.none)
                 {
-                    var secondline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(Armors.Type[item.type].Item2))
+                    var secondline = new TooltipLine(mod, "Type", LangHelper.langHelper.ElementName(dictionaryHelper.Armor(item)[item.type].Item2))
                     {
                         overrideColor = new Color
                         (
-                            Colors.Type[Armors.Type[item.type].Item2].Item1,
-                            Colors.Type[Armors.Type[item.type].Item2].Item2,
-                            Colors.Type[Armors.Type[item.type].Item2].Item3
+                            Colors.Type[dictionaryHelper.Armor(item)[item.type].Item2].Item1,
+                            Colors.Type[dictionaryHelper.Armor(item)[item.type].Item2].Item2,
+                            Colors.Type[dictionaryHelper.Armor(item)[item.type].Item2].Item3
                         )
                     };
                     tooltips.Add(secondline);

@@ -7,12 +7,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using TerraTyping.Dictionaries;
 
 namespace TerraTyping
 {
     public class DictionaryHelper
     {
-        Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        static Mod weaponOut = ModLoader.GetMod("WeaponOut");
 
         public Dictionary<int, Element> Ammo(Item item)
         {
@@ -36,11 +37,12 @@ namespace TerraTyping
 
         public Dictionary<int, Element> Item(Item item)
         {
-            //if (item.modItem.mod == weaponOut) 
-            //    return Items.WeaponOut;
-            //else
-                return Items.Type;
-
+            //if (item.modItem != null)
+            //{
+            //    if (item.modItem.mod == weaponOut)
+            //        return WeaponOut.Item;
+            //}
+            return Items.Type;
         }
 
         public Dictionary<int, Element> Other(PlayerDeathReason pdr)

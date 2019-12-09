@@ -14,16 +14,10 @@ namespace TerraTyping
 {
     public class STAB : GlobalItem
     {
-        public override bool InstancePerEntity => true;
+        //public override bool InstancePerEntity => true;
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
             mult = Calc.STAB(item, ArmorPlayer.typeSet);
-            //if (Items.Type.ContainsKey(item.type))
-            //{
-            //    float STAB = 1.0f; if (ArmorPlayer.typeSet.Item1 == Items.Type[item.type] || ArmorPlayer.typeSet.Item2 == Items.Type[item.type])
-            //    { STAB = Config.STAB; } // effects the stab damage multiplier
-            //    mult = STAB;
-            //}
         }
     }
 }

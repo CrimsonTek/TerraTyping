@@ -18,6 +18,8 @@ namespace TerraTyping
 
             switch (culture.LegacyId)
             {
+                case 2: return German.Name[element];
+                case 4: return French.Name[element];
                 case 6: return Russian.Name[element];
                 default: return English.Name[element];
             }

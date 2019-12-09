@@ -318,8 +318,6 @@ namespace TerraTyping
             float multiplier1 = Table.Effectiveness[attackQuatrinary, defensePrimary];
             float multiplier2 = Table.Effectiveness[attackQuatrinary, defenseSecondary];
             float multiplier3 = Table.Effectiveness[attackQuatrinary, defenseTertiary];
-            //if (Table.Effectiveness[attackQuatrinary, defensePrimary] == 2.0)
-            //    multiplier1 = 2.0f;
 
             return (int)(damage * multiplier1 * multiplier2 * multiplier3);
         }
@@ -335,12 +333,15 @@ namespace TerraTyping
 
             float multipler = 1.0f;
 
-            if (defensePrimary == attackQuatrinary)
-                multipler *= Config.STAB;
-            else if (defenseSecondary == attackQuatrinary)
-                multipler *= Config.STAB;
-            else if (defenseTertiary == attackQuatrinary)
-                multipler *= Config.STAB;
+            if (attackQuatrinary != (int)Element.none)
+            {
+                if (defensePrimary == attackQuatrinary)
+                    multipler *= Config.STAB;
+                else if (defenseSecondary == attackQuatrinary)
+                    multipler *= Config.STAB;
+                else if (defenseTertiary == attackQuatrinary)
+                    multipler *= Config.STAB;
+            }
             return multipler;
         }
 

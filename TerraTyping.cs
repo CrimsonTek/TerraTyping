@@ -15,6 +15,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using TerraTyping;
+using Newtonsoft.Json;
+using TerraTyping.Dictionaries;
 
 namespace TerraTyping
 {
@@ -22,25 +24,31 @@ namespace TerraTyping
 	{
         public TerraTyping()
         {
-        }
-        public override void Load()
-        {
-            Mod weaponOut = ModLoader.GetMod("WeaponOut");
-            if (weaponOut != null)
-            {
-                foreach (KeyValuePair<string, Element> index in Items.newWeaponOut)
-                {
-                    Items.WeaponOut.Add(weaponOut.ItemType(index.Key), index.Value);
-                }
-            }
-        }
-        public override void Unload()
-        {
-            Items.WeaponOut.Clear();
+
         }
 
-        public override void PostSetupContent()
-        {
-        }
+        //public override void PostSetupContent()
+        //{
+        //    Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        //    Initialize(weaponOut);
+        //}
+
+        //public void Initialize(Mod mod)
+        //{
+        //    if (mod == null)
+        //        return;
+
+        //    if (mod.Name == "WeaponOut")
+        //    {
+        //        foreach(KeyValuePair<string, Element> entry in WeaponOut._Item)
+        //        {
+        //            int key = mod.ItemType(entry.Key);
+        //            Element value = entry.Value;
+        //            if (WeaponOut.Item.ContainsKey(key))
+        //                return;
+        //            WeaponOut.Item.Add(key, value);
+        //        }
+        //    }
+        //}
     }
 }

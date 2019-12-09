@@ -509,61 +509,62 @@ namespace TerraTyping
             {1910 , Element.fire }, // elf melter
         };
 
-        public readonly static Dictionary<string, Element> newWeaponOut = new Dictionary<string, Element>
-        {
-            {"FistsBoxing" , Element.fighting },
-            /*{"" , Element.none },*/
-        };
+        //public readonly static Dictionary<string, Element> newWeaponOut = new Dictionary<string, Element>
+        //{
+        //    {"FistsBoxing" , Element.fighting },
+        //    /*{"" , Element.none },*/
+        //};
 
-        public static Dictionary<int, Element> WeaponOut = new Dictionary<int, Element>() { };
-            //{weaponOut.ItemType("BoneZone") , Element.bone},
+        //static Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        //public static Dictionary<int, Element> WeaponOut = new Dictionary<int, Element>() { { weaponOut.ItemType("KnucklesGold"), Element.steel } };
+        ////{weaponOut.ItemType("BoneZone") , Element.bone},
 
-            //// fists
-            //{weaponOut.ItemType("FistsBoxing") , Element.fighting },
-            //{weaponOut.ItemType("FistsGranite") , Element.ground },
-            //{weaponOut.ItemType("FistsSlime") , Element.water },
-            //{weaponOut.ItemType("FistsOfFury") , Element.rock },
-            //{weaponOut.ItemType("FistsJungleClaws") , Element.grass },
-            //{weaponOut.ItemType("FistsBone") , Element.bone },
-            //{weaponOut.ItemType("FistsMolten") , Element.fire },
-            //{weaponOut.ItemType("GlovesWooden") , Element.fighting },
-            //{weaponOut.ItemType("GlovesPalm") , Element.fighting },
-            //{weaponOut.ItemType("GlovesCaestus") , Element.fighting },
-            //{weaponOut.ItemType("GlovesCaestusCrimson") , Element.blood },
-            //{weaponOut.ItemType("GlovesObsidian") , Element.rock },
-            //{weaponOut.ItemType("GlovesFossil") , Element.bone },
-            //{weaponOut.ItemType("GlovesBee") , Element.bug },
-            //{weaponOut.ItemType("KnucklesIron") , Element.steel },
-            //{weaponOut.ItemType("KnucklesLead") , Element.steel },
-            //{weaponOut.ItemType("KnucklesGold") , Element.steel },
-            //{weaponOut.ItemType("KnucklesPlat") , Element.steel },
-            //{weaponOut.ItemType("KnucklesFlintlock") , Element.fighting },
-            //{weaponOut.ItemType("KnucklesMeteor") , Element.rock },
-            //{weaponOut.ItemType("KnucklesDungeon") , Element.dark },
-            //{weaponOut.ItemType("KnucklesDemon") , Element.dark },
-            //{weaponOut.ItemType("FistsSparring") , Element.fairy },
-            //{weaponOut.ItemType("FistsAdamant") , Element.dragon },
-            //{weaponOut.ItemType("FistsTitanium") , Element.steel },
-            //{weaponOut.ItemType("FistsCursed") , Element.ghost },
-            //{weaponOut.ItemType("FistsForbidden") , Element.ground },
-            //{weaponOut.ItemType("FistsLihzarhd") , Element.fighting },
-            //{weaponOut.ItemType("FistsFrozen") , Element.ice },
-            //{weaponOut.ItemType("FistsBetsy") , Element.dragon },
-            //{weaponOut.ItemType("FistsMartian") , Element.electric },
-            //{weaponOut.ItemType("GlovesCobalt") , Element.steel },
-            //{weaponOut.ItemType("GlovesOrich") , Element.fairy },
-            //{weaponOut.ItemType("GlovesCrystal") , Element.fairy },
-            //{weaponOut.ItemType("GlovesHallow") , Element.fighting },
-            //{weaponOut.ItemType("GlovesButterfly") , Element.bug },
-            //{weaponOut.ItemType("GlovesLee") , Element.fighting },
-            //{weaponOut.ItemType("GlovesPumpkin") , Element.fighting },
-            //{weaponOut.ItemType("KncuklesPalladium") , Element.fighting },
-            //{weaponOut.ItemType("KnucklesMithril") , Element.dragon },
-            //{weaponOut.ItemType("KnucklesShotty") , Element.fighting },
-            //{weaponOut.ItemType("KnucklesIchor") , Element.blood },
-            //{weaponOut.ItemType("KnucklesFrost") , Element.ice },
-            //{weaponOut.ItemType("KnucklesPlantera") , Element.poison },
-            //{weaponOut.ItemType("KnucklesDuke") , Element.water },
-            ///*{weaponOut.ItemType("") , Element.none },*/
+        ////// fists
+        ////{weaponOut.ItemType("FistsBoxing") , Element.fighting },
+        ////{weaponOut.ItemType("FistsGranite") , Element.ground },
+        ////{weaponOut.ItemType("FistsSlime") , Element.water },
+        ////{weaponOut.ItemType("FistsOfFury") , Element.rock },
+        ////{weaponOut.ItemType("FistsJungleClaws") , Element.grass },
+        ////{weaponOut.ItemType("FistsBone") , Element.bone },
+        ////{weaponOut.ItemType("FistsMolten") , Element.fire },
+        ////{weaponOut.ItemType("GlovesWooden") , Element.fighting },
+        ////{weaponOut.ItemType("GlovesPalm") , Element.fighting },
+        ////{weaponOut.ItemType("GlovesCaestus") , Element.fighting },
+        ////{weaponOut.ItemType("GlovesCaestusCrimson") , Element.blood },
+        ////{weaponOut.ItemType("GlovesObsidian") , Element.rock },
+        ////{weaponOut.ItemType("GlovesFossil") , Element.bone },
+        ////{weaponOut.ItemType("GlovesBee") , Element.bug },
+        ////{weaponOut.ItemType("KnucklesIron") , Element.steel },
+        ////{weaponOut.ItemType("KnucklesLead") , Element.steel },
+        ////{weaponOut.ItemType("KnucklesGold") , Element.steel },
+        ////{weaponOut.ItemType("KnucklesPlat") , Element.steel },
+        ////{weaponOut.ItemType("KnucklesFlintlock") , Element.fighting },
+        ////{weaponOut.ItemType("KnucklesMeteor") , Element.rock },
+        ////{weaponOut.ItemType("KnucklesDungeon") , Element.dark },
+        ////{weaponOut.ItemType("KnucklesDemon") , Element.dark },
+        ////{weaponOut.ItemType("FistsSparring") , Element.fairy },
+        ////{weaponOut.ItemType("FistsAdamant") , Element.dragon },
+        ////{weaponOut.ItemType("FistsTitanium") , Element.steel },
+        ////{weaponOut.ItemType("FistsCursed") , Element.ghost },
+        ////{weaponOut.ItemType("FistsForbidden") , Element.ground },
+        ////{weaponOut.ItemType("FistsLihzarhd") , Element.fighting },
+        ////{weaponOut.ItemType("FistsFrozen") , Element.ice },
+        ////{weaponOut.ItemType("FistsBetsy") , Element.dragon },
+        ////{weaponOut.ItemType("FistsMartian") , Element.electric },
+        ////{weaponOut.ItemType("GlovesCobalt") , Element.steel },
+        ////{weaponOut.ItemType("GlovesOrich") , Element.fairy },
+        ////{weaponOut.ItemType("GlovesCrystal") , Element.fairy },
+        ////{weaponOut.ItemType("GlovesHallow") , Element.fighting },
+        ////{weaponOut.ItemType("GlovesButterfly") , Element.bug },
+        ////{weaponOut.ItemType("GlovesLee") , Element.fighting },
+        ////{weaponOut.ItemType("GlovesPumpkin") , Element.fighting },
+        ////{weaponOut.ItemType("KncuklesPalladium") , Element.fighting },
+        ////{weaponOut.ItemType("KnucklesMithril") , Element.dragon },
+        ////{weaponOut.ItemType("KnucklesShotty") , Element.fighting },
+        ////{weaponOut.ItemType("KnucklesIchor") , Element.blood },
+        ////{weaponOut.ItemType("KnucklesFrost") , Element.ice },
+        ////{weaponOut.ItemType("KnucklesPlantera") , Element.poison },
+        ////{weaponOut.ItemType("KnucklesDuke") , Element.water },
+        /////*{weaponOut.ItemType("") , Element.none },*/
     }
 }
