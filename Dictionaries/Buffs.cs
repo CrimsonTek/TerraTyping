@@ -56,5 +56,18 @@ namespace TerraTyping
             {BuffID.Venom, Element.poison },
             {BuffID.Frostburn, Element.ice },
         };
+        public static Dictionary<int, int> Regen = new Dictionary<int, int>
+        {
+            {BuffID.Poisoned, -4 },
+            {BuffID.Venom, -12 },
+            {BuffID.OnFire, -8 },
+            {BuffID.Frostburn, -12 },
+            //{BuffID. }
+            {BuffID.Burning, -60 },
+            {BuffID.Suffocation, -40 },
+            //electrified, -8 or if (this.controlLeft || this.controlRight) -32
+            {BuffID.TheTongue, -100 },
+
+        };
     }
 }

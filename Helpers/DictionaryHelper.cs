@@ -7,7 +7,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using TerraTyping.Dictionaries;
 
 namespace TerraTyping
 {
@@ -17,11 +16,21 @@ namespace TerraTyping
 
         public Dictionary<int, Element> Ammo(Item item)
         {
+            if (item.modItem != null)
+            {
+                if (item.modItem.mod == weaponOut)
+                    return WeaponOutAmmos.Type;
+            }
             return Ammos.Type;
         }
 
         public Dictionary<int, Tuple<Element, Element>> Armor(Item item)
         {
+            if (item.modItem != null)
+            {
+                if (item.modItem.mod == weaponOut)
+                    return WeaponOutArmors.Type;
+            }
             return Armors.Type;
         }
 
@@ -32,16 +41,21 @@ namespace TerraTyping
 
         public Dictionary<int, Tuple<Element, Element, Element, Element>> NPC(NPC npc)
         {
+            if (npc.modNPC != null)
+            {
+                if (npc.modNPC.mod == weaponOut)
+                    return WeaponOutEnemies.Type;
+            }
             return Enemies.Type;
         }
 
         public Dictionary<int, Element> Item(Item item)
         {
-            //if (item.modItem != null)
-            //{
-            //    if (item.modItem.mod == weaponOut)
-            //        return WeaponOut.Item;
-            //}
+            if (item.modItem != null)
+            {
+                if (item.modItem.mod == weaponOut)
+                    return WeaponOutItems.Type;
+            }
             return Items.Type;
         }
 
@@ -52,6 +66,11 @@ namespace TerraTyping
 
         public Dictionary<int, Element> Projectile(Projectile projectile)
         {
+            if (projectile.modProjectile != null)
+            {
+                if (projectile.modProjectile.mod == weaponOut)
+                    return WeaponOutProjectiles.Type;
+            }
             return Projectiles.Type;
         }
     }

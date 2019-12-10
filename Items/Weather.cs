@@ -16,50 +16,54 @@ namespace TerraTyping
 
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
+            ElementHelper elementHelper = new ElementHelper();
+            Element element = elementHelper.Quatrinary(item);
+
             if (Main.expertMode)
             {
-                if (Items.Type.ContainsKey(item.type))
+                if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
                 {
-                    if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
+                    if (Main.bloodMoon)
                     {
-                        if (Main.bloodMoon)
+                        if (element == Element.blood)
                         {
-                            if (Items.Type[item.type] == Element.blood)
-                            {
-                                mult = Config.RainMultiplier;
-                            }
+                            mult = Config.RainMultiplier;
                         }
-                        if (Main.eclipse)
+                    }
+                    if (Main.eclipse)
+                    {
+                        if (element == Element.dark)
                         {
-                            if (Items.Type[item.type] == Element.dark)
-                            {
-                                mult = Config.RainMultiplier;
-                            }
+                            mult = Config.RainMultiplier;
                         }
-                        if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
+                    }
+                    if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
+                    {
+                        if (element == Element.water)
                         {
-                            if (Items.Type[item.type] == Element.water)
-                            {
-                                mult = Config.RainMultiplier;
-                            }
-                            if (Items.Type[item.type] == Element.fire)
-                            {
-                                mult = 1 / Config.RainMultiplier;
-                            }
+                            mult = Config.RainMultiplier;
                         }
-                        if (player.ZoneSnow && player.ZoneSnow)
+                        if (element == Element.fire)
                         {
-                            if (Items.Type[item.type] == Element.ice)
-                            {
-                                mult = Config.RainMultiplier;
-                            }
+                            mult = 1 / Config.RainMultiplier;
                         }
-                        if (player.ZoneSandstorm)
+                    }
+                    if (player.ZoneSnow && player.ZoneSnow)
+                    {
+                        if (element == Element.ice)
                         {
-                            if (Items.Type[item.type] == Element.ground || Items.Type[item.type] == Element.rock || Items.Type[item.type] == Element.steel)
-                            {
+                            mult = Config.RainMultiplier;
+                        }
+                    }
+                    if (player.ZoneSandstorm)
+                    {
+                        switch (element)
+                        {
+                            case Element.ground:
+                            case Element.rock:
+                            case Element.steel:
                                 mult = Config.RainMultiplier;
-                            }
+                                break;
                         }
                     }
                 }
@@ -70,48 +74,52 @@ namespace TerraTyping
     {
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
+            ElementHelper elementHelper = new ElementHelper();
+            Element element = elementHelper.Quatrinary(npc);
+
             if (Main.expertMode)
             {
-                if (Enemies.Type.ContainsKey(npc.type))
+                if (Main.bloodMoon && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                 {
-                    if (Main.bloodMoon && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
+                    if (element == Element.blood)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.blood)
-                        {
-                            damage = (int)(damage * Config.RainMultiplier);
-                        }
+                        damage = (int)(damage * Config.RainMultiplier);
                     }
-                    if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
+                }
+                if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
+                {
+                    if (element == Element.dark)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.dark)
-                        {
-                            damage = (int)(damage * Config.RainMultiplier);
-                        }
+                        damage = (int)(damage * Config.RainMultiplier);
                     }
-                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
+                }
+                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
+                {
+                    if (element == Element.water)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.water)
-                        {
-                            damage = (int)(damage * Config.RainMultiplier);
-                        }
-                        if (Enemies.Type[npc.type].Item4 == Element.fire)
-                        {
-                            damage = (int)(damage * (1 / Config.RainMultiplier));
-                        }
+                        damage = (int)(damage * Config.RainMultiplier);
                     }
-                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
+                    if (element == Element.fire)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.ice)
-                        {
-                            damage = (int)(damage * Config.RainMultiplier);
-                        }
+                        damage = (int)(damage * (1 / Config.RainMultiplier));
                     }
-                    if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
+                }
+                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
+                {
+                    if (element == Element.ice)
                     {
-                        if (Enemies.Type[npc.type].Item4 == Element.ground || Enemies.Type[npc.type].Item4 == Element.rock || Enemies.Type[npc.type].Item4 == Element.steel)
-                        {
+                        damage = (int)(damage * Config.RainMultiplier);
+                    }
+                }
+                if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
+                {
+                    switch (element)
+                    {
+                        case Element.ground:
+                        case Element.rock:
+                        case Element.steel:
                             damage = (int)(damage * Config.RainMultiplier);
-                        }
+                            break;
                     }
                 }
             }

@@ -8,7 +8,7 @@ namespace TerraTyping
 {
     public class Config
     {
-        public static float Multiplier { get; } = 2.0f;
+        public static float Multiplier { get; } = 2f;
         // the multiplier that effective types use (default = 2.0f)
         // don't go less than 1.0f
 

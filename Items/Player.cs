@@ -128,7 +128,25 @@ namespace TerraTyping
 
         public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
-            damage = Calc.Damage(npc, typeSet, damage);
+            damage = (int)(damage * Calc.Damage(npc, typeSet));
+
+            float dmg = Calc.Damage(npc, typeSet);
+            string text = ((float)(int)(dmg * 100) / 100).ToString() + "x!";
+
+            Color color = new Color(new Vector3(1, 1, 1));
+            if (dmg != 1)
+            {
+                if (dmg == 0)
+                    color = new Color(new Vector3(0.2f, 0.2f, 0.2f));
+
+                else if (dmg > 1)
+                    color = new Color(new Vector3(1 - (dmg / 3), 1, 1 - (dmg / 3)));
+
+                else if (dmg < 1)
+                    color = new Color(new Vector3((dmg * 4) / 5 + 0.2f, (dmg) / 5 + 0.2f, 0));
+            }
+
+            CombatText.NewText(player.getRect(), color, text, false, true);
         }
 
         public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)
@@ -141,7 +159,25 @@ namespace TerraTyping
 
         public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
         {
-            damage = Calc.Damage(proj, typeSet, damage);
+            damage = (int)(damage * Calc.Damage(proj, typeSet));
+
+            float dmg = Calc.Damage(proj, typeSet);
+            string text = ((float)(int)(dmg * 100) / 100).ToString() + "x!";
+
+            Color color = new Color(new Vector3(1, 1, 1));
+            if (dmg != 1)
+            {
+                if (dmg == 0)
+                    color = new Color(new Vector3(0.2f, 0.2f, 0.2f));
+
+                else if (dmg > 1)
+                    color = new Color(new Vector3(1 - (dmg / 3), 1, 1 - (dmg / 3)));
+
+                else if (dmg < 1)
+                    color = new Color(new Vector3((dmg * 4) / 5 + 0.2f, (dmg) / 5 + 0.2f, 0));
+            }
+
+            CombatText.NewText(player.getRect(), color, text, false, true);
         }
 
         public override bool CanBeHitByProjectile(Projectile proj)

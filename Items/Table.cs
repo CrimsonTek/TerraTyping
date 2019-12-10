@@ -22,11 +22,11 @@ namespace TerraTyping
 
             /* Ele */ { 1f,   1f, Mult, Divi, Divi,   1f,   1f,   1f,   0f, Mult,   1f,   1f,   1f,   1f, Divi,   1f,   1f,   1f,   1f,   1f,   1f,  1f},
 
-            /* Gra */ { 1f, Divi, Mult,   1f, Divi,   1f,   1f, Divi, Mult, Divi,   1f, Divi, Mult,   1f, Divi,   1f, Divi,   1f,   1f,   1f,   1f,  1f},
+            /* Gra */ { 1f, Divi, Mult,   1f, Divi,   1f,   1f, Divi, Mult, Divi,   1f, Divi, Mult,   1f, Divi,   1f, Divi,   1f,   1f, Divi,   1f,  1f},
 
             /* Ice */ { 1f, Divi, Divi,   1f, Mult, Divi,   1f,   1f, Mult, Mult,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   1f,   1f,   1f,   1f,  1f},
 
-            /* Fig */ { 2f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   1f, Divi, Divi, Divi, Mult,   0f,   1f, Mult, Mult, Divi,   1f, Divi,   1f,  1f},
+            /* Fig */ { 2f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   1f, Divi, Divi, Divi, Mult,   0f,   1f, Mult, Mult, Divi, Mult, Mult,   1f,  1f},
 
             /* Poi */ { 1f,   1f,   1f,   1f, Mult,   1f,   1f, Divi, Divi,   1f,   1f,   1f, Divi, Divi,   1f,   1f,   0f, Mult, Mult,   0f,   1f,  1f},
 
@@ -40,9 +40,9 @@ namespace TerraTyping
 
             /* Roc */ { 1f, Mult,   1f,   1f,   1f, Mult, Divi,   1f, Divi, Mult,   1f, Mult,   1f,   1f,   1f,   1f, Divi,   1f,   1f, Mult,   1f,  1f},
 
-            /* Gho */ { 0f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f,   1f, Mult,   1f, Divi,   1f,   1f, Divi,   1f,   1f,  1f},
+            /* Gho */ { 0f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f,   1f, Mult,   1f, Divi,   1f,   1f, Divi, Divi,   1f,  1f},
              
-            /* Dra */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   0f,   1f, Mult,   1f,  1f},
+            /* Dra */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   0f, Divi, Mult,   1f,  1f},
 
             /* Dar */ { 1f,   1f,   1f,   1f,   1f,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f, Mult,   1f, Divi,   1f, Divi, Divi,   1f,   1f,  1f},
 
@@ -50,9 +50,10 @@ namespace TerraTyping
 
             /* Fai */ { 1f, Divi,   1f,   1f,   1f,   1f, Mult, Divi,   1f,   1f,   1f,   1f,   1f,   1f, Mult, Mult, Divi,   1f, Mult,   1f,   1f,  1f},
 
-            /* Blo */ { 1f,   1f, Divi,   1f,   1f,   1f, Divi, Mult,   1f,   1f, Mult,   1f,   1f, Divi,   1f,   1f, Divi, Divi, Divi,   1f,   1f,  1f},
+            /* Blo */ { 1f,   1f, Divi,   1f,   1f, Mult, Mult, Mult,   1f,   1f, Mult,   1f,   1f, Divi,   1f,   1f, Divi, Divi, Divi, Mult,   1f,  1f},
 
-            /* Bon */ { 1f, Divi,   1f,   1f,   1f, Divi,   1f,   1f,   1f,   1f, Mult,   1f, Divi, Divi,   1f,   1f, Divi,   1f,   1f, Divi,   1f,  1f},
+            /* Bon */ { 1f, Divi,   1f,   1f,   1f, Divi, Mult,   1f, Mult,   1f, Mult,   1f, Divi, Divi,   1f, Mult, Divi,   1f, Mult, Divi,   1f,  1f},
+
             
             /* Lev */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,  1f},
 
