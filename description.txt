@@ -24,6 +24,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.1.1
+ - Made water super effective against fire.
+
 v0.1.1.0
  - Added support for Weapon Out.
  - A multiplier number now appears when striking an enemy.

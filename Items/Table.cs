@@ -18,7 +18,7 @@ namespace TerraTyping
 
             /* Fir */ { 1f, Divi, Divi,   1f, Mult, Mult,   1f,   1f,   1f,   1f,   1f, Mult, Divi,   1f, Divi,   1f, Mult,   1f, Mult,   1f,   1f,  1f},
 
-            /* Wat */ { 1f,   1f, Divi,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f,   1f, Mult,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f,  1f},
+            /* Wat */ { 1f, Mult, Divi,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f,   1f, Mult,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f,  1f},
 
             /* Ele */ { 1f,   1f, Mult, Divi, Divi,   1f,   1f,   1f,   0f, Mult,   1f,   1f,   1f,   1f, Divi,   1f,   1f,   1f,   1f,   1f,   1f,  1f},
 
