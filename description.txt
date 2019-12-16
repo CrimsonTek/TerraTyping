@@ -24,6 +24,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.1.2
+ - Made Angry Tumblers mono grass, and made fixed obsidian armor not having the right type.
+
 v0.1.1.1
  - Made water super effective against fire.
 

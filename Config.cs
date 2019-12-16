@@ -25,5 +25,7 @@ namespace TerraTyping
         public static float RainMultiplier { get; } = 1.25f;
         // the multiplier of water type moves during rain, blood type moves during blood moons, etc
         // don't go less than 1.0f;
+
+        public static bool DevMode { get; } = false;
     }
 }

@@ -256,16 +256,19 @@ namespace TerraTyping
             }
         }
 
-        //public override void PostUpdateEverything()
-        //{
-        //    if (Main.ActivePlayersCount > 0 && errors.Count > 0)
-        //    {
-        //        for (int index = 0; index < errors.Count; index++)
-        //        {
-        //            Main.NewText("[TerraTyping] " + errors[index], 255, 0, 0, true);
-        //            errors.RemoveAt(index);
-        //        }
-        //    }
-        //}
+        public override void PostUpdateEverything()
+        {
+            if (Main.ActivePlayersCount > 0 && errors.Count > 0)
+            {
+                for (int index = 0; index < errors.Count; index++)
+                {
+                    if (Config.DevMode)
+                    {
+                        Main.NewText("[TerraTyping] " + errors[index], 255, 0, 0, true);
+                    }
+                    errors.RemoveAt(index);
+                }
+            }
+        }
     }
 }

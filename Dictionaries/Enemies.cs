@@ -688,7 +688,7 @@ namespace TerraTyping
             {NPCID.SandsharkCorrupt, new Tuple<Element, Element, Element, Element>(Element.dragon, Element.dark, Element.none, Element.dark) },
             {NPCID.SandsharkCrimson, new Tuple<Element, Element, Element, Element>(Element.dragon, Element.blood, Element.none, Element.blood) },
             {NPCID.SandsharkHallow, new Tuple<Element, Element, Element, Element>(Element.dragon, Element.fairy, Element.none, Element.fairy) },
-            {NPCID.Tumbleweed, new Tuple<Element, Element, Element, Element>(Element.grass, Element.grass, Element.none, Element.grass) },
+            {NPCID.Tumbleweed, new Tuple<Element, Element, Element, Element>(Element.grass, Element.none, Element.none, Element.grass) },
 
             {NPCID.DD2EterniaCrystal, new Tuple<Element, Element, Element, Element>(Element.normal, Element.none, Element.none, Element.normal) },
             {NPCID.DD2LanePortal, new Tuple<Element, Element, Element, Element>(Element.dark, Element.none, Element.none, Element.dark) },

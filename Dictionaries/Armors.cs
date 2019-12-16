@@ -369,7 +369,7 @@ namespace TerraTyping
 
             {ItemID.NinjaShirt, new Tuple<Element, Element>(Element.dark, Element.fighting) },
             {ItemID.FossilShirt, new Tuple<Element, Element>(Element.bone, Element.ground) },
-            {ItemID.ObsidianChest, new Tuple<Element, Element>(Element.fire, Element.water) },
+            {ItemID.ObsidianShirt, new Tuple<Element, Element>(Element.fire, Element.water) },
             {ItemID.BeeBreastplate, new Tuple<Element, Element>(Element.bug, Element.flying) },
             {ItemID.JungleShirt, new Tuple<Element, Element>(Element.grass, Element.none) },
             {ItemID.AncientCobaltBreastplate, new Tuple<Element, Element>(Element.steel, Element.none) },
