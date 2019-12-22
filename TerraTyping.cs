@@ -17,6 +17,7 @@ using Terraria.UI;
 using TerraTyping;
 using Newtonsoft.Json;
 using Terraria.ModLoader.IO;
+using Terraria.GameInput;
 
 namespace TerraTyping
 {
@@ -29,62 +30,89 @@ namespace TerraTyping
 
         }
 
-        public override void MidUpdateNPCGore()
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            //if (Main.ActivePlayersCount == 0)
-            //    return;
+            PlayerInput.SetZoom_Unscaled();
+            PlayerInput.SetZoom_MouseInWorld();
+            Microsoft.Xna.Framework.Rectangle rectangle1 = new Microsoft.Xna.Framework.Rectangle((int)((double)Main.mouseX + (double)Main.screenPosition.X), (int)((double)Main.mouseY + (double)Main.screenPosition.Y), 1, 1);
+            if ((double)Main.player[Main.myPlayer].gravDir == -1.0)
+                rectangle1.Y = (int)Main.screenPosition.Y + Main.screenHeight - Main.mouseY;
+            PlayerInput.SetZoom_UI();
+            IngameOptions.MouseOver();
+            IngameFancyUI.MouseOver();
 
-            //foreach (NPC npc in Main.npc)
-            //{
-            //    //if (!(Main.HoveringOverAnNPC && Main.hideUI))
-            //    //    return;
+            for (int index1 = 0; index1 < 200; ++index1)
+            {
+                if (Main.npc[index1].active)
+                {
+                    Rectangle rectangle2 = new Rectangle((int)Main.npc[index1].Bottom.X - Main.npc[index1].frame.Width / 2,
+                                                            (int)Main.npc[index1].Bottom.Y - Main.npc[index1].frame.Height,
+                                                            Main.npc[index1].frame.Width,
+                                                            Main.npc[index1].frame.Height);
+                    if (Main.npc[index1].type >= 87 && Main.npc[index1].type <= 92)
+                        rectangle2 = new Rectangle((int)((double)Main.npc[index1].position.X + (double)Main.npc[index1].width * 0.5 - 32.0),
+                                                    (int)((double)Main.npc[index1].position.Y + (double)Main.npc[index1].height * 0.5 - 32.0),
+                                                    64,
+                                                    64);
+                    bool flag1 = rectangle1.Intersects(rectangle2);
+                    bool flag2 = flag1 || Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == index1;
+                    if (flag2 && (
+                        Main.npc[index1].type != 85 && 
+                        Main.npc[index1].type != 341 && 
+                        Main.npc[index1].aiStyle != 87 || 
+                        Main.npc[index1].ai[0] != 0.0) && 
+                        Main.npc[index1].type != 488)
+                    {
+                        if (flag1)
+                        {
+                            ElementHelper elementHelper = new ElementHelper();
 
-            //    ElementHelper elementHelper = new ElementHelper();
+                            float buffer = 4 * Main.UIScale;
+                            float prev = 0;
 
-            //    int buffer = 4;
-            //    int prev = 12;
+                            Element Primary = elementHelper.Primary(Main.npc[index1]);
+                            Element Secondary = elementHelper.Secondary(Main.npc[index1]);
+                            Element Tertiary = elementHelper.Tertiary(Main.npc[index1]);
+                            Element Quatrinary = elementHelper.Quatrinary(Main.npc[index1]);
 
-            //    Element Primary = elementHelper.Primary(npc);
-            //    Element Secondary = elementHelper.Secondary(npc);
-            //    Element Tertiary = elementHelper.Tertiary(npc);
-            //    Element Quatrinary = elementHelper.Quatrinary(npc);
+                            var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
+                            var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
+                            var icon3 = GetTexture("Types/" + Formal.Name[Tertiary]);
+                            var icon4 = GetTexture("Types/" + Formal.Name[Quatrinary]);
 
-            //    var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
-            //    var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
-            //    var icon3 = GetTexture("Types/" + Formal.Name[Tertiary]);
-            //    var icon4 = GetTexture("Types/" + Formal.Name[Quatrinary]);
-            //    //if (npc.Hitbox.Contains(Main.MouseWorld.ToPoint()))
-            //    {
-            //        Main.spriteBatch.Begin();
-            //        Main.spriteBatch.Draw(icon1, new Vector2(Main.mouseX + prev, Main.mouseY + 38), Color.White);
-            //        //Main.spriteBatch.Draw(icon1, new Vector2(Main.mouseX + prev, Main.mouseY + 38), Color.White);
-            //        //Main.spriteBatch.DrawString(Main.fontMouseText, npc.FullName, Main.MouseScreen, new Color(new Vector3(1, 1, 1)));
-            //        Main.spriteBatch.End();
-            //    }
-            //    //if (Math.Abs(npc.position.X + npc.width / 2 - Main.screenPosition.X - Main.mouseX) <= npc.width && Math.Abs(npc.position.Y + npc.height / 2 - Main.screenPosition.Y - Main.mouseY) <= npc.height)
-            //    //{
-            //    //    Main.spriteBatch.Begin();
-            //    //    if (Enemies.Type[npc.type].Item1 != Element.none && Enemies.Type[npc.type].Item1 != Element.levitate)
-            //    //    {
-            //    //        Main.spriteBatch.Draw(icon1, new Vector2(Main.mouseX + prev, Main.mouseY + 38), Color.White);
-            //    //        prev += icon1.Width + buffer;
-            //    //    }
-            //    //    if (Enemies.Type[npc.type].Item2 != Element.none && Enemies.Type[npc.type].Item2 != Element.levitate)
-            //    //    {
-            //    //        Main.spriteBatch.Draw(icon2, new Vector2(Main.mouseX + prev, Main.mouseY + 38), Color.White);
-            //    //        prev += icon2.Width + buffer;
-            //    //    }
-            //    //    if (Enemies.Type[npc.type].Item3 != Element.none && Enemies.Type[npc.type].Item3 != Element.levitate)
-            //    //    {
-            //    //        Main.spriteBatch.Draw(icon3, new Vector2(Main.mouseX + prev, Main.mouseY + 38), Color.White);
-            //    //    }
-            //    //    if (Enemies.Type[npc.type].Item4 != Element.none && Enemies.Type[npc.type].Item4 != Element.levitate)
-            //    //    {
-            //    //        Main.spriteBatch.Draw(icon4, new Vector2(Main.mouseX + 12, Main.mouseY + 38 + icon1.Width + buffer), Color.White);
-            //    //    }
-            //    //    Main.spriteBatch.End();
-            //    //}
-            //}
+                            int yOffset = 38;
+                            int xOffset = 12;
+                            Main.spriteBatch.Begin();
+                            int x = (int)((Main.mouseX + xOffset) * Main.UIScale);
+                            int y = (int)((Main.mouseY + yOffset) * Main.UIScale);
+                            if (Primary != Element.none && Primary != Element.levitate)
+                            {
+                                Main.spriteBatch.Draw(icon1, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                                prev += icon1.Width * Main.UIScale + buffer;
+                            }
+                            if (Secondary != Element.none && Secondary != Element.levitate)
+                            {
+                                Main.spriteBatch.Draw(icon2, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                                prev += icon2.Width * Main.UIScale + buffer;
+                            }
+                            if (Tertiary != Element.none && Tertiary != Element.levitate)
+                            {
+                                Main.spriteBatch.Draw(icon3, new Vector2(Main.mouseX + prev, Main.mouseY), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                            }
+                            if (Quatrinary != Element.none && Quatrinary != Element.levitate)
+                            {
+                                Main.spriteBatch.Draw(icon4, new Vector2(x, y + icon1.Width * Main.UIScale + buffer), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                            }
+                            Main.spriteBatch.End();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //PlayerInput.SetZoom_UI();
+            base.ModifyInterfaceLayers(layers);
         }
 
         public override void Load()
