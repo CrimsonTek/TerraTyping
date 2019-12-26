@@ -12,7 +12,7 @@ namespace TerraTyping
 {
     public class DictionaryHelper
     {
-        static Mod weaponOut = ModLoader.GetMod("WeaponOut");
+        static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
 
         public Dictionary<int, Element> Ammo(Item item)
         {

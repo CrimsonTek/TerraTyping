@@ -24,6 +24,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.1.4
+ - Now properly adds compatibility with Weapon Out
+
 v0.1.1.3
  - The icons over NPC's now show up more consistently.
 

@@ -23,7 +23,7 @@ namespace TerraTyping
 {
 	class TerraTyping : Mod
     {
-        static List<string> errors = new List<string>();
+        static readonly List<string> errors = new List<string>();
 
         public TerraTyping()
         {
@@ -117,11 +117,6 @@ namespace TerraTyping
 
         public override void Load()
         {
-            errors.Clear();
-        }
-
-        public override void PostSetupContent()
-        {
             /* armor */ {
                 foreach (KeyValuePair<int, Tuple<Element, Element>> entry in Armors.Helmet)
                 {
@@ -157,7 +152,11 @@ namespace TerraTyping
                     Armors.Type.Add(key, value);
                 }
             }
+            errors.Clear();
+        }
 
+        public override void AddRecipes()
+        {
             Mod weaponOut = ModLoader.GetMod("WeaponOut");
             if (weaponOut != null)
             {
