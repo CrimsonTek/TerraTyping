@@ -14,6 +14,7 @@ namespace TerraTyping
     {
         public override bool InstancePerEntity => true;
 
+        static float boostMult = 1;
         static float weatherMult = 1;
         static string weatherReason = string.Empty;
 
@@ -21,6 +22,8 @@ namespace TerraTyping
         {
             ElementHelper elementHelper = new ElementHelper();
             Element element = elementHelper.Quatrinary(item);
+            float[] boosts = player.GetModPlayer<HeldItems.HeldItemsPlayer>().boosts;
+            boostMult = boosts[(int)elementHelper.Quatrinary(item)];
 
             weatherMult = 1;
             weatherReason = string.Empty;
@@ -80,9 +83,10 @@ namespace TerraTyping
                 }
             }
 
-            if (weatherMult != 1)
+            float myMult = weatherMult + boostMult;
+            if (myMult != 1)
             {
-                mult = weatherMult;
+                mult = myMult;
             }
         }
 
@@ -96,6 +100,11 @@ namespace TerraTyping
             if (weatherMult != 1)
             {
                 var line = new TooltipLine(mod, "weatherMult", $"{weatherReason} {bonusOrPenalty}: {Math.Round((weatherMult - 1) * 100)}%");
+                tooltips.Add(line);
+            }
+            if (boostMult != 1)
+            {
+                var line = new TooltipLine(mod, "weatherMult", $"Item bonus: {Math.Round((boostMult - 1) * 100)}%");
                 tooltips.Add(line);
             }
         }
