@@ -14,11 +14,16 @@ namespace TerraTyping
     {
         public override bool InstancePerEntity => true;
 
+        static float weatherMult = 1;
+        static string weatherReason = string.Empty;
+
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
             ElementHelper elementHelper = new ElementHelper();
             Element element = elementHelper.Quatrinary(item);
 
+            weatherMult = 1;
+            weatherReason = string.Empty;
             if (Main.expertMode)
             {
                 if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
@@ -27,32 +32,37 @@ namespace TerraTyping
                     {
                         if (element == Element.blood)
                         {
-                            mult = Config.RainMultiplier;
+                            weatherReason = "Blood moon";
+                            weatherMult = Config.RainMultiplier;
                         }
                     }
                     if (Main.eclipse)
                     {
                         if (element == Element.dark)
                         {
-                            mult = Config.RainMultiplier;
+                            weatherReason = "Eclipse";
+                            weatherMult = Config.RainMultiplier;
                         }
                     }
                     if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
                     {
                         if (element == Element.water)
                         {
-                            mult = Config.RainMultiplier;
+                            weatherReason = "Rain";
+                            weatherMult = Config.RainMultiplier;
                         }
                         if (element == Element.fire)
                         {
-                            mult = 1 / Config.RainMultiplier;
+                            weatherReason = "Rain";
+                            weatherMult = 1 / Config.RainMultiplier;
                         }
                     }
                     if (player.ZoneSnow && player.ZoneSnow)
                     {
                         if (element == Element.ice)
                         {
-                            mult = Config.RainMultiplier;
+                            weatherReason = "Snow";
+                            weatherMult = Config.RainMultiplier;
                         }
                     }
                     if (player.ZoneSandstorm)
@@ -62,11 +72,31 @@ namespace TerraTyping
                             case Element.ground:
                             case Element.rock:
                             case Element.steel:
-                                mult = Config.RainMultiplier;
+                                weatherReason = "Sandstorm";
+                                weatherMult = Config.RainMultiplier;
                                 break;
                         }
                     }
                 }
+            }
+
+            if (weatherMult != 1)
+            {
+                mult = weatherMult;
+            }
+        }
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            string bonusOrPenalty = string.Empty;
+            if (weatherMult > 1)
+                bonusOrPenalty = "bonus";
+            else if (weatherMult < 1)
+                bonusOrPenalty = "penalty";
+            if (weatherMult != 1)
+            {
+                var line = new TooltipLine(mod, "weatherMult", $"{weatherReason} {bonusOrPenalty}: {Math.Round((weatherMult - 1) * 100)}%");
+                tooltips.Add(line);
             }
         }
     }
