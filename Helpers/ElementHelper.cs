@@ -60,7 +60,7 @@ namespace TerraTyping
             return element;
         }
 
-        public Element Quatrinary(Object obj)
+        public Element Quatrinary(object obj)
         {
             Element element = Element.none;
             if (obj is Item item)
@@ -91,6 +91,13 @@ namespace TerraTyping
                     element = dictionaryHelper.Buff(buff)[buff];
             }
             return element;
+        }
+
+        public bool Any(object obj, Element element)
+        {
+            if (Primary(obj) == element || Secondary(obj) == element || Tertiary(obj) == element || Quatrinary(obj) == element)
+                return true;
+            return false;
         }
 
         //public struct GetElement

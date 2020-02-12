@@ -24,6 +24,52 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.2.0
+ - Added Held Items for every type.
+  [c/f0e6d2:+ Silk Scarf (Normal Type)]
+  [c/f0e6d2:   Crafted with 25 silk]
+  [c/f65f1c:+ Charcoal (Fire Type)]
+  [c/f65f1c:   Dropped by enemies in the underworld]
+  [c/42a6f8:+ Mystic Water (Water Type)]
+  [c/42a6f8:   Found while fishing]
+  [c/fafa11:+ Magnet (Electric Type)]
+  [c/fafa11:   Dropped by enemies in the underground]
+  [c/42eb35:+ Miracle Seed (Grass Type)]
+  [c/42eb35:   Sold by the Dryad for 40 gold]
+  [c/b4e1ff:+ Never-Melt Ice (Ice Type)]
+  [c/b4e1ff:   Crafted with 50 ice at an ice machine]
+  [c/f5af0a:+ Fighter's Belt (Fighting Type)]
+  [c/f5af0a:   Dropped during fighting]
+  [c/b874fc:+ Poison Barb (Poison Type)]
+  [c/b874fc:   Dropped by the Queen Bee]
+  [c/ba8c4e:+ Soft Sand (Ground Type)]
+  [c/ba8c4e:   Crafted with 25 sand and 15 sturdy fossil]
+  [c/97b2ff:+ Sharp Beak (Flying Type)]
+  [c/97b2ff:   Dropped by Vultures]
+  [c/d80afa:+ Twisted Spoon (Psychic Type)]
+  [c/d80afa:   Dropped by enemies in the dungeon]
+  [c/92d84c:+ Silver Powder (Bug Type)]
+  [c/92d84c:   Dropped by critters]
+  [c/d3b959:+ Hard Stone (Rock Type)]
+  [c/d3b959:   Dropped when mining stone]
+  [c/c29ed6:+ Spell Tag (Ghost Type)]
+  [c/c29ed6:   Dropped by enemies during new moons]
+  [c/5312b2:+ Dragon Fang (Dragon Type)]
+  [c/5312b2:   Dropped by Wyverns and Pigrons]
+  [c/524559:+ Black Glasses (Dark Type)]
+  [c/524559:   Crafted with sunglasses and 3 black dye]
+  [c/9f9f9f:+ Metal Coat (Steel Type)]
+  [c/9f9f9f:   Crafted with 20 iron and]
+  [c/9f9f9f:   3 diamonds at an anvil]
+  [c/f46cda:+ Arcane Ball (Fairy Type)]
+  [c/f46cda:   Crafted with 35 pixie dust and]
+  [c/f46cda:   4 unicorn horns at a crystal ball]
+  [c/d63636:+ Bloody Heart (Blood Type)]
+  [c/d63636:   Dropped by blood enemies and enemies]
+  [c/d63636:   during blood moons]
+  [c/f2f2f2:+ Dusty Skull (Bone Type)]
+  [c/f2f2f2:   Dropped by underground skeletons]
+
 v0.1.1.4
  - Now properly adds compatibility with Weapon Out
 
