@@ -20,6 +20,8 @@ namespace TerraTyping
             {
                 if (item.modItem.mod == weaponOut)
                     return WeaponOutAmmos.Type;
+                else
+                    return UnsupportedAmmos.Type;
             }
             return Ammos.Type;
         }
@@ -30,6 +32,8 @@ namespace TerraTyping
             {
                 if (item.modItem.mod == weaponOut)
                     return WeaponOutArmors.Type;
+                else
+                    return UnsupportedArmors.Type;
             }
             return Armors.Type;
         }
@@ -45,6 +49,8 @@ namespace TerraTyping
             {
                 if (npc.modNPC.mod == weaponOut)
                     return WeaponOutEnemies.Type;
+                else
+                    return UnsupportedEnemies.Type;
             }
             return Enemies.Type;
         }
@@ -55,6 +61,8 @@ namespace TerraTyping
             {
                 if (item.modItem.mod == weaponOut)
                     return WeaponOutItems.Type;
+                else
+                    return UnsupportedItems.Type;
             }
             return Items.Type;
         }
@@ -70,6 +78,8 @@ namespace TerraTyping
             {
                 if (projectile.modProjectile.mod == weaponOut)
                     return WeaponOutProjectiles.Type;
+                else
+                    return UnsupportedProjectiles.Type;
             }
             return Projectiles.Type;
         }
