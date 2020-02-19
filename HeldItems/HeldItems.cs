@@ -24,7 +24,7 @@ namespace TerraTyping.HeldItems
 
         public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
         {
-            if (Main.rand.Next(25) == 0 && liquidType == 0)
+            if (Main.rand.Next(45) == 0 && liquidType == 0)
             {
                 caughtType = mod.ItemType("MysticWater");
                 junk = false;
@@ -33,11 +33,11 @@ namespace TerraTyping.HeldItems
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            int chance = 200;
+            int chance = 300;
             if (crit)
             {
                 if (Main.expertMode)
-                    chance = 150;
+                    chance = 200;
                 if (Main.rand.Next(chance) == 0)
                 {
                     Item.NewItem(target.getRect(), mod.ItemType("FightersBelt"));
@@ -55,56 +55,62 @@ namespace TerraTyping.HeldItems
         {
             Player player = Main.player[npc.FindClosestPlayer()];
 
+            // charcoal
             if (player.ZoneUnderworldHeight)
             {
-                int chance = 66;
+                int chance = 150;
                 if (Main.expertMode)
-                    chance = 50;
+                    chance = 100;
                 if (Main.rand.Next(chance) == 0)
                 {
                     Item.NewItem(npc.getRect(), mod.ItemType("Charcoal"));
                 }
             }
 
+            // magnet
             if (player.ZoneRockLayerHeight && !(player.ZoneCorrupt || player.ZoneCrimson || player.ZoneDesert || player.ZoneDungeon || player.ZoneGlowshroom || player.ZoneHoly || player.ZoneJungle || player.ZoneSnow || player.ZoneUndergroundDesert || player.ZoneUnderworldHeight))
             {
-                int chance = 100;
+                int chance = 175;
                 if (Main.expertMode)
-                    chance = 75;
+                    chance = 125;
                 if (Main.rand.Next(chance) == 0)
                 {
                     Item.NewItem(npc.getRect(), mod.ItemType("Magnet"));
                 }
             }
 
+            // twisted spoon
             if (player.ZoneDungeon)
             {
-                int chance = 100;
+                int chance = 150;
                 if (Main.expertMode)
-                    chance = 75;
+                    chance = 100;
                 if (Main.rand.Next(chance) == 0)
                     Item.NewItem(npc.getRect(), mod.ItemType("TwistedSpoon"));
             }
 
+            // silver powder
             if (npc.catchItem != 0)
             {
-                int chance = 20;
+                int chance = 50;
                 if (Main.expertMode)
-                    chance = 15;
+                    chance = 30;
                 if (Main.rand.Next(chance) == 0)
                     Item.NewItem(npc.getRect(), mod.ItemType("SilverPowder"));
             }
 
+            // ghost tag
             if (Main.moonPhase == 0)
             {
-                int chance = 100;
+                int chance = 75;
                 if (Main.expertMode)
-                    chance = 66;
+                    chance = 50;
                 if (Main.rand.Next(chance) == 0)
                     Item.NewItem(npc.getRect(), mod.ItemType("GhostTag"));
             }
 
-            if (Main.bloodMoon || elementHelper.Any(npc, Element.blood))
+            // bloody heart
+            if (Main.bloodMoon) // && elementHelper.Any(npc, Element.blood)
             {
                 int chance = 133;
                 if (Main.expertMode)
@@ -113,12 +119,12 @@ namespace TerraTyping.HeldItems
                     Item.NewItem(npc.getRect(), mod.ItemType("BloodyHeart"));
             }
 
-            int sharpBreakChance = 25;
-            int dustySkullChance = 125;
+            int sharpBreakChance = 35;
+            int dustySkullChance = 150;
             if (Main.expertMode)
             {
-                sharpBreakChance = 20;
-                dustySkullChance = 100;
+                sharpBreakChance = 25;
+                dustySkullChance = 125;
             }
             switch (npc.type)
             {
@@ -181,9 +187,9 @@ namespace TerraTyping.HeldItems
     {
         public override bool Drop(int i, int j, int type)
         {
-            int chance = 300;
+            int chance = 650;
             if (Main.expertMode)
-                chance = 250;
+                chance = 500;
             if (type == TileID.Stone && Main.rand.Next(chance) == 0)
                 Item.NewItem(i * 16 + 8, j * 16 + 8, 0, 0, mod.ItemType("HardStone"));
             return base.Drop(i, j, type);

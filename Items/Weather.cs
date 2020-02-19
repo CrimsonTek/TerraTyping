@@ -14,9 +14,9 @@ namespace TerraTyping
     {
         public override bool InstancePerEntity => true;
 
-        static float boostMult = 1;
-        static float weatherMult = 1;
-        static string weatherReason = string.Empty;
+        float boostMult = 1;
+        float weatherMult = 1;
+        string weatherReason = string.Empty;
 
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
@@ -104,7 +104,7 @@ namespace TerraTyping
             }
             if (boostMult != 1)
             {
-                var line = new TooltipLine(mod, "weatherMult", $"Item bonus: {Math.Round((boostMult - 1) * 100)}%");
+                var line = new TooltipLine(mod, "weatherMult", $"Held Item bonus: {Math.Round((boostMult - 1) * 100)}%");
                 tooltips.Add(line);
             }
         }
