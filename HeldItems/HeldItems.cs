@@ -414,7 +414,14 @@ namespace TerraTyping.HeldItems
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(RecipeGroupID.IronBar, 20);
+            recipe.AddIngredient(ItemID.IronBar, 20);
+            recipe.AddIngredient(ItemID.Diamond, 3);
+            recipe.AddTile(TileID.Anvils);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.LeadBar, 20);
             recipe.AddIngredient(ItemID.Diamond, 3);
             recipe.AddTile(TileID.Anvils);
             recipe.SetResult(this);

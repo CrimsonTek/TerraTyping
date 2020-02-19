@@ -27,7 +27,7 @@ Version History:
 v0.1.2.1
  - Made all Held Items rarer
  - Made bloody heart only drop during blood moons
- - Maybe fixed a bug where everything that doesn't do damage shows "Item bonus: 10%" with a Held Item
+ - Changed a few types
 
 v0.1.2.0
  - Added Held Items for every type.

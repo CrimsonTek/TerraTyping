@@ -14,9 +14,9 @@ namespace TerraTyping
     {
         public override bool InstancePerEntity => true;
 
-        float boostMult = 1;
-        float weatherMult = 1;
-        string weatherReason = string.Empty;
+        static float boostMult = 1;
+        static float weatherMult = 1;
+        static string weatherReason = string.Empty;
 
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
