@@ -24,6 +24,10 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.2.2
+ - Minor updates to some code
+ - Proper config file
+
 v0.1.2.1
  - Made all Held Items rarer
  - Made bloody heart only drop during blood moons

@@ -16,18 +16,18 @@ namespace TerraTyping
 
         static float boostMult = 1;
         static float weatherMult = 1;
+        static float RainMultiplier => ModContent.GetInstance<Config>().RainMultiplier;
         static string weatherReason = string.Empty;
 
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
-            ElementHelper elementHelper = new ElementHelper();
-            Element element = elementHelper.Quatrinary(item);
+            Element element = ElementHelper.Quatrinary(item);
             float[] boosts = player.GetModPlayer<HeldItems.HeldItemsPlayer>().boosts;
-            boostMult = boosts[(int)elementHelper.Quatrinary(item)];
+            boostMult = boosts[(int)ElementHelper.Quatrinary(item)];
 
             weatherMult = 1;
             weatherReason = string.Empty;
-            if (Main.expertMode)
+            if (Main.expertMode || !ModContent.GetInstance<Config>().RainMultOnlyExpert)
             {
                 if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
                 {
@@ -36,7 +36,7 @@ namespace TerraTyping
                         if (element == Element.blood)
                         {
                             weatherReason = "Blood moon";
-                            weatherMult = Config.RainMultiplier;
+                            weatherMult = RainMultiplier;
                         }
                     }
                     if (Main.eclipse)
@@ -44,7 +44,7 @@ namespace TerraTyping
                         if (element == Element.dark)
                         {
                             weatherReason = "Eclipse";
-                            weatherMult = Config.RainMultiplier;
+                            weatherMult = RainMultiplier;
                         }
                     }
                     if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
@@ -52,12 +52,12 @@ namespace TerraTyping
                         if (element == Element.water)
                         {
                             weatherReason = "Rain";
-                            weatherMult = Config.RainMultiplier;
+                            weatherMult = RainMultiplier;
                         }
                         if (element == Element.fire)
                         {
                             weatherReason = "Rain";
-                            weatherMult = 1 / Config.RainMultiplier;
+                            weatherMult = 1 / RainMultiplier;
                         }
                     }
                     if (player.ZoneSnow && player.ZoneSnow)
@@ -65,7 +65,7 @@ namespace TerraTyping
                         if (element == Element.ice)
                         {
                             weatherReason = "Snow";
-                            weatherMult = Config.RainMultiplier;
+                            weatherMult = RainMultiplier;
                         }
                     }
                     if (player.ZoneSandstorm)
@@ -76,7 +76,7 @@ namespace TerraTyping
                             case Element.rock:
                             case Element.steel:
                                 weatherReason = "Sandstorm";
-                                weatherMult = Config.RainMultiplier;
+                                weatherMult = RainMultiplier;
                                 break;
                         }
                     }
@@ -111,10 +111,11 @@ namespace TerraTyping
     }
     class WeatherEnemies : GlobalNPC
     {
+        float RainMultiplier => ModContent.GetInstance<Config>().RainMultiplier;
+
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
-            ElementHelper elementHelper = new ElementHelper();
-            Element element = elementHelper.Quatrinary(npc);
+            Element element = ElementHelper.Quatrinary(npc);
 
             if (Main.expertMode)
             {
@@ -122,32 +123,32 @@ namespace TerraTyping
                 {
                     if (element == Element.blood)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        damage = (int)(damage * RainMultiplier);
                     }
                 }
                 if (Main.eclipse && Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneOverworldHeight || Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSkyHeight)
                 {
                     if (element == Element.dark)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        damage = (int)(damage * RainMultiplier);
                     }
                 }
                 if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneRain)
                 {
                     if (element == Element.water)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        damage = (int)(damage * RainMultiplier);
                     }
                     if (element == Element.fire)
                     {
-                        damage = (int)(damage * (1 / Config.RainMultiplier));
+                        damage = (int)(damage * (1 / RainMultiplier));
                     }
                 }
                 if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSnow)
                 {
                     if (element == Element.ice)
                     {
-                        damage = (int)(damage * Config.RainMultiplier);
+                        damage = (int)(damage * RainMultiplier);
                     }
                 }
                 if (Main.player[(int)(Player.FindClosest(npc.position, npc.width, npc.height))].ZoneSandstorm)
@@ -157,7 +158,7 @@ namespace TerraTyping
                         case Element.ground:
                         case Element.rock:
                         case Element.steel:
-                            damage = (int)(damage * Config.RainMultiplier);
+                            damage = (int)(damage * RainMultiplier);
                             break;
                     }
                 }

@@ -1,31 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.ModLoader.Config;
 
 namespace TerraTyping
 {
-    public class Config
+    public class Config : ModConfig
     {
-        public static float Multiplier { get; } = 2f;
-        // the multiplier that effective types use (default = 2.0f)
-        // don't go less than 1.0f
+        public override ConfigScope Mode => ConfigScope.ServerSide;
 
-        public static float Divisor { get; } = 0.5f;
-        // the divisor that not effective types use (default = 0.5f)
-        // don't go more than 1.0f
+        [Label("Multiplier")]
+        [Tooltip("The increased damage of super effective moves.")]
+        [Range(1f, 5f)]
+        [Increment(0.1f)]
+        [DefaultValue(2)]
+        public float Multiplier = 2;
 
-        public static float STAB { get; } = 1.5f;
-        // wearing armor will multiply weapons of the same type by the STAB value (default 1.5f)
-        // don't go less than 1.0f
+        [Label("Divisor")]
+        [Tooltip("The decreased damage of uneffective moves.")]
+        [Range(0f, 1f)]
+        [Increment(0.1f)]
+        [DefaultValue(0.5)]
+        public float Divisor = 0.5f;
 
-        public static float Knockback { get; } = 1f;
+        [Label("STAB")]
+        [Tooltip("The increased damage when wearing the same armor type as your weapon type.")]
+        [Range(1f, 5f)]
+        [Increment(0.1f)]
+        [DefaultValue(1.5)]
+        public float STAB = 1.5f;
 
-        public static float RainMultiplier { get; } = 1.25f;
-        // the multiplier of water type moves during rain, blood type moves during blood moons, etc
-        // don't go less than 1.0f;
+        [Label("Weather Multiplier")]
+        [Tooltip("The increased damage when using a weapon that's super effective in a specific type of weather.\n" +
+            "This affects water type weapons in the rain, ground type weapons in sandstorms, and more.")]
+        [Range(1f, 5f)]
+        [Increment(0.05f)]
+        [DefaultValue(1.25)]
+        public float RainMultiplier = 1.25f;
 
-        public static bool DevMode { get; } = false;
+        [Label("Weather Multiplier in Expert Only")]
+        [Tooltip("Whether or not the weather multiplier should only apply in expert.")]
+        [DefaultValue(false)]
+        public bool RainMultOnlyExpert = false;
     }
 }

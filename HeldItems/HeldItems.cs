@@ -47,8 +47,6 @@ namespace TerraTyping.HeldItems
     }
     public class HeldItemsNPC : GlobalNPC
     {
-        ElementHelper elementHelper = new ElementHelper();
-
         public override bool InstancePerEntity => true;
 
         public override void NPCLoot(NPC npc)

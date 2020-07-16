@@ -65,15 +65,13 @@ namespace TerraTyping
                     {
                         if (flag1)
                         {
-                            ElementHelper elementHelper = new ElementHelper();
-
                             float buffer = 4 * Main.UIScale;
                             float prev = 0;
 
-                            Element Primary = elementHelper.Primary(Main.npc[index1]);
-                            Element Secondary = elementHelper.Secondary(Main.npc[index1]);
-                            Element Tertiary = elementHelper.Tertiary(Main.npc[index1]);
-                            Element Quatrinary = elementHelper.Quatrinary(Main.npc[index1]);
+                            Element Primary = ElementHelper.Primary(Main.npc[index1]);
+                            Element Secondary = ElementHelper.Secondary(Main.npc[index1]);
+                            Element Tertiary = ElementHelper.Tertiary(Main.npc[index1]);
+                            Element Quatrinary = ElementHelper.Quatrinary(Main.npc[index1]);
 
                             var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
                             var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
@@ -289,10 +287,10 @@ namespace TerraTyping
             {
                 for (int index = 0; index < errors.Count; index++)
                 {
-                    if (Config.DevMode)
-                    {
-                        Main.NewText("[TerraTyping] " + errors[index], 255, 0, 0, true);
-                    }
+                    //if (OldConfig.DevMode)
+                    //{
+                    //    Main.NewText("[TerraTyping] " + errors[index], 255, 0, 0, true);
+                    //}
                     errors.RemoveAt(index);
                 }
             }

@@ -10,11 +10,11 @@ using Terraria.DataStructures;
 
 namespace TerraTyping
 {
-    public class DictionaryHelper
+    public static class DictionaryHelper
     {
         static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
 
-        public Dictionary<int, Element> Ammo(Item item)
+        public static Dictionary<int, Element> Ammo(Item item)
         {
             if (item.modItem != null)
             {
@@ -26,7 +26,7 @@ namespace TerraTyping
             return Ammos.Type;
         }
 
-        public Dictionary<int, Tuple<Element, Element>> Armor(Item item)
+        public static Dictionary<int, Tuple<Element, Element>> Armor(Item item)
         {
             if (item.modItem != null)
             {
@@ -38,12 +38,12 @@ namespace TerraTyping
             return Armors.Type;
         }
 
-        public Dictionary<int, Element> Buff(int buff)
+        public static Dictionary<int, Element> Buff(int buff)
         {
             return Buffs.Type;
         }
 
-        public Dictionary<int, Tuple<Element, Element, Element, Element>> NPC(NPC npc)
+        public static Dictionary<int, Tuple<Element, Element, Element, Element>> NPC(NPC npc)
         {
             if (npc.modNPC != null)
             {
@@ -55,7 +55,7 @@ namespace TerraTyping
             return Enemies.Type;
         }
 
-        public Dictionary<int, Element> Item(Item item)
+        public static Dictionary<int, Element> Item(Item item)
         {
             if (item.modItem != null)
             {
@@ -67,12 +67,12 @@ namespace TerraTyping
             return Items.Type;
         }
 
-        public Dictionary<int, Element> Other(PlayerDeathReason pdr)
+        public static Dictionary<int, Element> Other(PlayerDeathReason pdr)
         {
             return OtherDict.Type;
         }
 
-        public Dictionary<int, Element> Projectile(Projectile projectile)
+        public static Dictionary<int, Element> Projectile(Projectile projectile)
         {
             if (projectile.modProjectile != null)
             {

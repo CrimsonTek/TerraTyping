@@ -35,12 +35,10 @@ namespace TerraTyping
 
         public static float Damage(object attack, object defense)
         {
-            ElementHelper elementHelper = new ElementHelper();
-
-            int defensePrimary = (int)elementHelper.Primary(defense);
-            int defenseSecondary = (int)elementHelper.Secondary(defense);
-            int defenseTertiary = (int)elementHelper.Tertiary(defense);
-            int attackQuatrinary = (int)elementHelper.Quatrinary(attack);
+            int defensePrimary = (int)ElementHelper.Primary(defense);
+            int defenseSecondary = (int)ElementHelper.Secondary(defense);
+            int defenseTertiary = (int)ElementHelper.Tertiary(defense);
+            int attackQuatrinary = (int)ElementHelper.Quatrinary(attack);
 
             float multiplier1 = Table.Effectiveness[attackQuatrinary, defensePrimary];
             float multiplier2 = Table.Effectiveness[attackQuatrinary, defenseSecondary];
@@ -55,23 +53,21 @@ namespace TerraTyping
 
         public static float STAB(object attack, object defense)
         {
-            ElementHelper elementHelper = new ElementHelper();
-
-            int defensePrimary = (int)elementHelper.Primary(defense);
-            int defenseSecondary = (int)elementHelper.Secondary(defense);
-            int defenseTertiary = (int)elementHelper.Tertiary(defense);
-            int attackQuatrinary = (int)elementHelper.Quatrinary(attack);
+            int defensePrimary = (int)ElementHelper.Primary(defense);
+            int defenseSecondary = (int)ElementHelper.Secondary(defense);
+            int defenseTertiary = (int)ElementHelper.Tertiary(defense);
+            int attackQuatrinary = (int)ElementHelper.Quatrinary(attack);
 
             float multiplier = 1.0f;
 
             if (attackQuatrinary != (int)Element.none)
             {
                 if (defensePrimary == attackQuatrinary)
-                    multiplier *= Config.STAB;
+                    multiplier *= ModContent.GetInstance<Config>().STAB;
                 else if (defenseSecondary == attackQuatrinary)
-                    multiplier *= Config.STAB;
+                    multiplier *= ModContent.GetInstance<Config>().STAB;
                 else if (defenseTertiary == attackQuatrinary)
-                    multiplier *= Config.STAB;
+                    multiplier *= ModContent.GetInstance<Config>().STAB;
             }
             if (!Main.expertMode)
                 multiplier = (multiplier + 1) / 2;
@@ -80,12 +76,10 @@ namespace TerraTyping
 
         public static int Buff(object buff, object defense, int lifeRegen)
         {
-            ElementHelper elementHelper = new ElementHelper();
-
-            int defensePrimary = (int)elementHelper.Primary(defense);
-            int defenseSecondary = (int)elementHelper.Secondary(defense);
-            int defenseTertiary = (int)elementHelper.Tertiary(defense);
-            int attackQuatrinary = (int)elementHelper.Quatrinary(buff);
+            int defensePrimary = (int)ElementHelper.Primary(defense);
+            int defenseSecondary = (int)ElementHelper.Secondary(defense);
+            int defenseTertiary = (int)ElementHelper.Tertiary(defense);
+            int attackQuatrinary = (int)ElementHelper.Quatrinary(buff);
 
             float multiplier1 = Table.Effectiveness[attackQuatrinary, defensePrimary];
             float multiplier2 = Table.Effectiveness[attackQuatrinary, defenseSecondary];
@@ -98,12 +92,10 @@ namespace TerraTyping
 
         public static int LifeRegen(object buff, object defense, int lifeRegen)
         {
-            ElementHelper elementHelper = new ElementHelper();
-
-            int defensePrimary = (int)elementHelper.Primary(defense);
-            int defenseSecondary = (int)elementHelper.Secondary(defense);
-            int defenseTertiary = (int)elementHelper.Tertiary(defense);
-            int attackQuatrinary = (int)elementHelper.Quatrinary(buff);
+            int defensePrimary = (int)ElementHelper.Primary(defense);
+            int defenseSecondary = (int)ElementHelper.Secondary(defense);
+            int defenseTertiary = (int)ElementHelper.Tertiary(defense);
+            int attackQuatrinary = (int)ElementHelper.Quatrinary(buff);
 
             float multiplier1 = Table.Effectiveness[attackQuatrinary, defensePrimary];
             float multiplier2 = Table.Effectiveness[attackQuatrinary, defenseSecondary];
@@ -114,12 +106,10 @@ namespace TerraTyping
 
         public static int BadRegen(object buff, object defense, int buffBadRegen)
         {
-            ElementHelper elementHelper = new ElementHelper();
-
-            int defensePrimary = (int)elementHelper.Primary(defense);
-            int defenseSecondary = (int)elementHelper.Secondary(defense);
-            int defenseTertiary = (int)elementHelper.Tertiary(defense);
-            int attackQuatrinary = (int)elementHelper.Quatrinary(buff);
+            int defensePrimary = (int)ElementHelper.Primary(defense);
+            int defenseSecondary = (int)ElementHelper.Secondary(defense);
+            int defenseTertiary = (int)ElementHelper.Tertiary(defense);
+            int attackQuatrinary = (int)ElementHelper.Quatrinary(buff);
 
             float multiplier1 = Table.Effectiveness[attackQuatrinary, defensePrimary];
             float multiplier2 = Table.Effectiveness[attackQuatrinary, defenseSecondary];

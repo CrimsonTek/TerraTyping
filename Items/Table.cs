@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.ModLoader;
 
 namespace TerraTyping
 {
-    public class Table
+    public static class Table
     {
-        static readonly float Mult = Config.Multiplier;
-        static readonly float Divi = Config.Divisor;
+        static readonly float Mult = ModContent.GetInstance<Config>().Multiplier;
+        static readonly float Divi = ModContent.GetInstance<Config>().Divisor;
+
+        public static float Eff(int attack, int defense)
+        {
+            if (attack < 21 || defense < 21)
+            {
+                return 1;
+            }
+            else
+            {
+                return Effectiveness[attack, defense];
+            }
+        }
 
         public static float[,] Effectiveness = new float[22, 22]
         {

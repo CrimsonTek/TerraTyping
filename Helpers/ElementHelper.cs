@@ -10,12 +10,11 @@ using Terraria.DataStructures;
 
 namespace TerraTyping
 {
-    public class ElementHelper
+    public static class ElementHelper
     {
-        readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
-        readonly DictionaryHelper dictionaryHelper = new DictionaryHelper();
+        static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
 
-        public Element Primary(object obj)
+        public static Element Primary(object obj)
         {
             Element element = Element.none;
             if (obj is Tuple<Element, Element, Element> typeSet)
@@ -24,13 +23,13 @@ namespace TerraTyping
             }
             else if (obj is NPC npc)
             {
-                if (dictionaryHelper.NPC(npc).ContainsKey(npc.type))
-                    element = dictionaryHelper.NPC(npc)[npc.type].Item1;
+                if (DictionaryHelper.NPC(npc).ContainsKey(npc.type))
+                    element = DictionaryHelper.NPC(npc)[npc.type].Item1;
             }
             return element;
         }
 
-        public Element Secondary(object obj)
+        public static Element Secondary(object obj)
         {
             Element element = Element.none;
             if (obj is Tuple<Element, Element, Element> typeSet)
@@ -39,13 +38,13 @@ namespace TerraTyping
             }
             else if (obj is NPC npc)
             {
-                if (dictionaryHelper.NPC(npc).ContainsKey(npc.type))
-                    element = dictionaryHelper.NPC(npc)[npc.type].Item2;
+                if (DictionaryHelper.NPC(npc).ContainsKey(npc.type))
+                    element = DictionaryHelper.NPC(npc)[npc.type].Item2;
             }
             return element;
         }
 
-        public Element Tertiary(object obj)
+        public static Element Tertiary(object obj)
         {
             Element element = Element.none;
             if (obj is Tuple<Element, Element, Element> typeSet)
@@ -54,46 +53,46 @@ namespace TerraTyping
             }
             else if (obj is NPC npc)
             {
-                if (dictionaryHelper.NPC(npc).ContainsKey(npc.type))
-                    element = dictionaryHelper.NPC(npc)[npc.type].Item3;
+                if (DictionaryHelper.NPC(npc).ContainsKey(npc.type))
+                    element = DictionaryHelper.NPC(npc)[npc.type].Item3;
             }
             return element;
         }
 
-        public Element Quatrinary(object obj)
+        public static Element Quatrinary(object obj)
         {
             Element element = Element.none;
             if (obj is Item item)
             {
-                if (dictionaryHelper.Item(item).ContainsKey(item.type))
-                    element = dictionaryHelper.Item(item)[item.type];
-                else if (dictionaryHelper.Ammo(item).ContainsKey(item.type))
-                    element = dictionaryHelper.Ammo(item)[item.type];
+                if (DictionaryHelper.Item(item).ContainsKey(item.type))
+                    element = DictionaryHelper.Item(item)[item.type];
+                else if (DictionaryHelper.Ammo(item).ContainsKey(item.type))
+                    element = DictionaryHelper.Ammo(item)[item.type];
             }
             else if (obj is NPC npc)
             {
-                if (dictionaryHelper.NPC(npc).ContainsKey(npc.type))
-                    element = dictionaryHelper.NPC(npc)[npc.type].Item4;
+                if (DictionaryHelper.NPC(npc).ContainsKey(npc.type))
+                    element = DictionaryHelper.NPC(npc)[npc.type].Item4;
             }
             else if (obj is Projectile proj)
             {
-                if (dictionaryHelper.Projectile(proj).ContainsKey(proj.type))
-                    element = dictionaryHelper.Projectile(proj)[proj.type];
+                if (DictionaryHelper.Projectile(proj).ContainsKey(proj.type))
+                    element = DictionaryHelper.Projectile(proj)[proj.type];
             }
             else if (obj is PlayerDeathReason pdr)
             {
-                if (dictionaryHelper.Other(pdr).ContainsKey(pdr.SourceOtherIndex))
-                    element = dictionaryHelper.Other(pdr)[pdr.SourceOtherIndex];
+                if (DictionaryHelper.Other(pdr).ContainsKey(pdr.SourceOtherIndex))
+                    element = DictionaryHelper.Other(pdr)[pdr.SourceOtherIndex];
             }
             else if (obj is int buff)
             {
-                if (dictionaryHelper.Buff(buff).ContainsKey(buff))
-                    element = dictionaryHelper.Buff(buff)[buff];
+                if (DictionaryHelper.Buff(buff).ContainsKey(buff))
+                    element = DictionaryHelper.Buff(buff)[buff];
             }
             return element;
         }
 
-        public bool Any(object obj, Element element)
+        public static bool Any(object obj, Element element)
         {
             if (Primary(obj) == element || Secondary(obj) == element || Tertiary(obj) == element || Quatrinary(obj) == element)
                 return true;
