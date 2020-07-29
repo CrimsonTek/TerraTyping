@@ -24,6 +24,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.2.3
+ - Fixed weapons having too much damage
+
 v0.1.2.2
  - Minor updates to some code
  - Proper config file

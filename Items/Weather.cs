@@ -83,7 +83,8 @@ namespace TerraTyping
                 }
             }
 
-            float myMult = weatherMult + boostMult;
+            // '- 1' because weatherMult and boostMult are both '1' by default. Adding them defaults 'mult' to '2'.
+            float myMult = weatherMult + boostMult - 1;
             if (myMult != 1)
             {
                 mult = myMult;
