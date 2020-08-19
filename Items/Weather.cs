@@ -93,20 +93,23 @@ namespace TerraTyping
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            string bonusOrPenalty = string.Empty;
-            if (weatherMult > 1)
-                bonusOrPenalty = "bonus";
-            else if (weatherMult < 1)
-                bonusOrPenalty = "penalty";
-            if (weatherMult != 1)
+            if (item.damage > 0)
             {
-                var line = new TooltipLine(mod, "weatherMult", $"{weatherReason} {bonusOrPenalty}: {Math.Round((weatherMult - 1) * 100)}%");
-                tooltips.Add(line);
-            }
-            if (boostMult != 1)
-            {
-                var line = new TooltipLine(mod, "weatherMult", $"Held Item bonus: {Math.Round((boostMult - 1) * 100)}%");
-                tooltips.Add(line);
+                string bonusOrPenalty = string.Empty;
+                if (weatherMult > 1)
+                    bonusOrPenalty = "bonus";
+                else if (weatherMult < 1)
+                    bonusOrPenalty = "penalty";
+                if (weatherMult != 1)
+                {
+                    var line = new TooltipLine(mod, "weatherMult", $"{weatherReason} {bonusOrPenalty}: {Math.Round((weatherMult - 1) * 100)}%");
+                    tooltips.Add(line);
+                }
+                if (boostMult != 1)
+                {
+                    var line = new TooltipLine(mod, "weatherMult", $"Held Item bonus: {Math.Round((boostMult - 1) * 100)}%");
+                    tooltips.Add(line);
+                }
             }
         }
     }

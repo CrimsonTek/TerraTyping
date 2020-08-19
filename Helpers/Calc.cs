@@ -45,9 +45,9 @@ namespace TerraTyping
             float multiplier3 = Table.Effectiveness[attackQuatrinary, defenseTertiary];
 
             float dmg = multiplier1 * multiplier2 * multiplier3;
-            if (dmg != 0)
-                if (!Main.expertMode)
-                    dmg = (dmg + dmg + 1) / 3;
+            //if (dmg != 0)
+            //    if (!Main.expertMode)
+            //        dmg = (dmg + dmg + 1) / 3;
             return dmg;
         }
 
@@ -69,8 +69,8 @@ namespace TerraTyping
                 else if (defenseTertiary == attackQuatrinary)
                     multiplier *= ModContent.GetInstance<Config>().STAB;
             }
-            if (!Main.expertMode)
-                multiplier = (multiplier + 1) / 2;
+            //if (!Main.expertMode)
+            //    multiplier = (multiplier + 1) / 2;
             return multiplier;
         }
 

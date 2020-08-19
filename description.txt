@@ -24,6 +24,10 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.2.4
+ - Fixed weapons doing more damage than they should in normal mode
+ - Armor no longer shows a "damage penalty", despite not being weapons
+
 v0.1.2.3
  - Fixed weapons having too much damage
 
