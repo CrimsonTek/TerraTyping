@@ -45,5 +45,11 @@ namespace TerraTyping
         [Tooltip("Whether or not the weather multiplier should only apply in expert.")]
         [DefaultValue(false)]
         public bool RainMultOnlyExpert = false;
+
+        [Label("Hidden Ability Chance in Percentage")]
+        [Tooltip("The chance of an NPC having a rarer hidden ability.")]
+        [Range(0f, 100f)]
+        [DefaultValue(0.5f)]
+        public float HiddenAbilityChancePercent = 0.5f;
     }
 }

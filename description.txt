@@ -24,6 +24,60 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.3.0
+ - Added a new command: "/type"
+   Try "/type [type]" to see the strengths and weaknesses of a given type.
+   Try "/type npc [npc name]" to see the type of an NPC and it's strengths and weaknesses.
+
+ - Added 22 new abilities for enemies.
+  [c/97b2ff:Levitate: Protects the user from ground attacks.]      
+  [c/fafa11:Volt Absorb: Allows the user to heal from electric]
+  [c/fafa11: attacks.]
+  [c/fafa11:Lightning Rod: Attracts electric projectiles, and]
+  [c/fafa11:  makesit immune to electric attacks.]  
+  [c/fafa11:Motor Drive: Speeds the user up when hit by electric]
+  [c/fafa11: attacks, and makes it immune.]
+  [c/42a6f8:Water Absorb: Allows the user to heal from water]
+  [c/42a6f8: attacks.] 
+  [c/42a6f8:Storm Drain: Attracts water projectiles, and makes]
+  [c/42a6f8: the user immune to them.]
+  [c/f65f1c:Flash Fire: Buffs the user when hit by a fire attack,]
+  [c/f65f1c: and makes it immune to them.]
+  [c/42eb35:Sap Sipper: Makes the user immune to grass]
+  [c/42eb35: attacks.]    
+  [c/b4e1ff:Thick Fat: Reduces the damage taken from ice and]
+  [c/b4e1ff: fire attacks.]
+  [c/b4e1ff:Fluffy: Reduces the damage taken from melee attacks,]
+  [c/b4e1ff: but increases the damage taken from fire attacks.]
+  [c/9f9f9f:Heatproof: Reduces the damage taken from fire]
+  [c/9f9f9f: attacks.]
+  [c/42a6f8:Water Bubble: Reduces the damage taken from fire]
+  [c/42a6f8: attacks, and powers up the user's water attacks.]
+  [c/f5af0a:Justified: Powers up the user when hit by dark] 
+  [c/f5af0a: types.] 
+  [c/ba8c4e:Water Compaction: Sharply raises the defense of the]
+  [c/ba8c4e: user when hit by a water attack.]
+  [c/f65f1c:Steam Engine: Speeds the user up when hit by a]
+  [c/f65f1c: water attack.] 
+  [c/ba8c4e:Dry Skin: Damages the user in the heat. Heals the]
+  [c/ba8c4e: user in the rain.]
+  [c/c29ed6:Mummy: Converts the attacker's ability to mummy]
+  [c/c29ed6: temporarily.]
+  [c/b874fc:Corrosion: Allows the user's poison attacks to hit]
+  [c/b874fc: steel and poison types.]
+  [c/f0e6d2:Color Change: When hit, the user changes its type to]
+  [c/f0e6d2: the attacking type.]
+  [c/ba8c4e:Mold Breaker: The user ignores the opponents]
+  [c/ba8c4e: abilities.]
+  [c/ba8c4e:Sand Force: Powers up rock, ground, and steel]
+  [c/ba8c4e: attacks during sandstorms.]
+  [c/f0e6d2:Scrappy: Allows the user to attack ghostly enemies]
+  [c/f0e6d2: with normal and fighting attacks.]
+  [c/f65f1c:Flammable: Increases the damage the user takes from]
+  [c/f65f1c: fire, but reduces the damage taken from water.]
+
+ - Bug Fixes
+
 v0.1.2.4
  - Fixed weapons doing more damage than they should in normal mode
  - Armor no longer shows a "damage penalty", despite not being weapons

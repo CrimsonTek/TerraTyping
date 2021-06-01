@@ -5,14 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Localization;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping
 {
     public class LangHelper
     {
-        public static LangHelper langHelper = new LangHelper();
-
-        public string ElementName(Element element)
+        public static string ElementName(Element element)
         {
             GameCulture culture = Language.ActiveCulture;
 
@@ -23,6 +22,11 @@ namespace TerraTyping
                 case 6: return Russian.Name[element];
                 default: return English.Name[element];
             }
+        }
+
+        public static string AbilityName(AbilityID ability)
+        {
+            return English.Ability[ability];
         }
     }
 }

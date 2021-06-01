@@ -19,6 +19,10 @@
     <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Testing\" />
     <Folder Include="Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Cecil" Version="0.11.3" />
   </ItemGroup>
 </Project>

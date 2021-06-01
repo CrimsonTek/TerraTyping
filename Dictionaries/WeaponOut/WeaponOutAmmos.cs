@@ -4,17 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
+using TerraTyping.Attributes;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping
 {
-    public class WeaponOutAmmos
+    [Load]
+    [Unload]
+    public static class WeaponOutAmmos
     {
-        public static Dictionary<int, Element> Type = new Dictionary<int, Element>() { };
-        public static Dictionary<string, Element> _Type = new Dictionary<string, Element>()
+        public static void Load()
         {
-            {"SplinterShot", Element.dark },
-            {"MeteorBreakshot", Element.fire },
-            {"ScatterShot", Element.fairy },
-        };
+            Type = new Dictionary<int, ItemTypeInfo>();
+            _Type = new Dictionary<string, ItemTypeInfo>()
+            {
+                {"SplinterShot", new ItemTypeInfo(Element.dark) },
+                {"MeteorBreakshot", new ItemTypeInfo(Element.fire) },
+                {"ScatterShot", new ItemTypeInfo(Element.fairy) },
+            };
+        }
+
+        public static void Unload()
+        {
+            Type = null;
+            _Type = null;
+        }
+
+        public static Dictionary<int, ItemTypeInfo> Type;
+        public static Dictionary<string, ItemTypeInfo> _Type;
     }
 }

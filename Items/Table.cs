@@ -9,18 +9,30 @@ namespace TerraTyping
 {
     public static class Table
     {
-        static readonly float Mult = ModContent.GetInstance<Config>().Multiplier;
-        static readonly float Divi = ModContent.GetInstance<Config>().Divisor;
+        public static readonly float Mult = ModContent.GetInstance<Config>().Multiplier;
+        public static readonly float Divi = ModContent.GetInstance<Config>().Divisor;
 
-        public static float Eff(int attack, int defense)
+        public static float Eff(Element attack, Element defense)
         {
-            if (attack < 21 || defense < 21)
+            if ((int)attack < 21 && (int)defense < 21)
             {
-                return 1;
+                return Effectiveness[(int)attack, (int)defense];
             }
             else
             {
+                return 1;
+            }
+        }
+
+        public static float Eff(int attack, int defense)
+        {
+            if (attack < 21 && defense < 21)
+            {
                 return Effectiveness[attack, defense];
+            }
+            else
+            {
+                return 1;
             }
         }
 

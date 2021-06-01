@@ -8,16 +8,29 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Attributes;
 
 namespace TerraTyping
 {
-    public class OtherDict
+    [Load]
+    [Unload]
+    public static class OtherDict
     {
-        public static Dictionary<int, Element> Type = new Dictionary<int, Element>
+        public static void Load()
         {
-            {0, Element.ground }, // falling
-            {2, Element.fire }, // lava
-            {3, Element.grass }, // vines
-        };
+            Type = new Dictionary<int, Element>
+            {
+                {0, Element.ground }, // falling
+                {2, Element.fire }, // lava
+                {3, Element.grass }, // vines
+            };
+        }
+
+        public static void Unload()
+        {
+            Type = null;
+        }
+
+        public static Dictionary<int, Element> Type;
     }
 }

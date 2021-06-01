@@ -1,11 +1,57 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.5": {}
+    ".NETFramework,Version=v4.5": {
+      "Mono.Cecil/0.11.3": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Mono.Cecil/0.11.3": {
+      "sha512": "DNYE+io5XfEE8+E+5padThTPHJARJHbz1mhbhMPNrrWGKVKKqj/KEeLvbawAmbIcT73NuxLV7itHZaYCZcVWGg==",
+      "type": "package",
+      "path": "mono.cecil/0.11.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Mono.Cecil.Mdb.dll",
+        "lib/net40/Mono.Cecil.Mdb.pdb",
+        "lib/net40/Mono.Cecil.Pdb.dll",
+        "lib/net40/Mono.Cecil.Pdb.pdb",
+        "lib/net40/Mono.Cecil.Rocks.dll",
+        "lib/net40/Mono.Cecil.Rocks.pdb",
+        "lib/net40/Mono.Cecil.dll",
+        "lib/net40/Mono.Cecil.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Mdb.dll",
+        "lib/netstandard2.0/Mono.Cecil.Mdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Pdb.dll",
+        "lib/netstandard2.0/Mono.Cecil.Pdb.pdb",
+        "lib/netstandard2.0/Mono.Cecil.Rocks.dll",
+        "lib/netstandard2.0/Mono.Cecil.Rocks.pdb",
+        "lib/netstandard2.0/Mono.Cecil.dll",
+        "lib/netstandard2.0/Mono.Cecil.pdb",
+        "mono.cecil.0.11.3.nupkg.sha512",
+        "mono.cecil.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETFramework,Version=v4.5": []
+    ".NETFramework,Version=v4.5": [
+      "Mono.Cecil >= 0.11.3"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Jack\\.nuget\\packages\\": {},
@@ -48,6 +94,12 @@
     },
     "frameworks": {
       "net45": {
+        "dependencies": {
+          "Mono.Cecil": {
+            "target": "Package",
+            "version": "[0.11.3, )"
+          }
+        },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
       }
     }

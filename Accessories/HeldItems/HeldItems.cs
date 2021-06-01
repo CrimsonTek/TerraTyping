@@ -8,17 +8,17 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TerraTyping.HeldItems
+namespace TerraTyping.Accessories.HeldItems
 {
     public class HeldItemsPlayer : ModPlayer
     {
-        public float[] boosts = new float[22];
+        public Boost[] heldItemBoosts = new Boost[22];
 
         public override void ResetEffects()
         {
-            for (int i = 0; i < boosts.Length; i++)
+            for (int i = 0; i < heldItemBoosts.Length; i++)
             {
-                boosts[i] = 1;
+                heldItemBoosts[i] = new Boost(1, string.Empty);
             }
         }
 
@@ -219,7 +219,7 @@ namespace TerraTyping.HeldItems
         public override void UpdateEquip(Player player)
         {
             HeldItemsPlayer hiPlayer = player.GetModPlayer<HeldItemsPlayer>();
-            hiPlayer.boosts[(int)Type] = Boost;
+            hiPlayer.heldItemBoosts[(int)Type] = new Boost(Boost, DispName);
         }
     }
 

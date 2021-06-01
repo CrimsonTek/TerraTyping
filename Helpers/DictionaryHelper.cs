@@ -7,6 +7,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using TerraTyping.DataTypes;
+using TerraTyping.DataTypes.Structs;
 
 namespace TerraTyping
 {
@@ -14,7 +16,7 @@ namespace TerraTyping
     {
         static readonly Mod weaponOut = ModLoader.GetMod("WeaponOut");
 
-        public static Dictionary<int, Element> Ammo(Item item)
+        public static Dictionary<int, ItemTypeInfo> Ammo(Item item)
         {
             if (item.modItem != null)
             {
@@ -26,7 +28,7 @@ namespace TerraTyping
             return Ammos.Type;
         }
 
-        public static Dictionary<int, Tuple<Element, Element>> Armor(Item item)
+        public static Dictionary<int, ArmorTypeInfo> Armor(Item item)
         {
             if (item.modItem != null)
             {
@@ -38,12 +40,24 @@ namespace TerraTyping
             return Armors.Type;
         }
 
+        //public static Dictionary<int, Tuple<Element, Element>> Armor(Item item)
+        //{
+        //    if (item.modItem != null)
+        //    {
+        //        if (item.modItem.mod == weaponOut)
+        //            return WeaponOutArmors.Type;
+        //        else
+        //            return UnsupportedArmors.Type;
+        //    }
+        //    return Armors.Type;
+        //}
+
         public static Dictionary<int, Element> Buff(int buff)
         {
             return Buffs.Type;
         }
 
-        public static Dictionary<int, Tuple<Element, Element, Element, Element>> NPC(NPC npc)
+        public static Dictionary<int, NPCTypeInfo> NPC(NPC npc)
         {
             if (npc.modNPC != null)
             {
@@ -55,7 +69,7 @@ namespace TerraTyping
             return Enemies.Type;
         }
 
-        public static Dictionary<int, Element> Item(Item item)
+        public static Dictionary<int, ItemTypeInfo> Item(Item item)
         {
             if (item.modItem != null)
             {
@@ -67,12 +81,13 @@ namespace TerraTyping
             return Items.Type;
         }
 
+        // TODO
         public static Dictionary<int, Element> Other(PlayerDeathReason pdr)
         {
             return OtherDict.Type;
         }
 
-        public static Dictionary<int, Element> Projectile(Projectile projectile)
+        public static Dictionary<int, ProjectileTypeInfo> Projectile(Projectile projectile)
         {
             if (projectile.modProjectile != null)
             {

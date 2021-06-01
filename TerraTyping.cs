@@ -1,27 +1,21 @@
-using Terraria.ModLoader;
-
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
-using Terraria.GameContent.Dyes;
-using Terraria.GameContent.UI;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.UI;
-using TerraTyping;
-using Newtonsoft.Json;
-using Terraria.ModLoader.IO;
 using Terraria.GameInput;
+using Terraria.ModLoader;
+using TerraTyping.DataTypes;
+using TerraTyping.Abilities.Buffs.TypeAdd;
+using TerraTyping.Abilities.Buffs.TypeReplace;
+using System.Reflection;
+using TerraTyping.Attributes;
 
 namespace TerraTyping
 {
-	class TerraTyping : Mod
+    class TerraTyping : Mod
     {
         static readonly List<string> errors = new List<string>();
 
@@ -34,7 +28,7 @@ namespace TerraTyping
         {
             PlayerInput.SetZoom_Unscaled();
             PlayerInput.SetZoom_MouseInWorld();
-            Microsoft.Xna.Framework.Rectangle rectangle1 = new Microsoft.Xna.Framework.Rectangle((int)((double)Main.mouseX + (double)Main.screenPosition.X), (int)((double)Main.mouseY + (double)Main.screenPosition.Y), 1, 1);
+            Rectangle rectangle1 = new Rectangle((int)((double)Main.mouseX + (double)Main.screenPosition.X), (int)((double)Main.mouseY + (double)Main.screenPosition.Y), 1, 1);
             if ((double)Main.player[Main.myPlayer].gravDir == -1.0)
                 rectangle1.Y = (int)Main.screenPosition.Y + Main.screenHeight - Main.mouseY;
             PlayerInput.SetZoom_UI();
@@ -68,14 +62,12 @@ namespace TerraTyping
                             float buffer = 4 * Main.UIScale;
                             float prev = 0;
 
-                            Element Primary = ElementHelper.Primary(Main.npc[index1]);
-                            Element Secondary = ElementHelper.Secondary(Main.npc[index1]);
-                            Element Tertiary = ElementHelper.Tertiary(Main.npc[index1]);
-                            Element Quatrinary = ElementHelper.Quatrinary(Main.npc[index1]);
+                            Element Primary = new NPCWrapper(Main.npc[index1]).Primary;
+                            Element Secondary = new NPCWrapper(Main.npc[index1]).Secondary;
+                            Element Quatrinary = new NPCWrapper(Main.npc[index1]).Offensive;
 
                             var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
                             var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
-                            var icon3 = GetTexture("Types/" + Formal.Name[Tertiary]);
                             var icon4 = GetTexture("Types/" + Formal.Name[Quatrinary]);
 
                             int yOffset = 38;
@@ -91,11 +83,6 @@ namespace TerraTyping
                             if (Secondary != Element.none && Secondary != Element.levitate)
                             {
                                 Main.spriteBatch.Draw(icon2, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
-                                prev += icon2.Width * Main.UIScale + buffer;
-                            }
-                            if (Tertiary != Element.none && Tertiary != Element.levitate)
-                            {
-                                Main.spriteBatch.Draw(icon3, new Vector2(Main.mouseX + prev, Main.mouseY), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
                             }
                             if (Quatrinary != Element.none && Quatrinary != Element.levitate)
                             {
@@ -115,42 +102,113 @@ namespace TerraTyping
 
         public override void Load()
         {
-            /* armor */ {
-                foreach (KeyValuePair<int, Tuple<Element, Element>> entry in Armors.Helmet)
+            Type[] arrType = Code.GetTypes();
+            foreach (Type type in arrType)
+            {
+                LoadAttribute loadAttribute = type.GetCustomAttribute<LoadAttribute>();
+                if (loadAttribute != null)
                 {
-                    int key = entry.Key;
-                    Tuple<Element, Element> value = entry.Value;
-                    if (Armors.Type.ContainsKey(key))
-                    {
-                        //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                        return;
-                    }
-                    Armors.Type.Add(key, value);
-                }
-                foreach (KeyValuePair<int, Tuple<Element, Element>> entry in Armors.Chest)
-                {
-                    int key = entry.Key;
-                    Tuple<Element, Element> value = entry.Value;
-                    if (Armors.Type.ContainsKey(key))
-                    {
-                        //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                        return;
-                    }
-                    Armors.Type.Add(key, value);
-                }
-                foreach (KeyValuePair<int, Tuple<Element, Element>> entry in Armors.Leggings)
-                {
-                    int key = entry.Key;
-                    Tuple<Element, Element> value = entry.Value;
-                    if (Armors.Type.ContainsKey(key))
-                    {
-                        //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                        return;
-                    }
-                    Armors.Type.Add(key, value);
+                    MethodInfo methodInfo = type.GetMethod("Load", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    methodInfo.Invoke(null, null);
                 }
             }
+
+            LoadArmors();
+            LoadBuffs();
             errors.Clear();
+        }
+
+        public override void Unload()
+        {
+            #region WeaponOut
+            WeaponOutAmmos.Type.Clear();
+            WeaponOutArmors.Type.Clear();
+            WeaponOutArmors.Helmet.Clear();
+            WeaponOutArmors.Chest.Clear();
+            WeaponOutArmors.Leggings.Clear();
+            WeaponOutEnemies.Type.Clear();
+            WeaponOutItems.Type.Clear();
+            WeaponOutProjectiles.Type.Clear();
+            #endregion
+
+            Type[] arrType = Code.GetTypes();
+            foreach (Type type in arrType)
+            {
+                UnloadAttribute unloadAttribute = type.GetCustomAttribute<UnloadAttribute>();
+                if (unloadAttribute != null)
+                {
+                    MethodInfo methodInfo = type.GetMethod("Unload", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                    methodInfo.Invoke(null, null);
+                }
+            }
+        }
+
+        void LoadArmors()
+        {
+            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Helmet)
+            {
+                int key = entry.Key;
+                ArmorTypeInfo value = entry.Value;
+                if (Armors.Type.ContainsKey(key))
+                {
+                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
+                    return;
+                }
+                Armors.Type.Add(key, value);
+            }
+            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Chest)
+            {
+                int key = entry.Key;
+                ArmorTypeInfo value = entry.Value;
+                if (Armors.Type.ContainsKey(key))
+                {
+                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
+                    return;
+                }
+                Armors.Type.Add(key, value);
+            }
+            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Leggings)
+            {
+                int key = entry.Key;
+                ArmorTypeInfo value = entry.Value;
+                if (Armors.Type.ContainsKey(key))
+                {
+                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
+                    return;
+                }
+                Armors.Type.Add(key, value);
+            }
+        }
+        void LoadBuffs()
+        {
+            Element[] elements = (Element[])Enum.GetValues(typeof(Element));
+            for (int i = 0; i < elements.Length; i++)
+            {
+                Element element = elements[i];
+                if (element != Element.none && element != Element.levitate)
+                {
+                    string nameAdd = element.ToString().First().ToString().ToUpper() + string.Join("", element.ToString().Skip(1)) + "Add";
+
+                    ModBuff buffAdd = new BuffAddType()
+                    {
+                        MyElement = element
+                    };
+
+                    string textureAdd = $"TerraTyping/Abilities/Buffs/TypeAdd/{nameAdd}";
+                    AddBuff(nameAdd, buffAdd, textureAdd);
+
+
+                    string nameReplace = element.ToString().First().ToString().ToUpper() + string.Join("", element.ToString().Skip(1)) + "Replace";
+
+                    ModBuff buffReplace = new BuffReplaceType()
+                    {
+                        MyElement = element
+                    };
+
+                    string textureReplace = $"TerraTyping/Abilities/Buffs/TypeReplace/{nameReplace}";
+                    AddBuff(nameReplace, buffReplace, textureReplace);
+                }
+            }
         }
 
         public override void AddRecipes()
@@ -158,31 +216,59 @@ namespace TerraTyping
             Mod weaponOut = ModLoader.GetMod("WeaponOut");
             if (weaponOut != null)
             {
-                Initialize(weaponOut, ref WeaponOutAmmos._Type, ref WeaponOutAmmos.Type);
-                Initialize(weaponOut, ref WeaponOutArmors._Helmet, ref WeaponOutArmors.Helmet, ref WeaponOutArmors.Type);
-                Initialize(weaponOut, ref WeaponOutArmors._Chest, ref WeaponOutArmors.Chest, ref WeaponOutArmors.Type);
-                Initialize(weaponOut, ref WeaponOutArmors._Leggings, ref WeaponOutArmors.Leggings, ref WeaponOutArmors.Type);
-                Initialize(weaponOut, ref WeaponOutEnemies._Type, ref WeaponOutEnemies.Type);
-                Initialize(weaponOut, ref WeaponOutItems._Type, ref WeaponOutItems.Type);
-                Initialize(weaponOut, ref WeaponOutProjectiles._Type, ref WeaponOutProjectiles.Type, true);
+                Initialize(weaponOut, ref WeaponOutArmors._Helmet, ref WeaponOutArmors.Helmet, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutArmors._Chest, ref WeaponOutArmors.Chest, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutArmors._Leggings, ref WeaponOutArmors.Leggings, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutArmors._Helmet, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutArmors._Chest, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutArmors._Leggings, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
+
+                Initialize(weaponOut, ref WeaponOutAmmos._Type, ref WeaponOutAmmos.Type, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutItems._Type, ref WeaponOutItems.Type, (str, mod) => mod.ItemType(str));
+                Initialize(weaponOut, ref WeaponOutProjectiles._Type, ref WeaponOutProjectiles.Type, (str, mod) => mod.ProjectileType(str));
+                Initialize(weaponOut, ref WeaponOutEnemies._Type, ref WeaponOutEnemies.Type, (str, mod) => mod.NPCType(str));
             }
         }
 
-        public override void Unload()
+        private void Initialize<T>(
+            Mod mod,
+            ref Dictionary<string, T> _dict,
+            ref Dictionary<int, T> dict, 
+            Func<string, Mod, int> getKey)
         {
-            /* WeaponOut */ {
-                WeaponOutAmmos.Type.Clear();
-                WeaponOutArmors.Type.Clear();
-                WeaponOutArmors.Helmet.Clear();
-                WeaponOutArmors.Chest.Clear();
-                WeaponOutArmors.Leggings.Clear();
-                WeaponOutEnemies.Type.Clear();
-                WeaponOutItems.Type.Clear();
-                WeaponOutProjectiles.Type.Clear(); 
+            if (mod == null)
+                return;
+
+            foreach (KeyValuePair<string, T> entry in _dict)
+            {
+                int key = getKey(entry.Key, mod);
+
+                #region Error Reporting
+                if (key == 0)
+                {
+                    errors.Add(string.Format("[Mod: {0}] {1} [Internal Index: {2}] may not exist. Consider looking into this. Dict: {3}", mod, entry.Key, key, dict.ToString()));
+                    return;
+                }
+                T value = entry.Value;
+                //if (value. == Element.none)
+                //{
+                //    errors.Add(string.Format("[Mod: {0}] {1} [Internal Index: {2}] doesn't have a type. Why? Dict: {3}", mod, entry.Key, key, dict.ToString()));
+                //    return;
+                //}
+                #endregion
+
+                if (!dict.ContainsKey(key))
+                {
+                    dict.Add(key, value);
+                }
+                else
+                {
+                    errors.Add(string.Format("[Mod: {0}] The key {1} [Internal Index: {2}] has already been added. Likely a spelling error. Dict: {3}", mod, entry.Key, key, dict.ToString()));
+                }
             }
         }
 
-        private void Initialize(Mod mod, ref Dictionary<string, Element> _dict, ref Dictionary<int, Element> dict, bool projectile = false)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Element> _dict, ref Dictionary<int, Element> dict, bool projectile = false)
         {
             if (mod == null)
                 return;
@@ -214,8 +300,7 @@ namespace TerraTyping
                 dict.Add(key, value);
             }
         }
-
-        private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element>> dict, ref Dictionary<int, Tuple<Element, Element>> dict2)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element>> dict, ref Dictionary<int, Tuple<Element, Element>> dict2)
         {
             if (mod == null)
                 return;
@@ -252,8 +337,7 @@ namespace TerraTyping
                 }
             }
         }
-
-        private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element, Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element, Element, Element>> dict)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element, Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element, Element, Element>> dict)
         {
             if (mod == null)
                 return;

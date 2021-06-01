@@ -8,68 +8,86 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Attributes;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping
 {
-    public class Ammos
+    [Load]
+    [Unload]
+    public static class Ammos
     {
-        public static Dictionary<int, Element> Type = new Dictionary<int, Element>
+        public static void Load()
         {
-            // ammo
-            {ItemID.WoodenArrow, Element.normal },
-            {ItemID.FlamingArrow, Element.fire },
-            {ItemID.UnholyArrow, Element.dark },
-            {ItemID.JestersArrow, Element.flying },
-            {ItemID.MusketBall, Element.normal },
-            {ItemID.Star, Element.flying },
-            {ItemID.MeteorShot, Element.rock },
-            {ItemID.HellfireArrow, Element.fire },
-            {ItemID.SandBlock, Element.ground },
-            {ItemID.Seed, Element.grass },
-            {ItemID.EbonsandBlock, Element.ground },
-            {ItemID.PearlsandBlock, Element.ground },
-            {ItemID.CrystalBullet, Element.fairy },
-            {ItemID.HolyArrow, Element.fairy },
-            {ItemID.CursedArrow, Element.ghost },
-            {ItemID.CursedBullet, Element.ghost },
-            {ItemID.Snowball, Element.ice },
-            {ItemID.BoneArrow, Element.bone },
-            {ItemID.FrostburnArrow, Element.ice },
-            {ItemID.RocketI, Element.normal },
-            {ItemID.RocketII, Element.normal },
-            {ItemID.RocketIII, Element.normal },
-            {ItemID.RocketIV, Element.normal },
-            {ItemID.Flare, Element.fire },
-            {ItemID.BlueFlare, Element.fire },
-            {ItemID.CopperCoin, Element.normal },
-            {ItemID.SilverCoin, Element.normal },
-            {ItemID.GoldCoin, Element.normal },
-            {ItemID.PlatinumCoin, Element.normal },
-            {ItemID.Gel, Element.fire },
-            {ItemID.StyngerBolt, Element.fighting },
-            {ItemID.PoisonDart, Element.poison },
-            {ItemID.IchorArrow, Element.blood },
-            {ItemID.IchorBullet, Element.blood },
-            {ItemID.ExplosiveBunny, Element.normal },
-            {ItemID.VenomArrow, Element.poison },
-            {ItemID.VenomBullet, Element.poison },
-            {ItemID.PartyBullet, Element.fairy },
-            {ItemID.NanoBullet, Element.psychic },
-            {ItemID.ExplodingBullet, Element.normal },
-            {ItemID.GoldenBullet, Element.steel },
-            {ItemID.CandyCorn, Element.normal },
-            {ItemID.Stake, Element.normal },
-            {ItemID.CrystalDart, Element.fairy },
-            {ItemID.CursedDart, Element.ghost },
-            {ItemID.IchorDart, Element.blood },
-            {ItemID.Nail, Element.steel },
-            {ItemID.Ale, Element.fighting },
-            {ItemID.ChlorophyteBullet, Element.grass },
-            {ItemID.ChlorophyteArrow, Element.grass },
-            {ItemID.EndlessMusketPouch, Element.normal },
-            {ItemID.EndlessQuiver, Element.normal },
-            {ItemID.MoonlordBullet, Element.electric },
-            {ItemID.MoonlordArrow, Element.electric }
-        };
+            Type = new Dictionary<int, ItemTypeInfo>
+            {
+                // ammo
+                {ItemID.WoodenArrow, new ItemTypeInfo(Element.normal) },
+                {ItemID.FlamingArrow, new ItemTypeInfo(Element.fire) },
+                {ItemID.UnholyArrow, new ItemTypeInfo(Element.dark) },
+                {ItemID.JestersArrow, new ItemTypeInfo(Element.flying) },
+                {ItemID.MusketBall, new ItemTypeInfo(Element.normal) },
+                {ItemID.SilverBullet, new ItemTypeInfo(Element.normal) },
+                {ItemID.FallenStar, new ItemTypeInfo(Element.flying) },
+                {ItemID.MeteorShot, new ItemTypeInfo(Element.rock) },
+                {ItemID.HellfireArrow, new ItemTypeInfo(Element.fire) },
+                {ItemID.SandBlock, new ItemTypeInfo(Element.ground) },
+                {ItemID.EbonsandBlock, new ItemTypeInfo(Element.dark) },
+                {ItemID.CrimsandBlock, new ItemTypeInfo(Element.blood) },
+                {ItemID.PearlsandBlock, new ItemTypeInfo(Element.fairy) },
+                {ItemID.Seed, new ItemTypeInfo(Element.grass) },
+                {ItemID.CrystalBullet, new ItemTypeInfo(Element.fairy) },
+                {ItemID.HolyArrow, new ItemTypeInfo(Element.fairy) },
+                {ItemID.CursedArrow, new ItemTypeInfo(Element.ghost) },
+                {ItemID.CursedBullet, new ItemTypeInfo(Element.ghost) },
+                {ItemID.Snowball, new ItemTypeInfo(Element.ice) },
+                {ItemID.BoneArrow, new ItemTypeInfo(Element.bone) },
+                {ItemID.FrostburnArrow, new ItemTypeInfo(Element.ice) },
+                {ItemID.RocketI, new ItemTypeInfo(Element.normal) },
+                {ItemID.RocketII, new ItemTypeInfo(Element.normal) },
+                {ItemID.RocketIII, new ItemTypeInfo(Element.normal) },
+                {ItemID.RocketIV, new ItemTypeInfo(Element.normal) },
+                {ItemID.Flare, new ItemTypeInfo(Element.fire) },
+                {ItemID.BlueFlare, new ItemTypeInfo(Element.fire) },
+                {ItemID.CopperCoin, new ItemTypeInfo(Element.normal) },
+                {ItemID.SilverCoin, new ItemTypeInfo(Element.normal) },
+                {ItemID.GoldCoin, new ItemTypeInfo(Element.normal) },
+                {ItemID.PlatinumCoin, new ItemTypeInfo(Element.normal) },
+                {ItemID.Gel, new ItemTypeInfo(Element.fire) },
+                {ItemID.StyngerBolt, new ItemTypeInfo(Element.fighting) },
+                {ItemID.PoisonDart, new ItemTypeInfo(Element.poison) },
+                {ItemID.IchorArrow, new ItemTypeInfo(Element.blood) },
+                {ItemID.IchorBullet, new ItemTypeInfo(Element.blood) },
+                {ItemID.ExplosiveBunny, new ItemTypeInfo(Element.normal) },
+                {ItemID.VenomArrow, new ItemTypeInfo(Element.poison) },
+                {ItemID.VenomBullet, new ItemTypeInfo(Element.poison) },
+                {ItemID.PartyBullet, new ItemTypeInfo(Element.fairy) },
+                {ItemID.NanoBullet, new ItemTypeInfo(Element.psychic) },
+                {ItemID.ExplodingBullet, new ItemTypeInfo(Element.normal) },
+                {ItemID.GoldenBullet, new ItemTypeInfo(Element.steel) },
+                {ItemID.CandyCorn, new ItemTypeInfo(Element.normal) },
+                {ItemID.Stake, new ItemTypeInfo(Element.normal) },
+                {ItemID.ExplosiveJackOLantern, new ItemTypeInfo(Element.normal) },
+                {ItemID.CrystalDart, new ItemTypeInfo(Element.fairy) },
+                {ItemID.CursedDart, new ItemTypeInfo(Element.ghost) },
+                {ItemID.IchorDart, new ItemTypeInfo(Element.blood) },
+                {ItemID.Nail, new ItemTypeInfo(Element.steel) },
+                {ItemID.Ale, new ItemTypeInfo(Element.fighting) },
+                {ItemID.ChlorophyteBullet, new ItemTypeInfo(Element.grass) },
+                {ItemID.ChlorophyteArrow, new ItemTypeInfo(Element.grass) },
+                {ItemID.EndlessMusketPouch, new ItemTypeInfo(Element.normal) },
+                {ItemID.EndlessQuiver, new ItemTypeInfo(Element.normal) },
+                {ItemID.MoonlordBullet, new ItemTypeInfo(Element.electric) },
+                {ItemID.MoonlordArrow, new ItemTypeInfo(Element.electric) },
+                {ItemID.HighVelocityBullet, new ItemTypeInfo(Element.fighting) }
+            };
+        }
+
+        public static void Unload()
+        {
+            Type = null;
+        }
+
+        public static Dictionary<int, ItemTypeInfo> Type;
     }
 }

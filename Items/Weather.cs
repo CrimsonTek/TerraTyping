@@ -7,26 +7,55 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Abilities;
+using TerraTyping.Abilities.Buffs;
+using TerraTyping.Accessories.HeldItems;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping
 {
-    class Weather : GlobalItem
+    public class Weather : GlobalItem
     {
         public override bool InstancePerEntity => true;
 
-        static float boostMult = 1;
-        static float weatherMult = 1;
-        static float RainMultiplier => ModContent.GetInstance<Config>().RainMultiplier;
-        static string weatherReason = string.Empty;
+        Boost heldItem = default;
+        Boost weather = default;
+        Boost abilityBoost = default;
+        Boost buffBoost = default;
+        float RainMultiplier => ModContent.GetInstance<Config>().RainMultiplier;
+
+        public override GlobalItem NewInstance(Item item)
+        {
+            return base.NewInstance(item);
+        }
 
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
-            Element element = ElementHelper.Quatrinary(item);
-            float[] boosts = player.GetModPlayer<HeldItems.HeldItemsPlayer>().boosts;
-            boostMult = boosts[(int)ElementHelper.Quatrinary(item)];
+            Element element = new ItemWrapper(item, player).Offensive;
+            GetHeldItemBoost(player, element);
+            GetWeatherBoost(player, element);
+            GetAbilityBoost(player, element);
+            GetBuffBoost(player, element);
 
-            weatherMult = 1;
-            weatherReason = string.Empty;
+            Boost[] boosts = new Boost[]
+            {
+                weather, heldItem, abilityBoost, buffBoost
+            };
+            float myMult = boosts.Sum((boost) => { return boost.Multiplier - 1; }) + 1;
+            if (myMult != 1)
+            {
+                mult *= myMult;
+            }
+        }
+
+        private void GetHeldItemBoost(Player player, Element element)
+        {
+            Boost[] boosts = player.GetModPlayer<HeldItemsPlayer>().heldItemBoosts;
+            heldItem = boosts[(int)element];
+        }
+        private void GetWeatherBoost(Player player, Element element)
+        {
+            weather = new Boost(1, string.Empty);
             if (Main.expertMode || !ModContent.GetInstance<Config>().RainMultOnlyExpert)
             {
                 if (player.ZoneOverworldHeight || player.ZoneSkyHeight || player.ZoneDirtLayerHeight)
@@ -35,37 +64,37 @@ namespace TerraTyping
                     {
                         if (element == Element.blood)
                         {
-                            weatherReason = "Blood moon";
-                            weatherMult = RainMultiplier;
+                            weather.reason = "Blood moon";
+                            weather.Multiplier = RainMultiplier;
                         }
                     }
                     if (Main.eclipse)
                     {
                         if (element == Element.dark)
                         {
-                            weatherReason = "Eclipse";
-                            weatherMult = RainMultiplier;
+                            weather.reason = "Eclipse";
+                            weather.Multiplier = RainMultiplier;
                         }
                     }
                     if (player.ZoneRain && !player.ZoneDesert && !player.ZoneSnow)
                     {
                         if (element == Element.water)
                         {
-                            weatherReason = "Rain";
-                            weatherMult = RainMultiplier;
+                            weather.reason = "Rain";
+                            weather.Multiplier = RainMultiplier;
                         }
                         if (element == Element.fire)
                         {
-                            weatherReason = "Rain";
-                            weatherMult = 1 / RainMultiplier;
+                            weather.reason = "Rain";
+                            weather.Multiplier = 1 / RainMultiplier;
                         }
                     }
                     if (player.ZoneSnow && player.ZoneSnow)
                     {
                         if (element == Element.ice)
                         {
-                            weatherReason = "Snow";
-                            weatherMult = RainMultiplier;
+                            weather.reason = "Snow";
+                            weather.Multiplier = RainMultiplier;
                         }
                     }
                     if (player.ZoneSandstorm)
@@ -75,19 +104,30 @@ namespace TerraTyping
                             case Element.ground:
                             case Element.rock:
                             case Element.steel:
-                                weatherReason = "Sandstorm";
-                                weatherMult = RainMultiplier;
+                                weather.reason = "Sandstorm";
+                                weather.Multiplier = RainMultiplier;
                                 break;
                         }
                     }
                 }
             }
-
-            // '- 1' because weatherMult and boostMult are both '1' by default. Adding them defaults 'mult' to '2'.
-            float myMult = weatherMult + boostMult - 1;
-            if (myMult != 1)
+        }
+        private void GetAbilityBoost(Player player, Element element)
+        {
+            Ability ability = player.GetModPlayer<PlayerTyping>().GetAbility();
+            AbilityLookup.PowerupTypeReturn powerupTypeReturn = ability.PowerupType(new AbilityLookup.PowerupTypeParameters(element, new PlayerWrapper(player), null));
+            abilityBoost = new Boost(powerupTypeReturn.powerupMultiplier, ability.ToString());
+        }
+        private void GetBuffBoost(Player player, Element element)
+        {
+            buffBoost = new Boost(1, string.Empty);
+            for (int i = 0; i < player.buffType.Length; i++)
             {
-                mult = myMult;
+                ModBuff modBuff = ModContent.GetModBuff(player.buffType[i]);
+                if (modBuff != null && modBuff is IPowerupType powerupType)
+                {
+                    buffBoost = powerupType.PowerupType(new PowerupTypeParameters(element, new PlayerWrapper(player))).boost;
+                }
             }
         }
 
@@ -95,31 +135,34 @@ namespace TerraTyping
         {
             if (item.damage > 0)
             {
+                ModifyTooltip(weather, "weatherMult");
+                ModifyTooltip(heldItem, "heldItemMult");
+                ModifyTooltip(abilityBoost, "abilityBoostMult");
+                ModifyTooltip(buffBoost, "buffBoostMult");
+            }
+
+            void ModifyTooltip(Boost boost, string name)
+            {
                 string bonusOrPenalty = string.Empty;
-                if (weatherMult > 1)
+                if (boost.Multiplier > 1)
                     bonusOrPenalty = "bonus";
-                else if (weatherMult < 1)
+                else if (boost.Multiplier < 1)
                     bonusOrPenalty = "penalty";
-                if (weatherMult != 1)
+                if (boost.Multiplier != 1)
                 {
-                    var line = new TooltipLine(mod, "weatherMult", $"{weatherReason} {bonusOrPenalty}: {Math.Round((weatherMult - 1) * 100)}%");
-                    tooltips.Add(line);
-                }
-                if (boostMult != 1)
-                {
-                    var line = new TooltipLine(mod, "weatherMult", $"Held Item bonus: {Math.Round((boostMult - 1) * 100)}%");
+                    var line = new TooltipLine(mod, name, $"{boost.reason} {bonusOrPenalty}: {Math.Round((boost.Multiplier - 1) * 100)}%");
                     tooltips.Add(line);
                 }
             }
         }
     }
-    class WeatherEnemies : GlobalNPC
+    public class WeatherEnemies : GlobalNPC
     {
         float RainMultiplier => ModContent.GetInstance<Config>().RainMultiplier;
 
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
-            Element element = ElementHelper.Quatrinary(npc);
+            Element element = new NPCWrapper(npc).Offensive;
 
             if (Main.expertMode)
             {
