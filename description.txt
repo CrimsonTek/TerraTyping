@@ -24,6 +24,9 @@ Mod Homepage: https://discord.gg/RvPGKwz
 
 Version History:
 
+v0.1.3.1
+ - Fixed the "melee type" response color when using "/type npc [npc name]".
+
 v0.1.3.0
  - Added a new command: "/type"
    Try "/type [type]" to see the strengths and weaknesses of a given type.

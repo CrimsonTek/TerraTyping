@@ -204,7 +204,7 @@ namespace TerraTyping.Commands
 
                 caller.Reply($"{npc.TypeName} melee attack:");
                 if (true)
-                    caller.Reply($" > {LangHelper.ElementName(offensive)}", Colors.type[secondary]);
+                    caller.Reply($" > {LangHelper.ElementName(offensive)}", Colors.type[offensive]);
 
                 if (primaryAbility != AbilityID.None) caller.Reply($"  Primary Ability: {LangHelper.AbilityName(primaryAbility)}");
                 if (secondaryAbility != AbilityID.None) caller.Reply($"  Secondary Ability: {LangHelper.AbilityName(secondaryAbility)}");
