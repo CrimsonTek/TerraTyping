@@ -14,7 +14,7 @@ namespace TerraTyping
 {
     [Load]
     [Unload]
-    public static class OtherDict
+    public static class OtherDictOld
     {
         public static void Load()
         {

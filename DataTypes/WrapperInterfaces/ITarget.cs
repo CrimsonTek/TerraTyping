@@ -9,7 +9,6 @@ namespace TerraTyping.DataTypes
 {
     /// <summary>
     /// Used for wrapping damage targets for the sake of passing as generic variables.
-    /// This should only be used for existing objects, not structs.
     /// </summary>
     public interface ITarget
     {
@@ -32,7 +31,16 @@ namespace TerraTyping.DataTypes
         int LifeMax { get; }
         int LifeRegen { get; set; }
         int LifeRegenTime { get; set; }
-        Element ModifyType { get; set; }
+        /// <summary>
+        /// Currently used for the ability Mummy
+        /// </summary>
+        AbilityID ModifiedAbility { get; set; }
+        /// <summary>
+        /// Currently used for the ability Color Change
+        /// </summary>
+        ElementArray ModifiedElements { get; set; }
+        bool UseModifiedAbility { get; set; }
+        bool UseModifiedElements { get; set; }
 
         #region Biomes
         bool ZoneBeach { get; }
@@ -66,7 +74,6 @@ namespace TerraTyping.DataTypes
     public enum EntityType
     {
         Player,
-        Projectile,
         NPC
     }
 }

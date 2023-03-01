@@ -12,6 +12,11 @@ using TerraTyping.Abilities.Buffs.TypeAdd;
 using TerraTyping.Abilities.Buffs.TypeReplace;
 using System.Reflection;
 using TerraTyping.Attributes;
+using TerraTyping.Abilities.Buffs;
+using TerraTyping.Helpers;
+using TerraTyping.Dictionaries;
+using TerraTyping.TypeLoaders;
+using log4net;
 
 namespace TerraTyping
 {
@@ -19,89 +24,90 @@ namespace TerraTyping
     {
         static readonly List<string> errors = new List<string>();
 
-        public TerraTyping()
-        {
+        public static TerraTyping Instance { get; private set; }
 
-        }
+        //public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)/* tModPorter Note: Removed. Use ModSystem.ModifyInterfaceLayers */
+        //{
+            //    PlayerInput.SetZoom_Unscaled();
+            //    PlayerInput.SetZoom_MouseInWorld();
+            //    Rectangle rectangle1 = new Rectangle((int)((double)Main.mouseX + (double)Main.screenPosition.X), (int)((double)Main.mouseY + (double)Main.screenPosition.Y), 1, 1);
+            //    if ((double)Main.player[Main.myPlayer].gravDir == -1.0)
+            //        rectangle1.Y = (int)Main.screenPosition.Y + Main.screenHeight - Main.mouseY;
+            //    PlayerInput.SetZoom_UI();
+            //    IngameOptions.MouseOver();
+            //    IngameFancyUI.MouseOver();
 
-        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {
-            PlayerInput.SetZoom_Unscaled();
-            PlayerInput.SetZoom_MouseInWorld();
-            Rectangle rectangle1 = new Rectangle((int)((double)Main.mouseX + (double)Main.screenPosition.X), (int)((double)Main.mouseY + (double)Main.screenPosition.Y), 1, 1);
-            if ((double)Main.player[Main.myPlayer].gravDir == -1.0)
-                rectangle1.Y = (int)Main.screenPosition.Y + Main.screenHeight - Main.mouseY;
-            PlayerInput.SetZoom_UI();
-            IngameOptions.MouseOver();
-            IngameFancyUI.MouseOver();
+            //    for (int index1 = 0; index1 < 200; ++index1)
+            //    {
+            //        if (Main.npc[index1].active)
+            //        {
+            //            Rectangle rectangle2 = new Rectangle((int)Main.npc[index1].Bottom.X - Main.npc[index1].frame.Width / 2,
+            //                                                    (int)Main.npc[index1].Bottom.Y - Main.npc[index1].frame.Height,
+            //                                                    Main.npc[index1].frame.Width,
+            //                                                    Main.npc[index1].frame.Height);
+            //            if (Main.npc[index1].type >= 87 && Main.npc[index1].type <= 92)
+            //                rectangle2 = new Rectangle((int)((double)Main.npc[index1].position.X + (double)Main.npc[index1].width * 0.5 - 32.0),
+            //                                            (int)((double)Main.npc[index1].position.Y + (double)Main.npc[index1].height * 0.5 - 32.0),
+            //                                            64,
+            //                                            64);
+            //            bool flag1 = rectangle1.Intersects(rectangle2);
+            //            bool flag2 = flag1 || Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == index1;
+            //            if (flag2 && (
+            //                Main.npc[index1].type != 85 && 
+            //                Main.npc[index1].type != 341 && 
+            //                Main.npc[index1].aiStyle != 87 || 
+            //                Main.npc[index1].ai[0] != 0.0) && 
+            //                Main.npc[index1].type != 488)
+            //            {
+            //                if (flag1)
+            //                {
+            //                    float buffer = 4 * Main.UIScale;
+            //                    float prev = 0;
 
-            for (int index1 = 0; index1 < 200; ++index1)
-            {
-                if (Main.npc[index1].active)
-                {
-                    Rectangle rectangle2 = new Rectangle((int)Main.npc[index1].Bottom.X - Main.npc[index1].frame.Width / 2,
-                                                            (int)Main.npc[index1].Bottom.Y - Main.npc[index1].frame.Height,
-                                                            Main.npc[index1].frame.Width,
-                                                            Main.npc[index1].frame.Height);
-                    if (Main.npc[index1].type >= 87 && Main.npc[index1].type <= 92)
-                        rectangle2 = new Rectangle((int)((double)Main.npc[index1].position.X + (double)Main.npc[index1].width * 0.5 - 32.0),
-                                                    (int)((double)Main.npc[index1].position.Y + (double)Main.npc[index1].height * 0.5 - 32.0),
-                                                    64,
-                                                    64);
-                    bool flag1 = rectangle1.Intersects(rectangle2);
-                    bool flag2 = flag1 || Main.SmartInteractShowingGenuine && Main.SmartInteractNPC == index1;
-                    if (flag2 && (
-                        Main.npc[index1].type != 85 && 
-                        Main.npc[index1].type != 341 && 
-                        Main.npc[index1].aiStyle != 87 || 
-                        Main.npc[index1].ai[0] != 0.0) && 
-                        Main.npc[index1].type != 488)
-                    {
-                        if (flag1)
-                        {
-                            float buffer = 4 * Main.UIScale;
-                            float prev = 0;
+            //                    Element Primary = new NPCWrapper(Main.npc[index1]).Primary;
+            //                    Element Secondary = new NPCWrapper(Main.npc[index1]).Secondary;
+            //                    Element Quatrinary = new NPCWrapper(Main.npc[index1]).Offensive;
 
-                            Element Primary = new NPCWrapper(Main.npc[index1]).Primary;
-                            Element Secondary = new NPCWrapper(Main.npc[index1]).Secondary;
-                            Element Quatrinary = new NPCWrapper(Main.npc[index1]).Offensive;
+            //                    var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
+            //                    var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
+            //                    var icon4 = GetTexture("Types/" + Formal.Name[Quatrinary]);
 
-                            var icon1 = GetTexture("Types/" + Formal.Name[Primary]);
-                            var icon2 = GetTexture("Types/" + Formal.Name[Secondary]);
-                            var icon4 = GetTexture("Types/" + Formal.Name[Quatrinary]);
+            //                    int yOffset = 38;
+            //                    int xOffset = 12;
+            //                    Main.spriteBatch.Begin();
+            //                    int x = (int)((Main.mouseX + xOffset) * Main.UIScale);
+            //                    int y = (int)((Main.mouseY + yOffset) * Main.UIScale);
+            //                    if (Primary != Element.none && Primary != Element.levitate)
+            //                    {
+            //                        Main.spriteBatch.Draw(icon1, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+            //                        prev += icon1.Width * Main.UIScale + buffer;
+            //                    }
+            //                    if (Secondary != Element.none && Secondary != Element.levitate)
+            //                    {
+            //                        Main.spriteBatch.Draw(icon2, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+            //                    }
+            //                    if (Quatrinary != Element.none && Quatrinary != Element.levitate)
+            //                    {
+            //                        Main.spriteBatch.Draw(icon4, new Vector2(x, y + icon1.Width * Main.UIScale + buffer), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+            //                    }
+            //                    Main.spriteBatch.End();
+            //                    break;
+            //                }
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                            int yOffset = 38;
-                            int xOffset = 12;
-                            Main.spriteBatch.Begin();
-                            int x = (int)((Main.mouseX + xOffset) * Main.UIScale);
-                            int y = (int)((Main.mouseY + yOffset) * Main.UIScale);
-                            if (Primary != Element.none && Primary != Element.levitate)
-                            {
-                                Main.spriteBatch.Draw(icon1, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
-                                prev += icon1.Width * Main.UIScale + buffer;
-                            }
-                            if (Secondary != Element.none && Secondary != Element.levitate)
-                            {
-                                Main.spriteBatch.Draw(icon2, new Vector2(x + prev, y), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
-                            }
-                            if (Quatrinary != Element.none && Quatrinary != Element.levitate)
-                            {
-                                Main.spriteBatch.Draw(icon4, new Vector2(x, y + icon1.Width * Main.UIScale + buffer), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
-                            }
-                            Main.spriteBatch.End();
-                            break;
-                        }
-                        break;
-                    }
-                }
-            }
-
-            //PlayerInput.SetZoom_UI();
-            base.ModifyInterfaceLayers(layers);
-        }
+            //    //PlayerInput.SetZoom_UI();
+            //    base.ModifyInterfaceLayers(layers);
+        //}
 
         public override void Load()
         {
+            Instance = this;
+
+            Static.Load();
+
             Type[] arrType = Code.GetTypes();
             foreach (Type type in arrType)
             {
@@ -113,121 +119,64 @@ namespace TerraTyping
                 }
             }
 
-            LoadArmors();
-            LoadBuffs();
             errors.Clear();
         }
 
         public override void Unload()
         {
-            #region WeaponOut
-            WeaponOutAmmos.Type.Clear();
-            WeaponOutArmors.Type.Clear();
-            WeaponOutArmors.Helmet.Clear();
-            WeaponOutArmors.Chest.Clear();
-            WeaponOutArmors.Leggings.Clear();
-            WeaponOutEnemies.Type.Clear();
-            WeaponOutItems.Type.Clear();
-            WeaponOutProjectiles.Type.Clear();
-            #endregion
-
-            Type[] arrType = Code.GetTypes();
-            foreach (Type type in arrType)
+            try
             {
-                UnloadAttribute unloadAttribute = type.GetCustomAttribute<UnloadAttribute>();
-                if (unloadAttribute != null)
+                Type[] arrType = Code.GetTypes();
+                foreach (Type type in arrType)
                 {
-                    MethodInfo methodInfo = type.GetMethod("Unload", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    methodInfo.Invoke(null, null);
-                }
-            }
-        }
-
-        void LoadArmors()
-        {
-            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Helmet)
-            {
-                int key = entry.Key;
-                ArmorTypeInfo value = entry.Value;
-                if (Armors.Type.ContainsKey(key))
-                {
-                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                    return;
-                }
-                Armors.Type.Add(key, value);
-            }
-            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Chest)
-            {
-                int key = entry.Key;
-                ArmorTypeInfo value = entry.Value;
-                if (Armors.Type.ContainsKey(key))
-                {
-                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                    return;
-                }
-                Armors.Type.Add(key, value);
-            }
-            foreach (KeyValuePair<int, ArmorTypeInfo> entry in Armors.Leggings)
-            {
-                int key = entry.Key;
-                ArmorTypeInfo value = entry.Value;
-                if (Armors.Type.ContainsKey(key))
-                {
-                    //errors.Add(string.Format("The key {0} [Internal Index: {1}] has already been added. Likely a spelling error.", entry.Key, key));
-                    return;
-                }
-                Armors.Type.Add(key, value);
-            }
-        }
-        void LoadBuffs()
-        {
-            Element[] elements = (Element[])Enum.GetValues(typeof(Element));
-            for (int i = 0; i < elements.Length; i++)
-            {
-                Element element = elements[i];
-                if (element != Element.none && element != Element.levitate)
-                {
-                    string nameAdd = element.ToString().First().ToString().ToUpper() + string.Join("", element.ToString().Skip(1)) + "Add";
-
-                    ModBuff buffAdd = new BuffAddType()
+                    UnloadAttribute unloadAttribute = type.GetCustomAttribute<UnloadAttribute>();
+                    if (unloadAttribute != null)
                     {
-                        MyElement = element
-                    };
-
-                    string textureAdd = $"TerraTyping/Abilities/Buffs/TypeAdd/{nameAdd}";
-                    AddBuff(nameAdd, buffAdd, textureAdd);
-
-
-                    string nameReplace = element.ToString().First().ToString().ToUpper() + string.Join("", element.ToString().Skip(1)) + "Replace";
-
-                    ModBuff buffReplace = new BuffReplaceType()
-                    {
-                        MyElement = element
-                    };
-
-                    string textureReplace = $"TerraTyping/Abilities/Buffs/TypeReplace/{nameReplace}";
-                    AddBuff(nameReplace, buffReplace, textureReplace);
+                        MethodInfo methodInfo = type.GetMethod("Unload", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                        methodInfo.Invoke(null, null);
+                    }
                 }
+
+                BuffUtils.addTypeBuffs = null;
+                BuffUtils.replaceTypeBuffs = null;
+
+                Static.Unload();
             }
+            catch (Exception exception)
+            {
+                Logger.Error("An error occured during the unloading process.", exception);
+            }
+
+            Instance = null;
         }
 
-        public override void AddRecipes()
+        public override void PostSetupContent()
         {
-            Mod weaponOut = ModLoader.GetMod("WeaponOut");
-            if (weaponOut != null)
-            {
-                Initialize(weaponOut, ref WeaponOutArmors._Helmet, ref WeaponOutArmors.Helmet, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutArmors._Chest, ref WeaponOutArmors.Chest, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutArmors._Leggings, ref WeaponOutArmors.Leggings, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutArmors._Helmet, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutArmors._Chest, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutArmors._Leggings, ref WeaponOutArmors.Type, (str, mod) => mod.ItemType(str));
+            TypeLoader.Logger = Logger;
+            TypeLoader.IsLoadingTypes = true;
 
-                Initialize(weaponOut, ref WeaponOutAmmos._Type, ref WeaponOutAmmos.Type, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutItems._Type, ref WeaponOutItems.Type, (str, mod) => mod.ItemType(str));
-                Initialize(weaponOut, ref WeaponOutProjectiles._Type, ref WeaponOutProjectiles.Type, (str, mod) => mod.ProjectileType(str));
-                Initialize(weaponOut, ref WeaponOutEnemies._Type, ref WeaponOutEnemies.Type, (str, mod) => mod.NPCType(str));
-            }
+            SpecialTooltip.StaticLoad();
+
+            //Enemies.SetupTypes();
+            NPCTypeLoader.Instance.SetupTypes();
+            //Items.SetupTypes();
+            WeaponTypeLoader.Instance.SetupTypes();
+            AmmoTypeLoader.Instance.SetupTypes();
+            
+            //Armors.SetupTypes();
+            ArmorTypeLoader.Instance.SetupTypes();
+            //Projectiles.SetupTypes();
+            ProjectileTypeLoader.Instance.SetupTypes();
+
+            //Items.LoadSpecialTooltips();
+
+            Static.PostSetupContent();
+
+            SpecialTooltip.Finish();
+
+            ElementArray.Clean();
+
+            TypeLoader.IsLoadingTypes = false;
         }
 
         private void Initialize<T>(
@@ -277,9 +226,9 @@ namespace TerraTyping
             {
                 int key = 0;
                 if (projectile)
-                    key = mod.ProjectileType(entry.Key);
+                    key = mod.Find<ModProjectile>(entry.Key).Type;
                 else
-                    key = mod.ItemType(entry.Key);
+                    key = mod.Find<ModItem>(entry.Key).Type;
 
                 if (key == 0)
                 {
@@ -307,7 +256,7 @@ namespace TerraTyping
 
             foreach (KeyValuePair<string, Tuple<Element, Element>> entry in _dict)
             {
-                int key = mod.ItemType(entry.Key);
+                int key = mod.Find<ModItem>(entry.Key).Type;
                 if (key == 0)
                 {
                     errors.Add(string.Format("[Mod: {0}] {1} [Internal Index: {2}] may not exist. Consider looking into this. Dict: {3}", mod, entry.Key, key, dict.ToString()));
@@ -344,7 +293,7 @@ namespace TerraTyping
 
             foreach (KeyValuePair<string, Tuple<Element, Element, Element, Element>> entry in _dict)
             {
-                int key = mod.NPCType(entry.Key);
+                int key = mod.Find<ModNPC>(entry.Key).Type;
                 if (key == 0)
                 {
                     errors.Add(string.Format("[Mod: {0}] {1} [Internal Index: {2}] may not exist. Consider looking into this. Dict: {3}", mod, entry.Key, key, dict.ToString()));
@@ -362,21 +311,6 @@ namespace TerraTyping
                     return;
                 }
                 dict.Add(key, value);
-            }
-        }
-
-        public override void PostUpdateEverything()
-        {
-            if (Main.ActivePlayersCount > 0 && errors.Count > 0)
-            {
-                for (int index = 0; index < errors.Count; index++)
-                {
-                    //if (OldConfig.DevMode)
-                    //{
-                    //    Main.NewText("[TerraTyping] " + errors[index], 255, 0, 0, true);
-                    //}
-                    errors.RemoveAt(index);
-                }
             }
         }
     }

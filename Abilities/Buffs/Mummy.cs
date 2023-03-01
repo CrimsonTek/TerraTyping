@@ -9,17 +9,31 @@ using TerraTyping.DataTypes;
 
 namespace TerraTyping.Abilities.Buffs
 {
-    public class Mummy : ModBuff, IBuffModifyType
+    public class Mummy : ModBuff
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;
+            DisplayName.SetDefault("Mummy");
+            Description.SetDefault("Your ability is now mummy");
         }
 
-        public ModifyType ModifyType => (parameters) =>
+        public override void Update(NPC npc, ref int buffIndex)
         {
-            parameters.typeSet.GetAbility = AbilityID.Mummy;
-            return parameters.typeSet;
-        };
+            if (npc.TryGetGlobalNPC(out NPCTyping npcTyping))
+            {
+                npcTyping.ModifiedAbility = AbilityID.Mummy;
+                npcTyping.UseModifiedAbility = true;
+            }
+        }
+
+        public override void Update(Player player, ref int buffIndex)
+        {
+            if (player.TryGetModPlayer(out PlayerTyping playerTyping))
+            {
+                playerTyping.ModifiedAbility = AbilityID.Mummy;
+                playerTyping.UseModifiedAbility = true;
+            }
+        }
     }
 }

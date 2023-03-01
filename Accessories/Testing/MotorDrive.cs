@@ -16,7 +16,7 @@ namespace TerraTyping.Accessories.Testing
 
         public override void SetDefaults()
         {
-            item.accessory = true;
+            Item.accessory = true;
         }
 
         public override void UpdateEquip(Player player)
@@ -24,7 +24,7 @@ namespace TerraTyping.Accessories.Testing
             AccessoriesUtil.UpdateEquipsUtil(this, player);
         }
 
-        public override bool CanEquipAccessory(Player player, int slot)
+        public override bool CanEquipAccessory(Player player, int slot, bool modded)/* tModPorter Suggestion: Consider using new hook CanAccessoryBeEquippedWith */
         {
             return AccessoriesUtil.CanEquip(player, slot);
         }

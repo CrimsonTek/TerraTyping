@@ -6,23 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping.Abilities.Buffs.TypeReplace
 {
     public class BuffReplaceType : ModBuff, IUseModifiedType
     {
         public Element MyElement { get; set; }
+        public ElementArray Elements { get; set; }
 
-        public override bool Autoload(ref string name, ref string texture)
+        public override void SetStaticDefaults()
         {
-            return false;
+            DisplayName.SetDefault($"{LangHelper.MultipleElements(Elements)} Type");
+            Description.SetDefault($"You are now {LangHelper.MultipleElements(Elements)}, replacing what your typing would have been.");
+            Main.debuff[Type] = true;
         }
 
-        public override void SetDefaults()
+        public override bool IsLoadingEnabled(Mod mod)
         {
-            DisplayName.SetDefault($"{LangHelper.ElementName(MyElement)} Type");
-            Description.SetDefault($"You are now {LangHelper.ElementName(MyElement)}, replacing what your typing would have been.");
-            Main.debuff[Type] = true;
+            return false;
         }
     }
 }

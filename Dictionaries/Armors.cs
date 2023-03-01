@@ -1,526 +1,310 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using TerraTyping.Attributes;
-using TerraTyping.DataTypes;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using Terraria.ID;
+//using Terraria.ModLoader;
+//using TerraTyping.DataTypes;
 
-namespace TerraTyping
-{
-    [Load]
-    [Unload]
-    public static class Armors
-    {
-        public static void Load()
-        {
-            Helmet = new Dictionary<int, ArmorTypeInfo>
-            {
-                {ItemID.MiningHelmet, new ArmorTypeInfo(Element.ground, Element.normal) },
-                {ItemID.WoodHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.RichMahoganyHelmet, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.BorealWoodHelmet, new ArmorTypeInfo(Element.ice, Element.normal) },
-                {ItemID.PalmWoodHelmet, new ArmorTypeInfo(Element.water, Element.normal) },
-                {ItemID.EbonwoodHelmet, new ArmorTypeInfo(Element.dark, Element.normal) },
-                {ItemID.ShadewoodHelmet, new ArmorTypeInfo(Element.dark, Element.normal) },
+//namespace TerraTyping.Dictionaries;
 
-                {ItemID.EskimoHood, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PinkEskimoHood, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.AnglerHat, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.CactusHelmet, new ArmorTypeInfo(Element.grass, Element.none) },
+//[Obsolete]
+//public class Armors : ILoadable
+//{
+//    private ArmorTypeInfo[] types;
 
-                {ItemID.CopperHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TinHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PumpkinHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
+//    public static Armors Instance { get; private set; }
 
-                {ItemID.GladiatorHelmet, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                {ItemID.AncientIronHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.IronHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.LeadHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.SilverHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TungstenHelmet, new ArmorTypeInfo(Element.steel, Element.normal) },
-                {ItemID.GoldHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PlatinumHelmet, new ArmorTypeInfo(Element.steel, Element.normal) },
+//    void ILoadable.Load(Mod mod)
+//    {
+//        Instance = this;
+//    }
 
-                {ItemID.NinjaHood, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                {ItemID.FossilHelm, new ArmorTypeInfo(Element.bone, Element.ground) },
-                {ItemID.ObsidianHelm, new ArmorTypeInfo(Element.fire, Element.water) },
-                {ItemID.BeeHeadgear, new ArmorTypeInfo(Element.bug, Element.flying) },
-                {ItemID.JungleHat, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.AncientCobaltHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
+//    void ILoadable.Unload()
+//    {
+//        Instance = null;
+//    }
 
-                {ItemID.MeteorHelmet, new ArmorTypeInfo(Element.fire, Element.rock) },
-                {ItemID.NecroHelmet, new ArmorTypeInfo(Element.bone, Element.none) },
-                {ItemID.ShadowHelmet, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.AncientShadowHelmet, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.CrimsonHelmet, new ArmorTypeInfo(Element.blood, Element.none) },
-                {ItemID.MoltenHelmet, new ArmorTypeInfo(Element.fire, Element.steel) },
+//    public static ArmorTypeInfo GetInfo(int type)
+//    {
+//        if (type >= 0 && type < Instance.types.Length)
+//        {
+//            return Instance.types[type];
+//        }
+//        else
+//        {
+//            return ArmorTypeInfo.ArmorDefault;
+//        }
+//    }
 
-                {ItemID.PearlwoodHelmet, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                {ItemID.SpiderMask, new ArmorTypeInfo(Element.bug, Element.poison) },
+//    public static void SetupTypes()
+//    {
+//        Instance.types = new ArmorTypeInfo[ItemLoader.ItemCount];
+//        Instance.LoadVanillaArmors();
 
-                {ItemID.CobaltHat, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.CobaltHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.CobaltMask, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.PalladiumHeadgear, new ArmorTypeInfo(Element.fighting, Element.none) },
-                {ItemID.PalladiumHelmet, new ArmorTypeInfo(Element.fighting, Element.none) },
-                {ItemID.PalladiumMask, new ArmorTypeInfo(Element.fighting, Element.none) },
-                {ItemID.MythrilHat, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.MythrilHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.MythrilHood, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.OrichalcumHeadgear, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.OrichalcumHelmet, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.OrichalcumMask, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.AdamantiteHeadgear, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.AdamantiteHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.AdamantiteMask, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.TitaniumHeadgear, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.TitaniumHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.TitaniumMask, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.FrostHelmet, new ArmorTypeInfo(Element.ice, Element.none) },
-                {ItemID.AncientBattleArmorHat, new ArmorTypeInfo(Element.rock, Element.none) },
+//        int loaded = 0;
+//        for (int i = 0; i < Instance.types.Length; i++)
+//        {
+//            ArmorTypeInfo typeInfo = Instance.types[i];
+//            if (typeInfo is null)
+//            {
+//                Instance.types[i] = ArmorTypeInfo.ArmorDefault;
+//            }
+//            else
+//            {
+//                loaded++;
+//            }
+//        }
 
-                {ItemID.ApprenticeHat, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.SquireGreatHelm, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.HuntressWig, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.MonkBrows, new ArmorTypeInfo(Element.fighting, Element.none) },
+//        ModContent.GetInstance<TerraTyping>().Logger.Info($"Loaded {Instance.types.Length} armors.");
+//    }
 
-                {ItemID.HallowedHeadgear, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                {ItemID.HallowedHelmet, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                {ItemID.HallowedMask, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                {ItemID.ChlorophyteHeadgear, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.ChlorophyteHelmet, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.ChlorophyteMask, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.TurtleHelmet, new ArmorTypeInfo(Element.grass, Element.rock) },
-                {ItemID.TikiMask, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.SpookyHelmet, new ArmorTypeInfo(Element.dark, Element.grass) },
-                {ItemID.ShroomiteHeadgear, new ArmorTypeInfo(Element.grass, Element.steel) },
-                {ItemID.ShroomiteHelmet, new ArmorTypeInfo(Element.grass, Element.steel) },
-                {ItemID.ShroomiteMask, new ArmorTypeInfo(Element.grass, Element.steel) },
-                {ItemID.SpectreHood, new ArmorTypeInfo(Element.ghost, Element.none) },
-                {ItemID.SpectreMask, new ArmorTypeInfo(Element.ghost, Element.none) },
-                {ItemID.BeetleHelmet, new ArmorTypeInfo(Element.bug, Element.rock) },
-
-                {ItemID.ApprenticeAltHead, new ArmorTypeInfo(Element.psychic, Element.dark) }, // psychic
-                {ItemID.MonkAltHead, new ArmorTypeInfo(Element.steel, Element.dark) }, // steel
-                {ItemID.HuntressAltHead, new ArmorTypeInfo(Element.fairy, Element.dark) }, // fairy
-                {ItemID.SquireAltHead, new ArmorTypeInfo(Element.fighting, Element.dark) }, // fighting
-
-                {ItemID.SolarFlareHelmet, new ArmorTypeInfo(Element.fire, Element.none) },
-                {ItemID.VortexHelmet, new ArmorTypeInfo(Element.electric, Element.none) },
-                {ItemID.NebulaHelmet, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.StardustHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-
-                //{ItemID.None, new ArmorTypeInfo(Element.none, Element.none) },
-            };
-
-            Chest = new Dictionary<int, ArmorTypeInfo>
-            {
-                {ItemID.MiningShirt, new ArmorTypeInfo(Element.ground, Element.normal) },
-                {ItemID.WoodBreastplate, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.RichMahoganyBreastplate, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.BorealWoodBreastplate, new ArmorTypeInfo(Element.ice, Element.normal) },
-                {ItemID.PalmWoodBreastplate, new ArmorTypeInfo(Element.water, Element.normal) },
-                {ItemID.EbonwoodBreastplate, new ArmorTypeInfo(Element.dark, Element.normal) },
-                {ItemID.ShadewoodBreastplate, new ArmorTypeInfo(Element.dark, Element.normal) },
-
-                {ItemID.EskimoCoat, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PinkEskimoCoat, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.AnglerVest, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.CactusBreastplate, new ArmorTypeInfo(Element.grass, Element.none) },
-
-                {ItemID.CopperChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TinChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PumpkinBreastplate, new ArmorTypeInfo(Element.normal, Element.none) },
-
-                {ItemID.GladiatorBreastplate, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                {ItemID.IronChainmail, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.LeadChainmail, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.SilverChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TungstenChainmail, new ArmorTypeInfo(Element.steel, Element.normal) },
-                {ItemID.GoldChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PlatinumChainmail, new ArmorTypeInfo(Element.steel, Element.normal) },
-
-                {ItemID.NinjaShirt, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                {ItemID.FossilShirt, new ArmorTypeInfo(Element.bone, Element.ground) },
-                {ItemID.ObsidianShirt, new ArmorTypeInfo(Element.fire, Element.water) },
-                {ItemID.BeeBreastplate, new ArmorTypeInfo(Element.bug, Element.flying) },
-                {ItemID.JungleShirt, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.AncientCobaltBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-
-                {ItemID.MeteorSuit, new ArmorTypeInfo(Element.fire, Element.rock) },
-                {ItemID.NecroBreastplate, new ArmorTypeInfo(Element.bone, Element.none) },
-                {ItemID.ShadowScalemail, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.AncientShadowScalemail, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.CrimsonScalemail, new ArmorTypeInfo(Element.blood, Element.none) },
-                {ItemID.MoltenBreastplate, new ArmorTypeInfo(Element.fire, Element.steel) },
-
-                {ItemID.PearlwoodBreastplate, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                {ItemID.SpiderBreastplate, new ArmorTypeInfo(Element.bug, Element.poison) },
-
-                {ItemID.CobaltBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.PalladiumBreastplate, new ArmorTypeInfo(Element.fighting, Element.none) },
-                {ItemID.MythrilChainmail, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.OrichalcumBreastplate, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.AdamantiteBreastplate, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.TitaniumBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.FrostBreastplate, new ArmorTypeInfo(Element.ice, Element.none) },
-                {ItemID.AncientBattleArmorShirt, new ArmorTypeInfo(Element.rock, Element.none) },
-
-                {ItemID.ApprenticeRobe, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.SquirePlating, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.HuntressJerkin, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.MonkShirt, new ArmorTypeInfo(Element.fighting, Element.none) },
-
-                {ItemID.HallowedPlateMail, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                {ItemID.ChlorophytePlateMail, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.TurtleScaleMail, new ArmorTypeInfo(Element.grass, Element.rock) },
-                {ItemID.TikiShirt, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.SpookyBreastplate, new ArmorTypeInfo(Element.dark, Element.grass) },
-                {ItemID.ShroomiteBreastplate, new ArmorTypeInfo(Element.grass, Element.steel) },
-                {ItemID.SpectreRobe, new ArmorTypeInfo(Element.ghost, Element.none) },
-                {ItemID.BeetleScaleMail, new ArmorTypeInfo(Element.bug, Element.rock) },
-                {ItemID.BeetleShell, new ArmorTypeInfo(Element.bug, Element.rock) },
-
-                {ItemID.ApprenticeAltShirt, new ArmorTypeInfo(Element.psychic, Element.dark) },
-                {ItemID.MonkAltShirt, new ArmorTypeInfo(Element.steel, Element.dark) },
-                {ItemID.HuntressAltShirt, new ArmorTypeInfo(Element.fairy, Element.dark) },
-                {ItemID.SquireAltShirt, new ArmorTypeInfo(Element.fighting, Element.dark) },
-
-                {ItemID.SolarFlareBreastplate, new ArmorTypeInfo(Element.fire, Element.none) },
-                {ItemID.VortexBreastplate, new ArmorTypeInfo(Element.electric, Element.none) },
-                {ItemID.NebulaBreastplate, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.StardustBreastplate, new ArmorTypeInfo(Element.dragon, Element.none) },
-
-                //{ItemID.None, new ArmorTypeInfo(Element.none, Element.none) },
-            };
-            
-            Leggings = new Dictionary<int, ArmorTypeInfo>
-            {
-                {ItemID.MiningPants, new ArmorTypeInfo(Element.ground, Element.normal) },
-                {ItemID.WoodGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.RichMahoganyGreaves, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.BorealWoodGreaves, new ArmorTypeInfo(Element.ice, Element.normal) },
-                {ItemID.PalmWoodGreaves, new ArmorTypeInfo(Element.water, Element.normal) },
-                {ItemID.EbonwoodGreaves, new ArmorTypeInfo(Element.dark, Element.normal) },
-                {ItemID.ShadewoodGreaves, new ArmorTypeInfo(Element.dark, Element.normal) },
-
-                {ItemID.EskimoPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PinkEskimoPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.AnglerPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.CactusLeggings, new ArmorTypeInfo(Element.grass, Element.none) },
-
-                {ItemID.CopperGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TinGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PumpkinLeggings, new ArmorTypeInfo(Element.normal, Element.none) },
-
-                {ItemID.GladiatorLeggings, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                {ItemID.IronGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.LeadGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.SilverGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.TungstenGreaves, new ArmorTypeInfo(Element.steel, Element.normal) },
-                {ItemID.GoldGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                {ItemID.PlatinumGreaves, new ArmorTypeInfo(Element.steel, Element.normal) },
-
-                {ItemID.NinjaPants, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                {ItemID.FossilPants, new ArmorTypeInfo(Element.bone, Element.ground) },
-                {ItemID.ObsidianPants, new ArmorTypeInfo(Element.fire, Element.water) },
-                {ItemID.BeeGreaves, new ArmorTypeInfo(Element.bug, Element.flying) },
-                {ItemID.JunglePants, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.AncientCobaltLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-
-                {ItemID.MeteorLeggings, new ArmorTypeInfo(Element.fire, Element.rock) },
-                {ItemID.NecroGreaves, new ArmorTypeInfo(Element.bone, Element.none) },
-                {ItemID.ShadowGreaves, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.AncientShadowGreaves, new ArmorTypeInfo(Element.dark, Element.none) },
-                {ItemID.CrimsonGreaves, new ArmorTypeInfo(Element.blood, Element.none) },
-                {ItemID.MoltenGreaves, new ArmorTypeInfo(Element.fire, Element.steel) },
-
-                {ItemID.PearlwoodGreaves, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                {ItemID.SpiderGreaves, new ArmorTypeInfo(Element.bug, Element.poison) },
-
-                {ItemID.CobaltLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.PalladiumLeggings, new ArmorTypeInfo(Element.fighting, Element.none) },
-                {ItemID.MythrilGreaves, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.OrichalcumLeggings, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.AdamantiteLeggings, new ArmorTypeInfo(Element.dragon, Element.none) },
-                {ItemID.TitaniumLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.FrostLeggings, new ArmorTypeInfo(Element.ice, Element.none) },
-                {ItemID.AncientBattleArmorPants, new ArmorTypeInfo(Element.rock, Element.none) },
-
-                {ItemID.ApprenticeTrousers, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.SquireGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                {ItemID.HuntressPants, new ArmorTypeInfo(Element.fairy, Element.none) },
-                {ItemID.MonkPants, new ArmorTypeInfo(Element.fighting, Element.none) },
-
-                {ItemID.HallowedGreaves, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                {ItemID.ChlorophyteGreaves, new ArmorTypeInfo(Element.grass, Element.none) },
-                {ItemID.TurtleLeggings, new ArmorTypeInfo(Element.grass, Element.rock) },
-                {ItemID.TikiPants, new ArmorTypeInfo(Element.grass, Element.normal) },
-                {ItemID.SpookyLeggings, new ArmorTypeInfo(Element.dark, Element.grass) },
-                {ItemID.ShroomiteLeggings, new ArmorTypeInfo(Element.grass, Element.steel) },
-                {ItemID.SpectrePants, new ArmorTypeInfo(Element.ghost, Element.none) },
-                {ItemID.BeetleLeggings, new ArmorTypeInfo(Element.bug, Element.rock) },
-
-                {ItemID.ApprenticeAltPants, new ArmorTypeInfo(Element.psychic, Element.dark) },
-                {ItemID.MonkAltPants, new ArmorTypeInfo(Element.steel, Element.dark) },
-                {ItemID.HuntressAltPants, new ArmorTypeInfo(Element.fairy, Element.dark) },
-                {ItemID.SquireAltPants, new ArmorTypeInfo(Element.fighting, Element.dark) },
-
-                {ItemID.SolarFlareLeggings, new ArmorTypeInfo(Element.fire, Element.none) },
-                {ItemID.VortexLeggings, new ArmorTypeInfo(Element.electric, Element.none) },
-                {ItemID.NebulaLeggings, new ArmorTypeInfo(Element.psychic, Element.none) },
-                {ItemID.StardustLeggings, new ArmorTypeInfo(Element.dragon, Element.none) },
-
-                //{ItemID.None, new ArmorTypeInfo(Element.none, Element.none) },
-            };
-
-            Type = new Dictionary<int, ArmorTypeInfo>
-            {
-                //{ItemID.MiningHelmet, new ArmorTypeInfo(Element.ground, Element.normal) },
-                //{ItemID.MiningShirt, new ArmorTypeInfo(Element.ground, Element.normal) },
-                //{ItemID.MiningPants, new ArmorTypeInfo(Element.ground, Element.normal) },
-                //{ItemID.WoodHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.WoodBreastplate, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.WoodGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.RichMahoganyHelmet, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.RichMahoganyBreastplate, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.RichMahoganyGreaves, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.BorealWoodHelmet, new ArmorTypeInfo(Element.ice, Element.normal) },
-                //{ItemID.BorealWoodBreastplate, new ArmorTypeInfo(Element.ice, Element.normal) },
-                //{ItemID.BorealWoodGreaves, new ArmorTypeInfo(Element.ice, Element.normal) },
-                //{ItemID.PalmWoodHelmet, new ArmorTypeInfo(Element.water, Element.normal) },
-                //{ItemID.PalmWoodBreastplate, new ArmorTypeInfo(Element.water, Element.normal) },
-                //{ItemID.PalmWoodGreaves, new ArmorTypeInfo(Element.water, Element.normal) },
-                //{ItemID.EbonwoodHelmet, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.EbonwoodBreastplate, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.EbonwoodGreaves, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.ShadewoodHelmet, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.ShadewoodBreastplate, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.ShadewoodGreaves, new ArmorTypeInfo(Element.dark, Element.normal) },
-                //{ItemID.RainHat, new ArmorTypeInfo(Element.normal, Element.none) }, // 2
-                //{ItemID.RainCoat, new ArmorTypeInfo(Element.normal, Element.none) }, // 2
-
-                //{ItemID.EskimoHood, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.EskimoCoat, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.EskimoPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PinkEskimoHood, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PinkEskimoCoat, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PinkEskimoPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.AnglerHat, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.AnglerVest, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.AnglerPants, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.CactusHelmet, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.CactusBreastplate, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.CactusLeggings, new ArmorTypeInfo(Element.grass, Element.none) },
-
-                //{ItemID.CopperHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.CopperChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.CopperGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.TinHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.TinChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.TinGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PumpkinHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PumpkinBreastplate, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PumpkinLeggings, new ArmorTypeInfo(Element.normal, Element.none) },
-
-                //{ItemID.GladiatorHelmet, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                //{ItemID.GladiatorBreastplate, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                //{ItemID.GladiatorLeggings, new ArmorTypeInfo(Element.fighting, Element.steel) },
-                //{ItemID.AncientIronHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.IronHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.IronChainmail, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.IronGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.LeadHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.LeadChainmail, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.LeadGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.SilverHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.SilverChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.SilverGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.TungstenHelmet, new ArmorTypeInfo(Element.steel, Element.normal) },
-                //{ItemID.TungstenChainmail, new ArmorTypeInfo(Element.steel, Element.normal) },
-                //{ItemID.TungstenGreaves, new ArmorTypeInfo(Element.steel, Element.normal) },
-                //{ItemID.GoldHelmet, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.GoldChainmail, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.GoldGreaves, new ArmorTypeInfo(Element.normal, Element.none) },
-                //{ItemID.PlatinumHelmet, new ArmorTypeInfo(Element.steel, Element.normal) },
-                //{ItemID.PlatinumChainmail, new ArmorTypeInfo(Element.steel, Element.normal) },
-                //{ItemID.PlatinumGreaves, new ArmorTypeInfo(Element.steel, Element.normal) },
-
-                //{ItemID.NinjaHood, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                //{ItemID.NinjaShirt, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                //{ItemID.NinjaPants, new ArmorTypeInfo(Element.dark, Element.fighting) },
-                //{ItemID.FossilHelm, new ArmorTypeInfo(Element.bone, Element.ground) },
-                //{ItemID.FossilShirt, new ArmorTypeInfo(Element.bone, Element.ground) },
-                //{ItemID.FossilPants, new ArmorTypeInfo(Element.bone, Element.ground) },
-                //{ItemID.ObsidianHelm, new ArmorTypeInfo(Element.fire, Element.water) },
-                //{ItemID.ObsidianChest, new ArmorTypeInfo(Element.fire, Element.water) },
-                //{ItemID.ObsidianPants, new ArmorTypeInfo(Element.fire, Element.water) },
-                //{ItemID.BeeHeadgear, new ArmorTypeInfo(Element.bug, Element.flying) },
-                //{ItemID.BeeBreastplate, new ArmorTypeInfo(Element.bug, Element.flying) },
-                //{ItemID.BeeGreaves, new ArmorTypeInfo(Element.bug, Element.flying) },
-                //{ItemID.JungleHat, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.JungleShirt, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.JunglePants, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.AncientCobaltHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.AncientCobaltBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.AncientCobaltLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-
-                //{ItemID.MeteorHelmet, new ArmorTypeInfo(Element.fire, Element.rock) },
-                //{ItemID.MeteorSuit, new ArmorTypeInfo(Element.fire, Element.rock) },
-                //{ItemID.MeteorLeggings, new ArmorTypeInfo(Element.fire, Element.rock) },
-                //{ItemID.NecroHelmet, new ArmorTypeInfo(Element.bone, Element.none) },
-                //{ItemID.NecroBreastplate, new ArmorTypeInfo(Element.bone, Element.none) },
-                //{ItemID.NecroGreaves, new ArmorTypeInfo(Element.bone, Element.none) },
-                //{ItemID.ShadowHelmet, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.ShadowScalemail, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.ShadowGreaves, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.AncientShadowHelmet, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.AncientShadowScalemail, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.AncientShadowGreaves, new ArmorTypeInfo(Element.dark, Element.none) },
-                //{ItemID.CrimsonHelmet, new ArmorTypeInfo(Element.blood, Element.none) },
-                //{ItemID.CrimsonScalemail, new ArmorTypeInfo(Element.blood, Element.none) },
-                //{ItemID.CrimsonGreaves, new ArmorTypeInfo(Element.blood, Element.none) },
-                //{ItemID.MoltenHelmet, new ArmorTypeInfo(Element.fire, Element.steel) },
-                //{ItemID.MoltenBreastplate, new ArmorTypeInfo(Element.fire, Element.steel) },
-                //{ItemID.MoltenGreaves, new ArmorTypeInfo(Element.fire, Element.steel) },
-
-                //{ItemID.PearlwoodHelmet, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                //{ItemID.PearlwoodBreastplate, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                //{ItemID.PearlwoodGreaves, new ArmorTypeInfo(Element.fairy, Element.normal) },
-                //{ItemID.SpiderMask, new ArmorTypeInfo(Element.bug, Element.poison) },
-                //{ItemID.SpiderBreastplate, new ArmorTypeInfo(Element.bug, Element.poison) },
-                //{ItemID.SpiderGreaves, new ArmorTypeInfo(Element.bug, Element.poison) },
-
-                //{ItemID.CobaltHat, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.CobaltHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.CobaltMask, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.CobaltBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.CobaltLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.PalladiumHeadgear, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.PalladiumHelmet, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.PalladiumMask, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.PalladiumBreastplate, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.PalladiumLeggings, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.MythrilHat, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.MythrilHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.MythrilHood, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.MythrilChainmail, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.MythrilGreaves, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.OrichalcumHeadgear, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.OrichalcumHelmet, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.OrichalcumMask, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.OrichalcumBreastplate, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.OrichalcumLeggings, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.AdamantiteHeadgear, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.AdamantiteHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.AdamantiteMask, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.AdamantiteBreastplate, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.AdamantiteLeggings, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.TitaniumHeadgear, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.TitaniumHelmet, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.TitaniumMask, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.TitaniumBreastplate, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.TitaniumLeggings, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.FrostHelmet, new ArmorTypeInfo(Element.ice, Element.none) },
-                //{ItemID.FrostBreastplate, new ArmorTypeInfo(Element.ice, Element.none) },
-                //{ItemID.FrostLeggings, new ArmorTypeInfo(Element.ice, Element.none) },
-                //{ItemID.AncientBattleArmorHat, new ArmorTypeInfo(Element.rock, Element.none) },
-                //{ItemID.AncientBattleArmorShirt, new ArmorTypeInfo(Element.rock, Element.none) },
-                //{ItemID.AncientBattleArmorPants, new ArmorTypeInfo(Element.rock, Element.none) },
-
-                //{ItemID.ApprenticeHat, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.ApprenticeRobe, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.ApprenticeTrousers, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.SquireGreatHelm, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.SquirePlating, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.SquireGreaves, new ArmorTypeInfo(Element.steel, Element.none) },
-                //{ItemID.HuntressWig, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.HuntressJerkin, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.HuntressPants, new ArmorTypeInfo(Element.fairy, Element.none) },
-                //{ItemID.MonkBrows, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.MonkShirt, new ArmorTypeInfo(Element.fighting, Element.none) },
-                //{ItemID.MonkPants, new ArmorTypeInfo(Element.fighting, Element.none) },
-
-                //{ItemID.HallowedHeadgear, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                //{ItemID.HallowedHelmet, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                //{ItemID.HallowedMask, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                //{ItemID.HallowedPlateMail, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                //{ItemID.HallowedGreaves, new ArmorTypeInfo(Element.fairy, Element.fighting) },
-                //{ItemID.ChlorophyteHeadgear, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.ChlorophyteHelmet, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.ChlorophyteMask, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.ChlorophytePlateMail, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.ChlorophyteGreaves, new ArmorTypeInfo(Element.grass, Element.none) },
-                //{ItemID.TurtleHelmet, new ArmorTypeInfo(Element.grass, Element.rock) },
-                //{ItemID.TurtleScaleMail, new ArmorTypeInfo(Element.grass, Element.rock) },
-                //{ItemID.TurtleLeggings, new ArmorTypeInfo(Element.grass, Element.rock) },
-                //{ItemID.TikiMask, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.TikiShirt, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.TikiPants, new ArmorTypeInfo(Element.grass, Element.normal) },
-                //{ItemID.SpookyHelmet, new ArmorTypeInfo(Element.dark, Element.grass) },
-                //{ItemID.SpookyBreastplate, new ArmorTypeInfo(Element.dark, Element.grass) },
-                //{ItemID.SpookyLeggings, new ArmorTypeInfo(Element.dark, Element.grass) },
-                //{ItemID.ShroomiteHeadgear, new ArmorTypeInfo(Element.grass, Element.steel) },
-                //{ItemID.ShroomiteHelmet, new ArmorTypeInfo(Element.grass, Element.steel) },
-                //{ItemID.ShroomiteMask, new ArmorTypeInfo(Element.grass, Element.steel) },
-                //{ItemID.ShroomiteBreastplate, new ArmorTypeInfo(Element.grass, Element.steel) },
-                //{ItemID.ShroomiteLeggings, new ArmorTypeInfo(Element.grass, Element.steel) },
-                //{ItemID.SpectreHood, new ArmorTypeInfo(Element.ghost, Element.none) },
-                //{ItemID.SpectreMask, new ArmorTypeInfo(Element.ghost, Element.none) },
-                //{ItemID.SpectreRobe, new ArmorTypeInfo(Element.ghost, Element.none) },
-                //{ItemID.SpectrePants, new ArmorTypeInfo(Element.ghost, Element.none) },
-                //{ItemID.BeetleHelmet, new ArmorTypeInfo(Element.bug, Element.rock) },
-                //{ItemID.BeetleScaleMail, new ArmorTypeInfo(Element.bug, Element.rock) },
-                //{ItemID.BeetleShell, new ArmorTypeInfo(Element.bug, Element.rock) },
-                //{ItemID.BeetleLeggings, new ArmorTypeInfo(Element.bug, Element.rock) },
-
-                //{ItemID.ApprenticeAltHead, new ArmorTypeInfo(Element.psychic, Element.dark) }, // psychic
-                //{ItemID.ApprenticeAltShirt, new ArmorTypeInfo(Element.psychic, Element.dark) },
-                //{ItemID.ApprenticeAltPants, new ArmorTypeInfo(Element.psychic, Element.dark) },
-                //{ItemID.MonkAltHead, new ArmorTypeInfo(Element.steel, Element.dark) }, // steel
-                //{ItemID.MonkAltShirt, new ArmorTypeInfo(Element.steel, Element.dark) },
-                //{ItemID.MonkAltPants, new ArmorTypeInfo(Element.steel, Element.dark) },
-                //{ItemID.HuntressAltHead, new ArmorTypeInfo(Element.fairy, Element.dark) }, // fairy
-                //{ItemID.HuntressAltShirt, new ArmorTypeInfo(Element.fairy, Element.dark) },
-                //{ItemID.HuntressAltPants, new ArmorTypeInfo(Element.fairy, Element.dark) },
-                //{ItemID.SquireAltHead, new ArmorTypeInfo(Element.fighting, Element.dark) }, // fighting
-                //{ItemID.SquireAltShirt, new ArmorTypeInfo(Element.fighting, Element.dark) },
-                //{ItemID.SquireAltPants, new ArmorTypeInfo(Element.fighting, Element.dark) },
-
-                //{ItemID.SolarFlareHelmet, new ArmorTypeInfo(Element.fire, Element.none) },
-                //{ItemID.SolarFlareBreastplate, new ArmorTypeInfo(Element.fire, Element.none) },
-                //{ItemID.SolarFlareLeggings, new ArmorTypeInfo(Element.fire, Element.none) },
-                //{ItemID.VortexHelmet, new ArmorTypeInfo(Element.electric, Element.none) },
-                //{ItemID.VortexBreastplate, new ArmorTypeInfo(Element.electric, Element.none) },
-                //{ItemID.VortexLeggings, new ArmorTypeInfo(Element.electric, Element.none) },
-                //{ItemID.NebulaHelmet, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.NebulaBreastplate, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.NebulaLeggings, new ArmorTypeInfo(Element.psychic, Element.none) },
-                //{ItemID.StardustHelmet, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.StardustBreastplate, new ArmorTypeInfo(Element.dragon, Element.none) },
-                //{ItemID.StardustLeggings, new ArmorTypeInfo(Element.dragon, Element.none) },
-
-                //{ItemID.None, new ArmorTypeInfo(Element.none, Element.none) },
-            };
-        }
-
-        public static void Unload()
-        {
-            Type = null;
-            Helmet = null;
-            Chest = null;
-            Leggings = null;
-        }
-
-        public static Dictionary<int, ArmorTypeInfo> Type;
-        public static Dictionary<int, ArmorTypeInfo> Helmet;
-        public static Dictionary<int, ArmorTypeInfo> Chest;
-        public static Dictionary<int, ArmorTypeInfo> Leggings;
-    }
-}
+//    private void LoadVanillaArmors()
+//    {
+//        types[0] = new ArmorTypeInfo(ElementArray.Get(Element.none));
+//        types[ItemID.MiningHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.MiningShirt] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.MiningPants] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.WoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.WoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.WoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.EbonwoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.dark));
+//        types[ItemID.EbonwoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.dark));
+//        types[ItemID.EbonwoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.dark));
+//        types[ItemID.RichMahoganyHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.grass));
+//        types[ItemID.RichMahoganyBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.grass));
+//        types[ItemID.RichMahoganyGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.grass));
+//        types[ItemID.PearlwoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.fairy));
+//        types[ItemID.PearlwoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.fairy));
+//        types[ItemID.PearlwoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.fairy));
+//        types[ItemID.ShadewoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.blood));
+//        types[ItemID.ShadewoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.blood));
+//        types[ItemID.ShadewoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.blood));
+//        types[ItemID.BorealWoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.ice));
+//        types[ItemID.BorealWoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.ice));
+//        types[ItemID.BorealWoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.ice));
+//        types[ItemID.PalmWoodHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.water));
+//        types[ItemID.PalmWoodBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.water));
+//        types[ItemID.PalmWoodGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.normal, Element.water));
+//        types[ItemID.RainHat] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.RainCoat] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.EskimoHood] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.EskimoCoat] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.EskimoPants] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.PinkEskimoHood] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.PinkEskimoCoat] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.PinkEskimoPants] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.AnglerHat] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.AnglerVest] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.AnglerPants] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.CactusHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.CactusBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.CactusLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.PumpkinHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.PumpkinBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.PumpkinLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.NinjaHood] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.NinjaShirt] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.NinjaPants] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.FossilHelm] = new ArmorTypeInfo(ElementArray.Get(Element.bone, Element.ground));
+//        types[ItemID.FossilShirt] = new ArmorTypeInfo(ElementArray.Get(Element.bone, Element.ground));
+//        types[ItemID.FossilPants] = new ArmorTypeInfo(ElementArray.Get(Element.bone, Element.ground));
+//        types[ItemID.BeeHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.BeeBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.BeeGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.ObsidianHelm] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.water, Element.fire));
+//        types[ItemID.ObsidianShirt] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.water, Element.fire));
+//        types[ItemID.ObsidianPants] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.water, Element.fire));
+//        types[ItemID.GladiatorHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.steel));
+//        types[ItemID.GladiatorBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.steel));
+//        types[ItemID.GladiatorLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.steel));
+//        types[ItemID.CopperHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.CopperChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.CopperGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TinHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TinChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TinGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.AncientIronHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.IronHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.IronChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.IronGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.LeadHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.LeadChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.LeadGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.SilverHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.SilverChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.SilverGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TungstenHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TungstenChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TungstenGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.AncientGoldHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.GoldChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.GoldGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.GoldHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.PlatinumHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.PlatinumChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.PlatinumGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.MeteorHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.fire));
+//        types[ItemID.MeteorSuit] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.fire));
+//        types[ItemID.MeteorLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.rock, Element.fire));
+//        types[ItemID.JungleHat] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.JungleShirt] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.JunglePants] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.AncientCobaltHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientCobaltBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientCobaltLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientNecroHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.bone));
+//        types[ItemID.NecroHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.bone));
+//        types[ItemID.NecroBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.bone));
+//        types[ItemID.NecroGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.bone));
+//        types[ItemID.ShadowGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.ShadowScalemail] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.ShadowHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientShadowHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientShadowScalemail] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.AncientShadowGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.CrimsonHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.blood));
+//        types[ItemID.CrimsonScalemail] = new ArmorTypeInfo(ElementArray.Get(Element.blood));
+//        types[ItemID.CrimsonGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.blood));
+//        types[ItemID.MoltenHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.MoltenBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.MoltenGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.WizardHat] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.MagicHat] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.TopazRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.SapphireRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.EmeraldRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.RubyRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.DiamondRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.AmberRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.GypsyRobe] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.SpiderMask] = new ArmorTypeInfo(ElementArray.Get(Element.bug, Element.poison));
+//        types[ItemID.SpiderBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.bug, Element.poison));
+//        types[ItemID.SpiderGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.bug, Element.poison));
+//        types[ItemID.CobaltHat] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.CobaltHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.CobaltMask] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.CobaltBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.CobaltLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.dark));
+//        types[ItemID.PalladiumMask] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.PalladiumHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.PalladiumHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.PalladiumBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.PalladiumLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.MythrilHood] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.MythrilHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.MythrilHat] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.MythrilChainmail] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.MythrilGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.OrichalcumMask] = new ArmorTypeInfo(ElementArray.Get(Element.fairy));
+//        types[ItemID.OrichalcumHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fairy));
+//        types[ItemID.OrichalcumHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.fairy));
+//        types[ItemID.OrichalcumBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.fairy));
+//        types[ItemID.OrichalcumLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.fairy));
+//        types[ItemID.AdamantiteHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.AdamantiteHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.AdamantiteMask] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.AdamantiteBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.AdamantiteLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.TitaniumMask] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TitaniumHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TitaniumHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TitaniumBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.TitaniumLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.CrystalNinjaHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.dark));
+//        types[ItemID.CrystalNinjaChestplate] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.dark));
+//        types[ItemID.CrystalNinjaLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.dark));
+//        types[ItemID.FrostHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.ice));
+//        types[ItemID.FrostBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.ice));
+//        types[ItemID.FrostLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.ice));
+//        types[ItemID.AncientBattleArmorHat] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.AncientBattleArmorShirt] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.AncientBattleArmorPants] = new ArmorTypeInfo(ElementArray.Get(Element.ground));
+//        types[ItemID.HallowedPlateMail] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.HallowedGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.HallowedHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.HallowedHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.HallowedMask] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.HallowedHood] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedMask] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedHood] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedPlateMail] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.AncientHallowedGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.fairy, Element.fighting));
+//        types[ItemID.ChlorophyteMask] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.ChlorophyteHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.ChlorophyteHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.ChlorophytePlateMail] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.ChlorophyteGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.grass));
+//        types[ItemID.TurtleHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.rock));
+//        types[ItemID.TurtleScaleMail] = new ArmorTypeInfo(ElementArray.Get(Element.rock));
+//        types[ItemID.TurtleLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.rock));
+//        types[ItemID.TikiMask] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.poison));
+//        types[ItemID.TikiShirt] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.poison));
+//        types[ItemID.TikiPants] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.poison));
+//        types[ItemID.BeetleHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.BeetleScaleMail] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.BeetleShell] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.BeetleLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.bug));
+//        types[ItemID.ShroomiteHeadgear] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.steel));
+//        types[ItemID.ShroomiteMask] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.steel));
+//        types[ItemID.ShroomiteHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.steel));
+//        types[ItemID.ShroomiteBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.steel));
+//        types[ItemID.ShroomiteLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.steel));
+//        types[ItemID.SpectreMask] = new ArmorTypeInfo(ElementArray.Get(Element.ghost));
+//        types[ItemID.SpectreHood] = new ArmorTypeInfo(ElementArray.Get(Element.ghost));
+//        types[ItemID.SpectreRobe] = new ArmorTypeInfo(ElementArray.Get(Element.ghost));
+//        types[ItemID.SpectrePants] = new ArmorTypeInfo(ElementArray.Get(Element.ghost));
+//        types[ItemID.SpookyHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.ghost));
+//        types[ItemID.SpookyBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.ghost));
+//        types[ItemID.SpookyLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.grass, Element.ghost));
+//        types[ItemID.VortexHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.electric));
+//        types[ItemID.VortexBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.electric));
+//        types[ItemID.VortexLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.electric));
+//        types[ItemID.NebulaHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.NebulaBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.NebulaLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.psychic));
+//        types[ItemID.SolarFlareHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.SolarFlareBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.SolarFlareLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.fire));
+//        types[ItemID.StardustHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.StardustBreastplate] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.StardustLeggings] = new ArmorTypeInfo(ElementArray.Get(Element.dragon));
+//        types[ItemID.ApprenticeHat] = new ArmorTypeInfo(ElementArray.Get(Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.ApprenticeRobe] = new ArmorTypeInfo(ElementArray.Get(Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.ApprenticeTrousers] = new ArmorTypeInfo(ElementArray.Get(Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.ApprenticeAltHead] = new ArmorTypeInfo(ElementArray.Get(Element.dark, Element.fire), AbilityID.DD2Stab);
+//        types[ItemID.ApprenticeAltShirt] = new ArmorTypeInfo(ElementArray.Get(Element.dark, Element.fire), AbilityID.DD2Stab);
+//        types[ItemID.ApprenticeAltPants] = new ArmorTypeInfo(ElementArray.Get(Element.dark, Element.fire), AbilityID.DD2Stab);
+//        types[ItemID.SquireGreatHelm] = new ArmorTypeInfo(ElementArray.Get(Element.steel), AbilityID.DD2Stab);
+//        types[ItemID.SquirePlating] = new ArmorTypeInfo(ElementArray.Get(Element.steel), AbilityID.DD2Stab);
+//        types[ItemID.SquireGreaves] = new ArmorTypeInfo(ElementArray.Get(Element.steel), AbilityID.DD2Stab);
+//        types[ItemID.SquireAltHead] = new ArmorTypeInfo(ElementArray.Get(Element.steel, Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.SquireAltShirt] = new ArmorTypeInfo(ElementArray.Get(Element.steel, Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.SquireAltPants] = new ArmorTypeInfo(ElementArray.Get(Element.steel, Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.MonkBrows] = new ArmorTypeInfo(ElementArray.Get(Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.MonkShirt] = new ArmorTypeInfo(ElementArray.Get(Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.MonkPants] = new ArmorTypeInfo(ElementArray.Get(Element.fighting), AbilityID.DD2Stab);
+//        types[ItemID.MonkAltHead] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.MonkAltShirt] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.MonkAltPants] = new ArmorTypeInfo(ElementArray.Get(Element.fighting, Element.dark), AbilityID.DD2Stab);
+//        types[ItemID.HuntressWig] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.HuntressJerkin] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.HuntressPants] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.HuntressAltHead] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.HuntressAltShirt] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.HuntressAltPants] = new ArmorTypeInfo(ElementArray.Get(Element.grass), AbilityID.DD2Stab);
+//        types[ItemID.Goggles] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.EmptyBucket] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.DivingHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.water));
+//        types[ItemID.GreenCap] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.VikingHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.steel));
+//        types[ItemID.Gi] = new ArmorTypeInfo(ElementArray.Get(Element.fighting));
+//        types[ItemID.NightVisionHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.UltrabrightHelmet] = new ArmorTypeInfo(ElementArray.Get(Element.normal));
+//        types[ItemID.FlinxFurCoat] = new ArmorTypeInfo(ElementArray.Get(Element.ice), AbilityID.Fluffy);
+//        types[ItemID.MoonLordLegs] = new ArmorTypeInfo(ElementArray.Get(Element.dragon, Element.dark));
+//    }
+//}

@@ -35,8 +35,7 @@ namespace TerraTyping
                 {Element.fairy, "Fairy" },
                 {Element.blood, "Blood" },
                 {Element.bone, "Bone" },
-                {Element.none, "None" },
-                {Element.levitate, "Levitate" }
+                {Element.none, "None" }
             };
         }
 

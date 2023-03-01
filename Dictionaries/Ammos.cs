@@ -13,6 +13,7 @@ using TerraTyping.DataTypes;
 
 namespace TerraTyping
 {
+    // Todo: Merge with Weapons?
     [Load]
     [Unload]
     public static class Ammos

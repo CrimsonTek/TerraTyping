@@ -1,780 +1,739 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using TerraTyping.Attributes;
-using TerraTyping.DataTypes;
-
-namespace TerraTyping
-{
-    [Load]
-    [Unload]
-    public static class Enemies
-    {
-        public static void Load()
-        {
-            Type = new Dictionary<int, NPCTypeInfo>()
-            {
-                {NPCID.BigHornetStingy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleHornetStingy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.BigHornetSpikey, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleHornetSpikey, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.BigHornetLeafy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleHornetLeafy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.BigHornetHoney, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleHornetHoney, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.BigHornetFatty, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleHornetFatty, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-
-                {NPCID.BigRainZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallRainZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigPantlessSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SmallPantlessSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BigMisassembledSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SmallMisassembledSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BigHeadacheSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SmallHeadacheSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BigSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SmallSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BigFemaleZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallFemaleZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.DemonEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.PurpleEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.GreenEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.DialatedEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.SleepyEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.CataractEye2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-
-                {NPCID.BigTwiggyZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallTwiggyZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigSwampZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallSwampZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigSlimedZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallSlimedZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigPincushionZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallPincushionZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigBaldZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallBaldZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.BigZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SmallZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-
-                {NPCID.BigCrimslime, new NPCTypeInfo(Element.water, Element.blood, Element.blood) },
-                {NPCID.LittleCrimslime, new NPCTypeInfo(Element.water, Element.blood, Element.blood) },
-                {NPCID.BigCrimera, new NPCTypeInfo(Element.blood, Element.flying, Element.blood) },
-                {NPCID.LittleCrimera, new NPCTypeInfo(Element.blood, Element.flying, Element.blood) },
-
-                {NPCID.GiantMossHornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.BigMossHornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleMossHornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.TinyMossHornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-
-                {NPCID.BigStinger, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.LittleStinger, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-
-                {NPCID.HeavySkeleton, new NPCTypeInfo(Element.bone, Element.steel, Element.bone) },
-                {NPCID.BigBoned, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.ShortBones, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-
-                {NPCID.BigEater, new NPCTypeInfo(Element.dark, Element.flying, Element.dark) },
-                {NPCID.LittleEater, new NPCTypeInfo(Element.dark, Element.flying, Element.dark) },
-
-                {NPCID.JungleSlime, new NPCTypeInfo(Element.water, Element.grass, Element.grass, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.YellowSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.RedSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.PurpleSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BlackSlime, new NPCTypeInfo(Element.water, Element.dark, Element.dark, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BabySlime, new NPCTypeInfo(Element.water, Element.ground, Element.ground, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Pinky, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.GreenSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Slimer2, new NPCTypeInfo(Element.water, Element.dark, Element.dark, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Slimeling, new NPCTypeInfo(Element.water, Element.dark, Element.dark, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BlueSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-
-                {NPCID.DemonEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Zombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.EyeofCthulhu, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.ServantofCthulhu, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-
-                {NPCID.EaterofSouls, new NPCTypeInfo(Element.dark, Element.flying, Element.dark) },
-                {NPCID.DevourerHead, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-                {NPCID.DevourerBody, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-                {NPCID.DevourerTail, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-
-                {NPCID.GiantWormHead, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.GiantWormBody, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.GiantWormTail, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-
-                {NPCID.EaterofWorldsHead, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-                {NPCID.EaterofWorldsBody, new NPCTypeInfo(Element.dark, Element.ground, Element.ground) },
-                {NPCID.EaterofWorldsTail, new NPCTypeInfo(Element.dark, Element.ground, Element.ground) },
-
-                {NPCID.MotherSlime, new NPCTypeInfo(Element.water, Element.dark, Element.dark, new AbilityContainer(AbilityID.Flammable)) },
-
-                {NPCID.Merchant, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Nurse, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.ArmsDealer, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Dryad, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Guide, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-
-                {NPCID.MeteorHead, new NPCTypeInfo(Element.rock, Element.fire, Element.rock, new AbilityContainer(AbilityID.Levitate, hiddenAbility: AbilityID.FlashFire)) }, // rock or fire attack?
-                {NPCID.FireImp, new NPCTypeInfo(Element.fire, Element.none, Element.fire, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.FlashFire)) },
-                {NPCID.BurningSphere, new NPCTypeInfo(Element.fire, Element.none, Element.fire, AbilityID.FlashFire) },
-
-                {NPCID.GoblinPeon, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GoblinThief, new NPCTypeInfo(Element.normal, Element.dark, Element.dark) },
-                {NPCID.GoblinWarrior, new NPCTypeInfo(Element.normal, Element.fighting, Element.normal, AbilityID.Scrappy) },
-                {NPCID.GoblinSorcerer, new NPCTypeInfo(Element.normal, Element.psychic, Element.psychic) },
-                {NPCID.ChaosBall, new NPCTypeInfo(Element.psychic, Element.none, Element.psychic) },
-
-                {NPCID.AngryBones, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.DarkCaster, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.WaterSphere, new NPCTypeInfo(Element.water, Element.none, Element.water, AbilityID.WaterAbsorb) },
-                {NPCID.CursedSkull, new NPCTypeInfo(Element.bone, Element.ghost, AbilityID.Levitate, Element.bone) },
-                {NPCID.SkeletronHead, new NPCTypeInfo(Element.bone, Element.ghost, Element.bone) },
-                {NPCID.SkeletronHand, new NPCTypeInfo(Element.bone, Element.ghost, Element.bone) },
-
-                {NPCID.OldMan, new NPCTypeInfo(Element.none, Element.none, Element.normal) }, //town NPCS
-                {NPCID.Demolitionist, new NPCTypeInfo(Element.none, Element.none, Element.normal) }, //town NPCS
-
-                {NPCID.BoneSerpentHead, new NPCTypeInfo(Element.bone, Element.none, Element.bone) }, //fire? ground?
-                {NPCID.BoneSerpentBody, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BoneSerpentTail, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-
-                {NPCID.Hornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.ManEater, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-
-                {NPCID.UndeadMiner, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.Tim, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-
-                {NPCID.Bunny, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.CorruptBunny, new NPCTypeInfo(Element.normal, Element.dark, Element.dark) },
-
-                {NPCID.Harpy, new NPCTypeInfo(Element.normal, Element.flying, Element.flying) },
-                {NPCID.CaveBat, new NPCTypeInfo(Element.normal, Element.flying, Element.flying) },
-
-                {NPCID.KingSlime, new NPCTypeInfo(Element.water, Element.dark, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-
-                {NPCID.JungleBat, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-
-                {NPCID.DoctorBones, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.TheGroom, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.Clothier, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Goldfish, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.Snatcher, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.CorruptGoldfish, new NPCTypeInfo(Element.water, Element.dark, Element.dark) },
-                {NPCID.Piranha, new NPCTypeInfo(Element.water, Element.none, Element.normal) },
-                {NPCID.LavaSlime, new NPCTypeInfo(Element.water, Element.fire, AbilityID.FlashFire, Element.fire) },
-                {NPCID.Hellbat, new NPCTypeInfo(Element.fire, Element.flying, Element.fire, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.FlashFire)) },
-                {NPCID.Vulture, new NPCTypeInfo(Element.dark, Element.flying, Element.dark) },
-                {NPCID.Demon, new NPCTypeInfo(Element.dark, Element.fire, AbilityID.Levitate, Element.fire) },
-
-                {NPCID.BlueJellyfish, new NPCTypeInfo(Element.water, Element.electric, Element.electric, new AbilityContainer(primaryAbility: AbilityID.WaterAbsorb, hiddenAbility: AbilityID.VoltAbsorb)) },
-                {NPCID.PinkJellyfish, new NPCTypeInfo(Element.water, Element.electric, Element.electric, new AbilityContainer(primaryAbility: AbilityID.WaterAbsorb, hiddenAbility: AbilityID.VoltAbsorb)) },
-                {NPCID.Shark, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.VoodooDemon, new NPCTypeInfo(Element.dark, Element.fire, AbilityID.Levitate, Element.fire) },
-                {NPCID.Crab, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.DungeonGuardian, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.Antlion, new NPCTypeInfo(Element.ground, Element.bug, Element.bug, new AbilityContainer(primaryAbility: AbilityID.MoldBreaker, secondaryAbility: AbilityID.SandForce)) },
-                {NPCID.SpikeBall, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.DungeonSlime, new NPCTypeInfo(Element.water, Element.bone, Element.bone, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BlazingWheel, new NPCTypeInfo(Element.fire, Element.none, Element.fire) },
-                {NPCID.GoblinScout, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // goblins?
-
-                {NPCID.Bird, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Pixie, new NPCTypeInfo(Element.fairy, Element.none, AbilityID.Levitate, Element.fairy) },
-                {NPCID.ArmoredSkeleton, new NPCTypeInfo(Element.bone, Element.steel, Element.bone) },
-                {NPCID.Mummy, new NPCTypeInfo(Element.ghost, Element.none, Element.ghost, AbilityID.Mummy) },
-                {NPCID.DarkMummy, new NPCTypeInfo(Element.ghost, Element.dark, Element.dark, AbilityID.Mummy) },
-                {NPCID.LightMummy, new NPCTypeInfo(Element.ghost, Element.fairy, Element.fairy, AbilityID.Mummy) },
-                {NPCID.CorruptSlime, new NPCTypeInfo(Element.water, Element.dark, Element.dark, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Wraith, new NPCTypeInfo(Element.ghost, Element.none, AbilityID.Levitate, Element.ghost) },
-
-                {NPCID.CursedHammer, new NPCTypeInfo(Element.steel, Element.dark, AbilityID.Levitate, Element.steel) },
-                {NPCID.EnchantedSword, new NPCTypeInfo(Element.steel, Element.fairy, AbilityID.Levitate, Element.steel) },
-                {NPCID.Mimic, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-
-                {NPCID.Unicorn, new NPCTypeInfo(Element.fairy, Element.normal, Element.fairy) },
-                {NPCID.WyvernHead, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.WyvernLegs, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.WyvernBody, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.WyvernBody2, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.WyvernBody3, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.WyvernTail, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-
-                {NPCID.GiantBat, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Corruptor, new NPCTypeInfo(Element.dark, Element.none, AbilityID.Levitate, Element.flying) },
-                {NPCID.DiggerHead, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.DiggerBody, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.DiggerTail, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.SeekerHead, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-                {NPCID.SeekerBody, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-                {NPCID.SeekerTail, new NPCTypeInfo(Element.dark, Element.ground, Element.dark) },
-
-                {NPCID.Clinger, new NPCTypeInfo(Element.dark, Element.normal, Element.dark) },
-                {NPCID.AnglerFish, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.GreenJellyfish, new NPCTypeInfo(Element.water, Element.electric, Element.electric, new AbilityContainer(primaryAbility: AbilityID.WaterAbsorb, hiddenAbility: AbilityID.VoltAbsorb)) },
-                {NPCID.Werewolf, new NPCTypeInfo(Element.dark, Element.normal, Element.dark) },
-
-                {NPCID.BoundGoblin, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // npc
-                {NPCID.BoundWizard, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // npc
-                {NPCID.GoblinTinkerer, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // npc
-                {NPCID.Wizard, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // npc
-
-                {NPCID.Clown, new NPCTypeInfo(Element.normal, Element.none, Element.normal) }, // clown
-                {NPCID.SkeletonArcher, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.GoblinArcher, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.VileSpit, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.WallofFlesh, new NPCTypeInfo(Element.blood, Element.fire, Element.dark) }, // mouth
-                {NPCID.WallofFleshEye, new NPCTypeInfo(Element.blood, Element.fire, Element.blood) },
-                {NPCID.TheHungry, new NPCTypeInfo(Element.blood, Element.none, AbilityID.Levitate, Element.blood) },
-                {NPCID.TheHungryII, new NPCTypeInfo(Element.blood, Element.none, AbilityID.Levitate, Element.blood) },
-                {NPCID.LeechHead, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.LeechBody, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.LeechTail, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ChaosElemental, new NPCTypeInfo(Element.fairy, Element.none, Element.fairy) },
-                {NPCID.Slimer, new NPCTypeInfo(Element.water, Element.dark, AbilityID.Levitate, Element.dark) }, // with wings
-                {NPCID.Gastropod, new NPCTypeInfo(Element.water, Element.electric, Element.normal, new AbilityContainer(AbilityID.Levitate, hiddenAbility: AbilityID.Flammable)) },
-
-                {NPCID.BoundMechanic, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Mechanic, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Retinazer, new NPCTypeInfo(Element.normal, Element.flying, Element.normal, new AbilityContainer(),
-                    (parameters) =>
-                    {
-                        if (parameters.npc.ai[0] < 2)
-                        {
-                            return parameters.defaultTypes;
-                        }
-                        else
-                        {
-                            return new ThreeType(Element.steel, Element.flying, Element.steel);
-                        }
-                    } )
-                },
-                {NPCID.Spazmatism, new NPCTypeInfo(Element.normal, Element.flying, Element.normal, new AbilityContainer(),
-                    (parameters) =>
-                    {
-                        if (parameters.npc.ai[0] < 2)
-                        {
-                            return parameters.defaultTypes;
-                        }
-                        else
-                        {
-                            return new ThreeType(Element.steel, Element.flying, Element.steel);
-                        }
-                    } )
-                },
-                {NPCID.SkeletronPrime, new NPCTypeInfo(Element.steel, Element.ghost, Element.steel) },
-                {NPCID.PrimeCannon, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.PrimeSaw, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.PrimeVice, new NPCTypeInfo(Element.steel, Element.none, Element.fighting) },
-                {NPCID.PrimeLaser, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-
-                {NPCID.BaldZombie, new NPCTypeInfo(Element.blood, Element.none, Element.normal) },
-                {NPCID.WanderingEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.TheDestroyer, new NPCTypeInfo(Element.steel, Element.ground, Element.fighting) },
-                {NPCID.TheDestroyerBody, new NPCTypeInfo(Element.steel, Element.ground, Element.steel) },
-                {NPCID.TheDestroyerTail, new NPCTypeInfo(Element.steel, Element.ground, Element.steel) },
-                {NPCID.IlluminantBat, new NPCTypeInfo(Element.fairy, Element.flying, Element.fairy) },
-                {NPCID.IlluminantSlime, new NPCTypeInfo(Element.water, Element.fairy, Element.fairy, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Probe, new NPCTypeInfo(Element.steel, Element.none, AbilityID.Levitate, Element.steel) },
-                {NPCID.ToxicSludge, new NPCTypeInfo(Element.water, Element.poison, Element.poison, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.Corrosion)) },
-                {NPCID.SantaClaus, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.SnowmanGangsta, new NPCTypeInfo(Element.ice, Element.none, Element.ice) },
-                {NPCID.MisterStabby, new NPCTypeInfo(Element.ice, Element.none, Element.ice) },
-                {NPCID.SnowBalla, new NPCTypeInfo(Element.ice, Element.none, Element.ice) },
-                {NPCID.IceSlime, new NPCTypeInfo(Element.water, Element.ice, Element.ice, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Penguin, new NPCTypeInfo(Element.normal, Element.ice, Element.normal, new AbilityContainer(AbilityID.ThickFat)) },
-                {NPCID.PenguinBlack, new NPCTypeInfo(Element.normal, Element.ice, Element.normal, new AbilityContainer(AbilityID.ThickFat)) },
-                {NPCID.IceBat, new NPCTypeInfo(Element.ice, Element.flying, Element.ice) },
-                {NPCID.Lavabat, new NPCTypeInfo(Element.fire, Element.flying, Element.fire, AbilityID.FlashFire) },
-                {NPCID.GiantFlyingFox, new NPCTypeInfo(Element.grass, Element.flying, Element.grass) },
-                {NPCID.GiantTortoise, new NPCTypeInfo(Element.grass, Element.rock, Element.grass) },
-                {NPCID.IceTortoise, new NPCTypeInfo(Element.ice, Element.rock, Element.ice) },
-                {NPCID.Wolf, new NPCTypeInfo(Element.normal, Element.dark, Element.normal, new AbilityContainer(AbilityID.ThickFat)) },
-                {NPCID.RedDevil, new NPCTypeInfo(Element.dark, Element.fire, AbilityID.Levitate, Element.dark) },
-                {NPCID.Arapaima, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.VampireBat, new NPCTypeInfo(Element.normal, Element.flying, Element.blood) },
-                {NPCID.Vampire, new NPCTypeInfo(Element.normal, Element.none, Element.blood) },
-                {NPCID.Truffle, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.ZombieEskimo, new NPCTypeInfo(Element.blood, Element.none, Element.normal) },
-                {NPCID.Frankenstein, new NPCTypeInfo(Element.normal, Element.dark, Element.normal) },
-                {NPCID.BlackRecluse, new NPCTypeInfo(Element.bug, Element.poison, Element.poison) },
-                {NPCID.WallCreeper, new NPCTypeInfo(Element.bug, Element.poison, Element.poison) },
-                {NPCID.WallCreeperWall, new NPCTypeInfo(Element.bug, Element.poison, Element.poison) },
-                {NPCID.SwampThing, new NPCTypeInfo(Element.water, Element.grass, Element.grass) },
-                {NPCID.UndeadViking, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-
-                {NPCID.CorruptPenguin, new NPCTypeInfo(Element.normal, Element.blood, Element.blood, new AbilityContainer(AbilityID.ThickFat)) },
-                {NPCID.IceElemental, new NPCTypeInfo(Element.ice, Element.none, AbilityID.Levitate, Element.ice) },
-                {NPCID.PigronCorruption, new NPCTypeInfo(Element.dragon, Element.dark, AbilityID.Levitate, Element.dark) },
-                {NPCID.PigronHallow, new NPCTypeInfo(Element.dragon, Element.fairy, AbilityID.Levitate, Element.fairy) },
-                {NPCID.RuneWizard, new NPCTypeInfo(Element.bone, Element.fire, Element.bone) },
-                {NPCID.Crimera, new NPCTypeInfo(Element.blood, Element.flying, Element.blood) },
-                {NPCID.Herpling, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.AngryTrapper, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.MossHornet, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.Derpling, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.Steampunker, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.CrimsonAxe, new NPCTypeInfo(Element.steel, Element.blood, AbilityID.Levitate, Element.steel) },
-                {NPCID.PigronCrimson, new NPCTypeInfo(Element.dragon, Element.blood, Element.blood) },
-                {NPCID.FaceMonster, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.FloatyGross, new NPCTypeInfo(Element.ghost, Element.blood, AbilityID.Levitate, Element.ghost) },
-                {NPCID.Crimslime, new NPCTypeInfo(Element.water, Element.blood, Element.blood, new AbilityContainer(AbilityID.Flammable)) },
-
-                {NPCID.SpikedIceSlime, new NPCTypeInfo(Element.water, Element.ice, Element.ice, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.SnowFlinx, new NPCTypeInfo(Element.normal, Element.ice, Element.ice, new AbilityContainer(primaryAbility: AbilityID.Fluffy, hiddenAbility: AbilityID.ThickFat)) },
-                {NPCID.PincushionZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SlimedZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SwampZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.TwiggyZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.CataractEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.SleepyEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.DialatedEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.GreenEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.PurpleEye, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.LostGirl, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Nymph, new NPCTypeInfo(Element.normal, Element.blood, Element.blood) },
-                {NPCID.ArmoredViking, new NPCTypeInfo(Element.bone, Element.steel, Element.bone) },
-                {NPCID.Lihzahrd, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.LihzahrdCrawler, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.FemaleZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.HeadacheSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.MisassembledSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.PantlessSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-
-                {NPCID.SpikedJungleSlime, new NPCTypeInfo(Element.water, Element.grass, Element.grass, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Moth, new NPCTypeInfo(Element.bug, Element.flying, Element.bug) },
-                {NPCID.IcyMerman, new NPCTypeInfo(Element.ice, Element.water, Element.ice) },
-                {NPCID.DyeTrader, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.PartyGirl, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Cyborg, new NPCTypeInfo(Element.normal, Element.steel, Element.normal) },
-                {NPCID.Bee, new NPCTypeInfo(Element.bug, Element.none, AbilityID.Levitate, Element.bug) },
-                {NPCID.BeeSmall, new NPCTypeInfo(Element.bug, Element.none, AbilityID.Levitate, Element.bug) },
-                {NPCID.PirateDeckhand, new NPCTypeInfo(Element.normal, Element.none, Element.fighting, new AbilityContainer(AbilityID.Scrappy)) },
-                {NPCID.PirateCorsair, new NPCTypeInfo(Element.normal, Element.none, Element.steel) },
-                {NPCID.PirateDeadeye, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.PirateCrossbower, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.PirateCaptain, new NPCTypeInfo(Element.normal, Element.water, Element.fighting) },
-
-                {NPCID.CochinealBeetle, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.CyanBeetle, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.LacBeetle, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.SeaSnail, new NPCTypeInfo(Element.water, Element.rock, Element.water) },
-                {NPCID.Squid, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.QueenBee, new NPCTypeInfo(Element.bug, Element.none, AbilityID.Levitate, Element.bug) },
-                {NPCID.ZombieRaincoat, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.FlyingFish, new NPCTypeInfo(Element.water, Element.flying, Element.water) },
-                {NPCID.UmbrellaSlime, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.FlyingSnake, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Painter, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.WitchDoctor, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Pirate, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GoldfishWalker, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-
-                {NPCID.HornetFatty, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.HornetHoney, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.HornetLeafy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.HornetSpikey, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.HornetStingy, new NPCTypeInfo(Element.bug, Element.poison, AbilityID.Levitate, Element.poison) },
-                {NPCID.JungleCreeper, new NPCTypeInfo(Element.grass, Element.bug, Element.bug) },
-                {NPCID.JungleCreeperWall, new NPCTypeInfo(Element.grass, Element.bug, Element.bug) },
-                {NPCID.BlackRecluseWall, new NPCTypeInfo(Element.bug, Element.poison, Element.poison) },
-                {NPCID.BloodCrawler, new NPCTypeInfo(Element.blood, Element.bug, Element.blood) },
-                {NPCID.BloodCrawlerWall, new NPCTypeInfo(Element.blood, Element.bug, Element.blood) },
-
-                {NPCID.BloodFeeder, new NPCTypeInfo(Element.water, Element.blood, Element.blood) },
-                {NPCID.BloodJelly, new NPCTypeInfo(Element.water, Element.blood, Element.electric, new AbilityContainer(primaryAbility: AbilityID.WaterAbsorb, hiddenAbility: AbilityID.VoltAbsorb)) },
-                {NPCID.IceGolem, new NPCTypeInfo(Element.ice, Element.rock, Element.ice) },
-                {NPCID.RainbowSlime, new NPCTypeInfo(Element.water, Element.fairy, Element.fairy, new AbilityContainer(AbilityID.Flammable, hiddenAbility: AbilityID.ColorChange)) },
-
-                {NPCID.Golem, new NPCTypeInfo(Element.rock, Element.none, Element.rock, AbilityID.Heatproof) },
-                {NPCID.GolemHead, new NPCTypeInfo(Element.rock, Element.none, Element.rock, AbilityID.Heatproof) },
-                {NPCID.GolemFistLeft, new NPCTypeInfo(Element.rock, Element.none, Element.fighting, AbilityID.Heatproof) },
-                {NPCID.GolemFistRight, new NPCTypeInfo(Element.rock, Element.none, Element.fighting, AbilityID.Heatproof) },
-                {NPCID.AngryNimbus, new NPCTypeInfo(Element.water, Element.flying, Element.water, AbilityID.LightningRod) },
-                {NPCID.Eyezor, new NPCTypeInfo(Element.blood, Element.none, Element.normal) },
-                {NPCID.Parrot, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Reaper, new NPCTypeInfo(Element.ghost, Element.dark, AbilityID.Levitate, Element.dark) },
-                {NPCID.ZombieMushroom, new NPCTypeInfo(Element.blood, Element.grass, Element.grass) },
-                {NPCID.ZombieMushroomHat, new NPCTypeInfo(Element.blood, Element.grass, Element.grass) },
-                {NPCID.FungoFish, new NPCTypeInfo(Element.water, Element.grass, Element.electric, new AbilityContainer(AbilityID.WaterAbsorb, AbilityID.SapSipper, AbilityID.VoltAbsorb)) },
-                {NPCID.AnomuraFungus, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.MushiLadybug, new NPCTypeInfo(Element.bug, Element.grass, Element.bug) },
-                {NPCID.FungiBulb, new NPCTypeInfo(Element.grass, Element.none, Element.grass, AbilityID.SapSipper) },
-                {NPCID.GiantFungiBulb, new NPCTypeInfo(Element.grass, Element.none, Element.grass, AbilityID.SapSipper) },
-                {NPCID.FungiSpore, new NPCTypeInfo(Element.grass, Element.poison, Element.grass) },
-
-                {NPCID.Plantera, new NPCTypeInfo(Element.grass, Element.none, Element.grass, AbilityID.SapSipper) },
-                {NPCID.PlanterasHook, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.PlanterasTentacle, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Spore, new NPCTypeInfo(Element.grass, Element.poison, Element.grass) },
-                {NPCID.BrainofCthulhu, new NPCTypeInfo(Element.psychic, Element.blood, Element.blood) },
-                {NPCID.Creeper, new NPCTypeInfo(Element.blood, Element.none, AbilityID.Levitate, Element.blood) },
-
-                {NPCID.IchorSticker, new NPCTypeInfo(Element.blood, Element.none, AbilityID.Levitate, Element.blood) },
-                {NPCID.RustyArmoredBonesAxe, new NPCTypeInfo(Element.bone, Element.steel, Element.steel) },
-                {NPCID.RustyArmoredBonesFlail, new NPCTypeInfo(Element.bone, Element.steel, Element.steel) },
-                {NPCID.RustyArmoredBonesSword, new NPCTypeInfo(Element.bone, Element.steel, Element.steel) },
-                {NPCID.RustyArmoredBonesSwordNoArmor, new NPCTypeInfo(Element.bone, Element.none, Element.steel) }, // no armor
-                {NPCID.HellArmoredBones, new NPCTypeInfo(Element.bone, Element.fire, Element.fire, AbilityID.FlashFire) },
-                {NPCID.HellArmoredBonesSpikeShield, new NPCTypeInfo(Element.bone, Element.fire, Element.fire, AbilityID.FlashFire) },
-                {NPCID.HellArmoredBonesMace, new NPCTypeInfo(Element.bone, Element.fire, Element.fire, AbilityID.FlashFire) },
-                {NPCID.HellArmoredBonesSword, new NPCTypeInfo(Element.bone, Element.fire, Element.fire, AbilityID.FlashFire) },
-                {NPCID.RaggedCaster, new NPCTypeInfo(Element.bone, Element.ghost, Element.bone) },
-                {NPCID.RaggedCasterOpenCoat, new NPCTypeInfo(Element.bone, Element.ghost, Element.bone) },
-                {NPCID.Necromancer, new NPCTypeInfo(Element.bone, Element.psychic, Element.psychic) },
-                {NPCID.NecromancerArmored, new NPCTypeInfo(Element.bone, Element.psychic, Element.psychic) },
-                {NPCID.DiabolistRed, new NPCTypeInfo(Element.bone, Element.fire, Element.fire) },
-                {NPCID.DiabolistWhite, new NPCTypeInfo(Element.bone, Element.fire, Element.fire) },
-                {NPCID.BoneLee, new NPCTypeInfo(Element.bone, Element.fighting, Element.fighting, AbilityID.Scrappy) },
-                {NPCID.DungeonSpirit, new NPCTypeInfo(Element.ghost, Element.none, AbilityID.Levitate, Element.ghost) },
-                {NPCID.GiantCursedSkull, new NPCTypeInfo(Element.bone, Element.ghost, AbilityID.Levitate, Element.bone) },
-                {NPCID.Paladin, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.SkeletonSniper, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.TacticalSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SkeletonCommando, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.AngryBonesBig, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.AngryBonesBigMuscle, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.AngryBonesBigHelmet, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BirdBlue, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.BirdRed, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Squirrel, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Mouse, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Raven, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-
-                {NPCID.SlimeMasked, new NPCTypeInfo(Element.water, Element.normal, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BunnySlimed, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.HoppinJack, new NPCTypeInfo(Element.grass, Element.ghost, Element.ghost, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.Scarecrow1, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow2, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow3, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow4, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow5, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow6, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow7, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow8, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow9, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.Scarecrow10, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-                {NPCID.HeadlessHorseman, new NPCTypeInfo(Element.normal, Element.ghost, Element.ghost) },
-                {NPCID.Ghost, new NPCTypeInfo(Element.ghost, Element.none, AbilityID.Levitate, Element.ghost) },
-
-                {NPCID.DemonEyeOwl, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.DemonEyeSpaceship, new NPCTypeInfo(Element.normal, Element.steel, Element.normal) },
-                {NPCID.ZombieDoctor, new NPCTypeInfo(Element.blood, Element.normal, Element.blood) },
-                {NPCID.ZombieSuperman, new NPCTypeInfo(Element.blood, Element.fighting, Element.blood) },
-                {NPCID.ZombiePixie, new NPCTypeInfo(Element.blood, Element.fairy, Element.blood) },
-                {NPCID.SkeletonTopHat, new NPCTypeInfo(Element.bone, Element.normal, Element.normal) },
-                {NPCID.SkeletonAstonaut, new NPCTypeInfo(Element.bone, Element.steel, Element.normal) },
-                {NPCID.SkeletonAlien, new NPCTypeInfo(Element.bone, Element.none, Element.normal) },
-
-                {NPCID.MourningWood, new NPCTypeInfo(Element.grass, Element.dark, Element.dark, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.SapSipper)) },
-                {NPCID.Splinterling, new NPCTypeInfo(Element.grass, Element.dark, Element.grass) },
-                {NPCID.Pumpking, new NPCTypeInfo(Element.dark, Element.fire, Element.dark) },
-                {NPCID.PumpkingBlade, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.Hellhound, new NPCTypeInfo(Element.normal, Element.dark, Element.normal) },
-                {NPCID.Poltergeist, new NPCTypeInfo(Element.ghost, Element.none, AbilityID.Levitate, Element.ghost) },
-                {NPCID.ZombieXmas, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ZombieSweater, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.SlimeRibbonWhite, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.SlimeRibbonYellow, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.SlimeRibbonGreen, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.SlimeRibbonRed, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.BunnyXmas, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.ZombieElf, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ZombieElfBeard, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ZombieElfGirl, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-
-                {NPCID.PresentMimic, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.GingerbreadMan, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Yeti, new NPCTypeInfo(Element.normal, Element.ice, Element.ice) },
-                {NPCID.Everscream, new NPCTypeInfo(Element.grass, Element.none, Element.grass, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.SapSipper)) },
-                {NPCID.IceQueen, new NPCTypeInfo(Element.ice, Element.none, AbilityID.Levitate, Element.ice) },
-                {NPCID.SantaNK1, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.ElfCopter, new NPCTypeInfo(Element.steel, Element.flying, Element.steel) },
-                {NPCID.Nutcracker, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.NutcrackerSpinning, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.ElfArcher, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Krampus, new NPCTypeInfo(Element.normal, Element.dark, Element.normal) },
-                {NPCID.Flocko, new NPCTypeInfo(Element.ice, Element.none, AbilityID.Levitate, Element.ice) },
-                {NPCID.Stylist, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.WebbedStylist, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-
-                {NPCID.Firefly, new NPCTypeInfo(Element.electric, Element.flying, Element.normal) },
-                {NPCID.Butterfly, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.Worm, new NPCTypeInfo(Element.normal, Element.grass, Element.normal) },
-                {NPCID.LightningBug, new NPCTypeInfo(Element.electric, Element.none, AbilityID.Levitate, Element.normal) },
-                {NPCID.Snail, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GlowingSnail, new NPCTypeInfo(Element.normal, Element.electric, Element.normal) },
-                {NPCID.Frog, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Duck, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.Duck2, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.DuckWhite, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.DuckWhite2, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.ScorpionBlack, new NPCTypeInfo(Element.normal, Element.poison, Element.normal) },
-                {NPCID.Scorpion, new NPCTypeInfo(Element.normal, Element.poison, Element.normal) },
-
-                {NPCID.TravellingMerchant, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Angler, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DukeFishron, new NPCTypeInfo(Element.water, Element.dragon, Element.dragon) },
-                {NPCID.DetonatingBubble, new NPCTypeInfo(Element.water, Element.none, Element.water) },
-                {NPCID.Sharkron, new NPCTypeInfo(Element.water, Element.dragon, Element.water) },
-                {NPCID.Sharkron2, new NPCTypeInfo(Element.water, Element.dragon, Element.water) },
-
-                {NPCID.TruffleWorm, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.TruffleWormDigger, new NPCTypeInfo(Element.bug, Element.none, Element.bug) },
-                {NPCID.SleepingAngler, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Grasshopper, new NPCTypeInfo(Element.normal, Element.grass, Element.normal) },
-                {NPCID.ChatteringTeethBomb, new NPCTypeInfo(Element.normal, Element.steel, Element.normal) },
-
-                {NPCID.CultistArcherBlue, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.CultistArcherWhite, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-
-                #region Martians
-                {NPCID.BrainScrambler, new NPCTypeInfo(Element.normal, Element.psychic, Element.psychic) }, //martian
-                {NPCID.RayGunner, new NPCTypeInfo(Element.normal, Element.dark, Element.dark) },
-                {NPCID.MartianOfficer, new NPCTypeInfo(Element.normal, Element.dark, Element.dark) },
-                {NPCID.ForceBubble, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GrayGrunt, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.MartianEngineer, new NPCTypeInfo(Element.normal, Element.psychic, Element.psychic) },
-                {NPCID.MartianTurret, new NPCTypeInfo(Element.steel, Element.none, Element.steel, new AbilityContainer(AbilityID.LightningRod, hiddenAbility: AbilityID.VoltAbsorb)) },
-                {NPCID.MartianDrone, new NPCTypeInfo(Element.steel, Element.flying, Element.steel) },
-                {NPCID.GigaZapper, new NPCTypeInfo(Element.normal, Element.electric, Element.electric) },
-                {NPCID.ScutlixRider, new NPCTypeInfo(Element.normal, Element.dark, Element.normal) },
-                {NPCID.Scutlix, new NPCTypeInfo(Element.normal, Element.dark, Element.normal) },
-                {NPCID.MartianSaucer, new NPCTypeInfo(Element.steel, Element.flying, Element.steel) },
-                {NPCID.MartianSaucerTurret, new NPCTypeInfo(Element.steel, Element.none, AbilityID.Levitate, Element.steel) },
-                {NPCID.MartianSaucerCannon, new NPCTypeInfo(Element.steel, Element.none, AbilityID.Levitate, Element.steel) },
-                {NPCID.MartianSaucerCore, new NPCTypeInfo(Element.steel, Element.electric, AbilityID.Levitate, Element.steel) }, // martian
-                #endregion
-
-                {NPCID.MoonLordHead, new NPCTypeInfo(Element.dark, Element.psychic, Element.psychic) },
-                {NPCID.MoonLordHand, new NPCTypeInfo(Element.dark, Element.fighting, Element.fighting) },
-                {NPCID.MoonLordCore, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.MartianProbe, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.MoonLordFreeEye, new NPCTypeInfo(Element.dark, Element.none, Element.electric) },
-                {NPCID.MoonLordLeechBlob, new NPCTypeInfo(Element.dark, Element.none, Element.electric) },
-
-                {NPCID.StardustWormHead, new NPCTypeInfo(Element.dragon, Element.ground, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustWormBody, new NPCTypeInfo(Element.dragon, Element.ground, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustWormTail, new NPCTypeInfo(Element.dragon, Element.ground, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustCellBig, new NPCTypeInfo(Element.dragon, Element.none, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustCellSmall, new NPCTypeInfo(Element.dragon, Element.none, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustJellyfishBig, new NPCTypeInfo(Element.dragon, Element.electric, AbilityID.Levitate, Element.dragon) },
-                {NPCID.StardustSpiderBig, new NPCTypeInfo(Element.dragon, Element.none, Element.dragon) },
-                {NPCID.StardustSpiderSmall, new NPCTypeInfo(Element.dragon, Element.none, Element.dragon) },
-                {NPCID.StardustSoldier, new NPCTypeInfo(Element.dragon, Element.normal, Element.dragon) },
-
-                {NPCID.SolarCrawltipedeHead, new NPCTypeInfo(Element.fire, Element.ground, AbilityID.Levitate, Element.fire) },
-                {NPCID.SolarCrawltipedeBody, new NPCTypeInfo(Element.fire, Element.ground, AbilityID.Levitate, Element.fire) },
-                {NPCID.SolarCrawltipedeTail, new NPCTypeInfo(Element.fire, Element.ground, AbilityID.Levitate, Element.fire) },
-                {NPCID.SolarDrakomire, new NPCTypeInfo(Element.fire, Element.none, Element.fire) },
-                {NPCID.SolarDrakomireRider, new NPCTypeInfo(Element.fire, Element.none, Element.fire) },
-                {NPCID.SolarSroller, new NPCTypeInfo(Element.fire, Element.rock, Element.fire) },
-                {NPCID.SolarCorite, new NPCTypeInfo(Element.fire, Element.rock, AbilityID.Levitate, Element.fire) },
-                {NPCID.SolarSolenian, new NPCTypeInfo(Element.fire, Element.dark, Element.fire, AbilityID.FlashFire) },
-
-                {NPCID.NebulaBrain, new NPCTypeInfo(Element.psychic, Element.flying, Element.psychic) },
-                {NPCID.NebulaHeadcrab, new NPCTypeInfo(Element.psychic, Element.dark, AbilityID.Levitate, Element.psychic) },
-                {NPCID.LunarTowerVortex, new NPCTypeInfo(Element.electric, Element.ground, Element.electric) },
-                {NPCID.NebulaBeast, new NPCTypeInfo(Element.psychic, Element.none, Element.psychic) },
-                {NPCID.NebulaSoldier, new NPCTypeInfo(Element.psychic, Element.none, Element.psychic) },
-
-                {NPCID.VortexRifleman, new NPCTypeInfo(Element.electric, Element.normal, Element.electric) },
-                {NPCID.VortexHornetQueen, new NPCTypeInfo(Element.electric, Element.bug, AbilityID.Levitate, Element.electric) },
-                {NPCID.VortexHornet, new NPCTypeInfo(Element.electric, Element.bug, AbilityID.Levitate, Element.electric) },
-                {NPCID.VortexLarva, new NPCTypeInfo(Element.electric, Element.bug, Element.electric) },
-                {NPCID.VortexSoldier, new NPCTypeInfo(Element.electric, Element.normal, Element.electric) },
-
-                {NPCID.ArmedZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombieEskimo, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombiePincussion, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombieSlimed, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombieSwamp, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombieTwiggy, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.ArmedZombieCenx, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.CultistTablet, new NPCTypeInfo(Element.dark, Element.fire, Element.fire) },
-                {NPCID.CultistDevote, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.CultistBoss, new NPCTypeInfo(Element.dark, Element.none, AbilityID.Levitate, Element.dark) },
-                {NPCID.CultistBossClone, new NPCTypeInfo(Element.dark, Element.none, AbilityID.Levitate, Element.dark) },
-                {NPCID.TaxCollector, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-
-                {NPCID.GoldBird, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.GoldBunny, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GoldButterfly, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.GoldFrog, new NPCTypeInfo(Element.normal, Element.water, Element.normal) },
-                {NPCID.GoldGrasshopper, new NPCTypeInfo(Element.normal, Element.grass, Element.normal) },
-                {NPCID.GoldMouse, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GoldWorm, new NPCTypeInfo(Element.normal, Element.ground, Element.normal) },
-                {NPCID.BoneThrowingSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BoneThrowingSkeleton2, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BoneThrowingSkeleton3, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.BoneThrowingSkeleton4, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.SkeletonMerchant, new NPCTypeInfo(Element.normal, Element.bone, Element.normal) },
-
-                {NPCID.CultistDragonHead, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-                {NPCID.CultistDragonBody1, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-                {NPCID.CultistDragonBody2, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-                {NPCID.CultistDragonBody3, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-                {NPCID.CultistDragonBody4, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-                {NPCID.CultistDragonTail, new NPCTypeInfo(Element.dragon, Element.ghost, Element.dragon) },
-
-                {NPCID.Butcher, new NPCTypeInfo(Element.dark, Element.none, Element.normal) },
-                {NPCID.CreatureFromTheDeep, new NPCTypeInfo(Element.grass, Element.water, Element.grass) },
-                {NPCID.Fritz, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.Nailhead, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.CrimsonBunny, new NPCTypeInfo(Element.normal, Element.blood, Element.blood) },
-                {NPCID.CrimsonGoldfish, new NPCTypeInfo(Element.water, Element.blood, Element.blood) },
-                {NPCID.Psycho, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.DeadlySphere, new NPCTypeInfo(Element.steel, Element.none, Element.steel) },
-                {NPCID.DrManFly, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.ThePossessed, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-
-                {NPCID.CrimsonPenguin, new NPCTypeInfo(Element.normal, Element.blood, Element.blood, new AbilityContainer(AbilityID.ThickFat)) },
-                {NPCID.GoblinSummoner, new NPCTypeInfo(Element.normal, Element.dark, Element.dark) },
-                {NPCID.ShadowFlameApparition, new NPCTypeInfo(Element.dark, Element.ghost, AbilityID.Levitate, Element.fire) },
-                {NPCID.BigMimicCorruption, new NPCTypeInfo(Element.steel, Element.dark, Element.steel) },
-                {NPCID.BigMimicCrimson, new NPCTypeInfo(Element.steel, Element.blood, Element.steel) },
-                {NPCID.BigMimicHallow, new NPCTypeInfo(Element.steel, Element.fairy, Element.steel) },
-                {NPCID.BigMimicJungle, new NPCTypeInfo(Element.steel, Element.grass, Element.steel) },
-
-                {NPCID.Mothron, new NPCTypeInfo(Element.bug, Element.flying, Element.bug) },
-                {NPCID.MothronEgg, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.MothronSpawn, new NPCTypeInfo(Element.bug, Element.flying, Element.bug) },
-                {NPCID.Medusa, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.GreekSkeleton, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.GraniteGolem, new NPCTypeInfo(Element.rock, Element.none, Element.rock) },
-                {NPCID.GraniteFlyer, new NPCTypeInfo(Element.rock, Element.none, AbilityID.Levitate, Element.rock) },
-
-                {NPCID.EnchantedNightcrawler, new NPCTypeInfo(Element.normal, Element.electric, Element.normal) },
-                {NPCID.Grubby, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Sluggy, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.Buggy, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.TargetDummy, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.BloodZombie, new NPCTypeInfo(Element.blood, Element.none, Element.blood) },
-                {NPCID.Drippler, new NPCTypeInfo(Element.blood, Element.none, AbilityID.Levitate, Element.blood) },
-
-                {NPCID.PirateShip, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.PirateShipCannon, new NPCTypeInfo(Element.steel, Element.flying, Element.steel) },
-                {NPCID.LunarTowerStardust, new NPCTypeInfo(Element.ground, Element.dragon, Element.dragon) },
-                {NPCID.Crawdad, new NPCTypeInfo(Element.water, Element.ground, Element.normal) },
-                {NPCID.Crawdad2, new NPCTypeInfo(Element.water, Element.ground, Element.normal) },
-                {NPCID.GiantShelly, new NPCTypeInfo(Element.rock, Element.ground, Element.normal) },
-                {NPCID.GiantShelly2, new NPCTypeInfo(Element.rock, Element.ground, Element.normal) },
-                {NPCID.Salamander , new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander2, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander3, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander4, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander5, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander6, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander7, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander8, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.Salamander9, new NPCTypeInfo(Element.normal, Element.poison, Element.poison, new AbilityContainer(primaryAbility: AbilityID.Corrosion, hiddenAbility: AbilityID.ColorChange)) },
-                {NPCID.LunarTowerNebula, new NPCTypeInfo(Element.ground, Element.psychic, Element.psychic) },
-                {NPCID.WalkingAntlion, new NPCTypeInfo(Element.ground, Element.bug, Element.bug) }, // GiantAntlionCharger
-                {NPCID.FlyingAntlion, new NPCTypeInfo(Element.bug, Element.flying, Element.bug) },
-                {NPCID.DuneSplicerHead, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)) },
-                {NPCID.DuneSplicerBody, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)) },
-                {NPCID.DuneSplicerTail, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)) },
-                {NPCID.TombCrawlerHead, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce)) },
-                {NPCID.TombCrawlerBody, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce)) },
-                {NPCID.TombCrawlerTail, new NPCTypeInfo(Element.ground, Element.rock, Element.ground, new AbilityContainer(AbilityID.SandForce)) },
-
-                {NPCID.SolarFlare, new NPCTypeInfo(Element.fire, Element.none, Element.fire, AbilityID.FlashFire) },
-                {NPCID.LunarTowerSolar, new NPCTypeInfo(Element.ground, Element.fire, Element.fire) },
-                {NPCID.SolarSpearman, new NPCTypeInfo(Element.fire, Element.none, Element.fire) },
-                {NPCID.SolarGoop, new NPCTypeInfo(Element.fire, Element.none, AbilityID.Levitate, Element.fire) },
-
-                {NPCID.MartianWalker, new NPCTypeInfo(Element.steel, Element.none, Element.steel, new AbilityContainer(AbilityID.None, hiddenAbility: AbilityID.LightningRod) ) }, // martian
-                {NPCID.AncientCultistSquidhead, new NPCTypeInfo(Element.ghost, Element.dark, Element.dark) },
-                {NPCID.AncientLight, new NPCTypeInfo(Element.psychic, Element.none, Element.psychic) },
-                {NPCID.AncientDoom, new NPCTypeInfo(Element.ghost, Element.dark, Element.dark) },
-
-                {NPCID.DesertGhoul, new NPCTypeInfo(Element.ghost, Element.ground, Element.ghost) },
-                {NPCID.DesertGhoulCorruption, new NPCTypeInfo(Element.ghost, Element.dark, Element.dark) },
-                {NPCID.DesertGhoulCrimson, new NPCTypeInfo(Element.ghost, Element.blood, Element.blood) },
-                {NPCID.DesertGhoulHallow, new NPCTypeInfo(Element.ghost, Element.fairy, Element.fairy) },
-                {NPCID.DesertLamiaLight, new NPCTypeInfo(Element.ground, Element.none, Element.ground) },
-                {NPCID.DesertLamiaDark, new NPCTypeInfo(Element.ground, Element.dark, Element.ground) },
-                {NPCID.DesertScorpionWalk, new NPCTypeInfo(Element.ground, Element.poison, Element.poison) },
-                {NPCID.DesertScorpionWall, new NPCTypeInfo(Element.ground, Element.poison, Element.poison) },
-                {NPCID.DesertDjinn, new NPCTypeInfo(Element.ghost, Element.ground, AbilityID.Levitate, Element.ghost) },
-
-                {NPCID.DemonTaxCollector, new NPCTypeInfo(Element.normal, Element.ghost, Element.normal) },
-                {NPCID.SlimeSpiked, new NPCTypeInfo(Element.water, Element.none, Element.water, new AbilityContainer(AbilityID.Flammable)) },
-                {NPCID.TheBride, new NPCTypeInfo(Element.blood, Element.normal, Element.normal) },
-                {NPCID.SandSlime, new NPCTypeInfo(Element.water, Element.ground, Element.ground, new AbilityContainer(AbilityID.WaterCompaction)) },
-                {NPCID.SquirrelRed, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.SquirrelGold, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.PartyBunny, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-
-                {NPCID.SandElemental, new NPCTypeInfo(Element.ground, Element.none, AbilityID.Levitate, Element.ground) },
-                {NPCID.SandShark, new NPCTypeInfo(Element.dragon, Element.ground, Element.ground) },
-                {NPCID.SandsharkCorrupt, new NPCTypeInfo(Element.dragon, Element.dark, Element.dark) },
-                {NPCID.SandsharkCrimson, new NPCTypeInfo(Element.dragon, Element.blood, Element.blood) },
-                {NPCID.SandsharkHallow, new NPCTypeInfo(Element.dragon, Element.fairy, Element.fairy) },
-                {NPCID.Tumbleweed, new NPCTypeInfo(Element.grass, Element.none, Element.grass) },
-
-                {NPCID.DD2EterniaCrystal, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2LanePortal, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.DD2Bartender, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2Betsy, new NPCTypeInfo(Element.dragon, Element.fire, AbilityID.Levitate, Element.dragon) },
-                {NPCID.DD2GoblinT1, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2GoblinT2, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2GoblinT3, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2GoblinBomberT1, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2GoblinBomberT2, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2GoblinBomberT3, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2WyvernT1, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.DD2WyvernT2, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.DD2WyvernT3, new NPCTypeInfo(Element.dragon, Element.flying, Element.dragon) },
-                {NPCID.DD2JavelinstT1, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2JavelinstT2, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2JavelinstT3, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2DarkMageT1, new NPCTypeInfo(Element.psychic, Element.dark, Element.dark, AbilityID.Levitate) },
-                {NPCID.DD2DarkMageT3, new NPCTypeInfo(Element.psychic, Element.dark, Element.dark, AbilityID.Levitate) },
-                {NPCID.DD2SkeletonT1, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.DD2SkeletonT3, new NPCTypeInfo(Element.bone, Element.none, Element.bone) },
-                {NPCID.DD2WitherBeastT2, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.DD2WitherBeastT3, new NPCTypeInfo(Element.dark, Element.none, Element.dark) },
-                {NPCID.DD2DrakinT2, new NPCTypeInfo(Element.dragon, Element.none, Element.dragon) },
-                {NPCID.DD2DrakinT3, new NPCTypeInfo(Element.dragon, Element.none, Element.dragon) },
-                {NPCID.DD2KoboldWalkerT2, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2KoboldWalkerT3, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2KoboldFlyerT2, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.DD2KoboldFlyerT3, new NPCTypeInfo(Element.normal, Element.flying, Element.normal) },
-                {NPCID.DD2OgreT2, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2OgreT3, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                {NPCID.DD2LightningBugT3, new NPCTypeInfo(Element.bug, Element.electric, Element.electric, new AbilityContainer(AbilityID.Levitate, AbilityID.VoltAbsorb)) },
-                {NPCID.BartenderUnconscious, new NPCTypeInfo(Element.normal, Element.none, Element.normal) },
-                //{1022, new EnemyInfo(Element.none, Element.none, Element.none, Element.none) },
-                //{1023, new EnemyInfo(Element.none, Element.none, Element.none, Element.none) },
-                //{1025, new EnemyInfo(Element.none, Element.none, Element.none, Element.none) },
-                //{1026, new EnemyInfo(Element.none, Element.none, Element.none, Element.none) },
-            };
-        }
-
-        public static void Unload()
-        {
-            Type = null;
-        }
-
-        public static Dictionary<int, NPCTypeInfo> Type;
-
-        
-        //public static void Adding()
-        //{
-        //    Mod calamity = ModLoader.GetMod("CalamityMod");
-        //    if (calamity != null)
-        //    {
-        //        Enemies.Type.Add()
-        //    }
-        //}
-    }
-}
+﻿//using System;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using Microsoft.CodeAnalysis.Differencing;
+//using Microsoft.Xna;
+//using Microsoft.Xna.Framework;
+//using Terraria;
+//using Terraria.ID;
+//using Terraria.ModLoader;
+//using TerraTyping.DataTypes;
+
+//namespace TerraTyping;
+
+//public class Enemies : ILoadable
+//{
+//    private NPCTypeInfo[] types;
+
+//    public static Enemies Instance { get; private set; }
+
+//    void ILoadable.Load(Mod mod)
+//    {
+//        Instance = this;
+//    }
+
+//    void ILoadable.Unload()
+//    {
+//        Instance = null;
+//    }
+
+//    public static NPCTypeInfo GetInfo(int type)
+//    {
+//        if (type < Instance.types.Length && type >= 0)
+//        {
+//            return Instance.types[type];
+//        }
+//        else
+//        {
+//            throw new IndexOutOfRangeException($"Argument {nameof(type)} ({type}) is out of the bounds of NPC types.");
+//        }
+//    }
+
+//    public static void SetupTypes()
+//    {
+//        Instance.types = new NPCTypeInfo[NPCLoader.NPCCount];
+//        Instance.LoadVanillaEnemies();
+
+//        int typed = 0;
+//        for (int i = 0; i < Instance.types.Length; i++)
+//        {
+//            NPCTypeInfo typeInfo = Instance.types[i];
+//            if (typeInfo is null)
+//            {
+//                Instance.types[i] = NPCTypeInfo.Default;
+//            }
+//            else
+//            {
+//                typed++;
+//            }
+//        }
+
+//        ModContent.GetInstance<TerraTyping>().Logger.Info($"Loaded {Instance.types.Length} NPCs, {typed} of which having types.");
+//    }
+
+//    private void LoadVanillaEnemies()
+//    {
+//        types[NPCID.BlueSlime] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Blue Slime
+//        types[NPCID.MotherSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Flammable)); // Mother Slime
+//        types[NPCID.KingSlime] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // King Slime
+//        types[NPCID.LavaSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.Flammable, AbilityID.None, AbilityID.FlashFire)); // Lava Slime
+//        types[NPCID.DemonEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.CataractEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.SleepyEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.DialatedEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.GreenEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.PurpleEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.DemonEyeOwl] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.DemonEyeSpaceship] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Demon Eye
+//        types[NPCID.WanderingEye] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Wandering Eye
+//        types[NPCID.EyeofCthulhu] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Eye of Cthulhu
+//        types[NPCID.ServantofCthulhu] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Servant of Cthulhu
+//        types[NPCID.Zombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ZombieDoctor] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ZombieSuperman] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ZombiePixie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.PincushionZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.SlimedZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Flammable)); // Zombie
+//        types[NPCID.SwampZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.grass, Element.water), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.TwiggyZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.Skeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.ArmoredSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel), ElementArray.Get(Element.bone)); // Armored Skeleton
+//        types[NPCID.SkeletonArcher] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton Archer
+//        types[NPCID.HeadacheSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Skeleton
+//        types[NPCID.MisassembledSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Skeleton
+//        types[NPCID.PantlessSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Skeleton
+//        types[NPCID.SkeletonTopHat] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.SkeletonAstonaut] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.SkeletonAlien] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.BoneThrowingSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.BoneThrowingSkeleton2] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.BoneThrowingSkeleton3] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.BoneThrowingSkeleton4] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton
+//        types[NPCID.SkeletonMerchant] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton Merchant
+//        types[NPCID.EaterofSouls] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Levitate)); // Eater of Souls
+//        types[NPCID.GiantWormHead] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Giant Worm
+//        types[NPCID.GiantWormBody] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Giant Worm
+//        types[NPCID.GiantWormTail] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Giant Worm
+//        types[NPCID.DiggerHead] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Digger
+//        types[NPCID.DiggerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Digger
+//        types[NPCID.DiggerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Digger
+//        types[NPCID.DevourerHead] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Devourer
+//        types[NPCID.DevourerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Devourer
+//        types[NPCID.DevourerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Devourer
+//        types[NPCID.SeekerHead] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // World Feeder
+//        types[NPCID.SeekerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // World Feeder
+//        types[NPCID.SeekerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // World Feeder
+//        types[NPCID.EaterofWorldsHead] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Eater of Worlds
+//        types[NPCID.EaterofWorldsBody] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Eater of Worlds
+//        types[NPCID.EaterofWorldsTail] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.ground)); // Eater of Worlds
+//        types[NPCID.Merchant] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Merchant
+//        types[NPCID.Nurse] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.psychic), ElementArray.Get(Element.psychic)); // Nurse
+//        types[NPCID.ArmsDealer] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dark), ElementArray.Get(Element.dark)); // Arms Dealer
+//        types[NPCID.Dryad] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.grass), ElementArray.Get(Element.fairy)); // Dryad
+//        types[NPCID.Guide] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Guide
+//        types[NPCID.MeteorHead] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.FlashFire)); // Meteor Head
+//        types[NPCID.FireImp] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.psychic), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Fire Imp
+//        types[NPCID.BurningSphere] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.FlashFire)); // Burning Sphere
+//        types[NPCID.GoblinPeon] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Goblin Peon
+//        types[NPCID.GoblinThief] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dark), ElementArray.Get(Element.dark)); // Goblin Thief
+//        types[NPCID.GoblinWarrior] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.fighting), ElementArray.Get(Element.fighting), new AbilityContainer(AbilityID.Scrappy)); // Goblin Warrior
+//        types[NPCID.GoblinSorcerer] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.psychic), ElementArray.Get(Element.psychic)); // Goblin Sorcerer
+//        types[NPCID.ChaosBall] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Chaos Ball
+//        types[NPCID.GoblinSummoner] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ghost, Element.fire), ElementArray.Get(Element.ghost, Element.fire)); // Goblin Summoner
+//        types[NPCID.ShadowFlameApparition] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.fire), ElementArray.Get(Element.ghost, Element.fire)); // Shadowflame Apparition
+//        types[NPCID.GoblinScout] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Goblin Scout
+//        types[NPCID.AngryBones] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Angry Bones
+//        types[NPCID.DarkCaster] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic), ElementArray.Get(Element.bone)); // Dark Caster
+//        types[NPCID.WaterSphere] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.WaterAbsorb)); // Water Sphere
+//        types[NPCID.CursedSkull] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ghost), ElementArray.Get(Element.ghost)); // Cursed Skull
+//        types[NPCID.SkeletronHead] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ghost), ElementArray.Get(Element.bone)); // Skeletron
+//        types[NPCID.SkeletronHand] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ghost), ElementArray.Get(Element.bone)); // Skeletron
+//        types[NPCID.OldMan] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ghost), ElementArray.Get(Element.normal)); // Old Man
+//        types[NPCID.Demolitionist] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Demolitionist
+//        types[NPCID.BoneSerpentHead] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ground), ElementArray.Get(Element.bone), new AbilityContainer(AbilityID.MoldBreaker)); // Bone Serpent
+//        types[NPCID.BoneSerpentBody] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ground), ElementArray.Get(Element.bone), new AbilityContainer(AbilityID.MoldBreaker)); // Bone Serpent
+//        types[NPCID.BoneSerpentTail] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ground), ElementArray.Get(Element.bone), new AbilityContainer(AbilityID.MoldBreaker)); // Bone Serpent
+//        types[NPCID.Hornet] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.ManEater] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Man Eater
+//        types[NPCID.UndeadMiner] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ground), ElementArray.Get(Element.bone)); // Undead Miner
+//        types[NPCID.Tim] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic), ElementArray.Get(Element.bone)); // Tim
+//        types[NPCID.Bunny] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bunny
+//        types[NPCID.CorruptBunny] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dark), ElementArray.Get(Element.dark)); // Corrupt Bunny
+//        types[NPCID.Harpy] = new NPCTypeInfo(ElementArray.Get(Element.flying), ElementArray.Get(Element.flying)); // Harpy
+//        types[NPCID.CaveBat] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.flying), ElementArray.Get(Element.flying)); // Cave Bat
+//        types[NPCID.JungleBat] = new NPCTypeInfo(ElementArray.Get(Element.flying), ElementArray.Get(Element.flying)); // Jungle Bat
+//        types[NPCID.DoctorBones] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.psychic), ElementArray.Get(Element.psychic)); // Doctor Bones
+//        types[NPCID.TheGroom] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.normal), ElementArray.Get(Element.blood)); // The Groom
+//        types[NPCID.TheBride] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.normal), ElementArray.Get(Element.blood)); // The Bride
+//        types[NPCID.Clothier] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Clothier
+//        types[NPCID.Goldfish] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Goldfish
+//        types[NPCID.Snatcher] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Snatcher
+//        types[NPCID.CorruptGoldfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.dark), ElementArray.Get(Element.dark)); // Corrupt Goldfish
+//        types[NPCID.Piranha] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Piranha
+//        types[NPCID.Hellbat] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.flying), ElementArray.Get(Element.fire)); // Hellbat
+//        types[NPCID.Vulture] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.dark), ElementArray.Get(Element.flying)); // Vulture
+//        types[NPCID.Demon] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Levitate)); // Demon
+//        types[NPCID.BlueJellyfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.electric), ElementArray.Get(Element.electric)); // Blue Jellyfish
+//        types[NPCID.PinkJellyfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.electric), ElementArray.Get(Element.electric)); // Pink Jellyfish
+//        types[NPCID.GreenJellyfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.electric), ElementArray.Get(Element.electric)); // Green Jellyfish
+//        types[NPCID.Shark] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Shark
+//        types[NPCID.VoodooDemon] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Levitate)); // Voodoo Demon
+//        types[NPCID.Crab] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Crab
+//        types[NPCID.DungeonGuardian] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ghost), ElementArray.Get(Element.bone)); // Dungeon Guardian
+//        types[NPCID.Antlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.ground)); // Antlion
+//        types[NPCID.SpikeBall] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Spike Ball
+//        types[NPCID.DungeonSlime] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Dungeon Slime
+//        types[NPCID.BlazingWheel] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire)); // Blazing Wheel
+//        types[NPCID.Bird] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Bird
+//        types[NPCID.Pixie] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Levitate)); // Pixie
+//        types[NPCID.Mummy] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Mummy)); // Mummy
+//        types[NPCID.DarkMummy] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Mummy)); // Dark Mummy
+//        types[NPCID.LightMummy] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Mummy)); // Light Mummy
+//        types[NPCID.CorruptSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Flammable)); // Corrupt Slime
+//        types[NPCID.Wraith] = new NPCTypeInfo(ElementArray.Get(Element.ghost), ElementArray.Get(Element.ghost)); // Wraith
+//        types[NPCID.CursedHammer] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.ghost), ElementArray.Get(Element.ghost)); // Cursed Hammer
+//        types[NPCID.EnchantedSword] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.fairy), ElementArray.Get(Element.fairy)); // Enchanted Sword
+//        types[NPCID.CrimsonAxe] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.blood), ElementArray.Get(Element.blood)); // Crimson Axe
+//        types[NPCID.Mimic] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.dark), ElementArray.Get(Element.steel)); // Mimic
+//        types[NPCID.Unicorn] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy)); // Unicorn
+//        types[NPCID.WyvernHead] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.WyvernLegs] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.WyvernBody] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.WyvernBody2] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.WyvernBody3] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.WyvernTail] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Wyvern
+//        types[NPCID.GiantBat] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.flying, Element.dark), ElementArray.Get(Element.flying)); // Giant Bat
+//        types[NPCID.Corruptor] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.poison), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Levitate)); // Corruptor
+//        types[NPCID.Clinger] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark, Element.fire)); // Clinger
+//        types[NPCID.AnglerFish] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Angler Fish
+//        types[NPCID.Werewolf] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark)); // Werewolf
+//        types[NPCID.BoundGoblin] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bound Goblin
+//        types[NPCID.BoundWizard] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.psychic), ElementArray.Get(Element.normal)); // Bound Wizard
+//        types[NPCID.GoblinTinkerer] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Goblin Tinkerer
+//        types[NPCID.Wizard] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.psychic), ElementArray.Get(Element.normal)); // Wizard
+//        types[NPCID.Clown] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.psychic, Element.fairy), ElementArray.Get(Element.dark)); // Clown
+//        types[NPCID.GoblinArcher] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Goblin Archer
+//        types[NPCID.VileSpit] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.poison), ElementArray.Get(Element.dark)); // Vile Spit
+//        types[NPCID.WallofFlesh] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Wall of Flesh
+//        types[NPCID.WallofFleshEye] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Wall of Flesh
+//        types[NPCID.TheHungry] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // The Hungry
+//        types[NPCID.TheHungryII] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // The Hungry
+//        types[NPCID.LeechHead] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Leech
+//        types[NPCID.LeechBody] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Leech
+//        types[NPCID.LeechTail] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Leech
+//        types[NPCID.ChaosElemental] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy)); // Chaos Elemental
+//        types[NPCID.Slimer] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.dark, Element.flying), ElementArray.Get(Element.dark)); // Slimer
+//        types[NPCID.Gastropod] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fairy, Element.flying, Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Flammable)); // Gastropod
+//        types[NPCID.BoundMechanic] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bound Mechanic
+//        types[NPCID.Mechanic] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Mechanic
+//        NPCTypeInfo twins = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood), (typeInfo, npc) =>
+//        {
+//            return npc.ai[0] < 2 ? typeInfo : new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.steel));
+//        });
+//        types[NPCID.Retinazer] = twins; // Retinazer
+//        types[NPCID.Spazmatism] = twins; // Spazmatism
+//        types[NPCID.SkeletronPrime] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.ghost), ElementArray.Get(Element.steel)); // Skeletron Prime
+//        types[NPCID.PrimeCannon] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.MoldBreaker)); // Prime Cannon
+//        types[NPCID.PrimeSaw] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.MoldBreaker)); // Prime Saw
+//        types[NPCID.PrimeVice] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.MoldBreaker)); // Prime Vice
+//        types[NPCID.PrimeLaser] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.MoldBreaker)); // Prime Laser
+//        types[NPCID.BaldZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.TheDestroyer] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.steel), ElementArray.Get(Element.steel)); // The Destroyer
+//        types[NPCID.TheDestroyerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.steel), ElementArray.Get(Element.steel)); // The Destroyer
+//        types[NPCID.TheDestroyerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.steel), ElementArray.Get(Element.steel)); // The Destroyer
+//        types[NPCID.IlluminantBat] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.flying), ElementArray.Get(Element.fairy)); // Illuminant Bat
+//        types[NPCID.IlluminantSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Flammable)); // Illuminant Slime
+//        types[NPCID.Probe] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Probe
+//        types[NPCID.PossessedArmor] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.steel), ElementArray.Get(Element.steel)); // Possessed Armor
+//        types[NPCID.ToxicSludge] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Flammable)); // Toxic Sludge
+//        types[NPCID.SantaClaus] = new NPCTypeInfo(ElementArray.Get(Element.ice, Element.fairy), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.ThickFat)); // Santa Claus
+//        types[NPCID.SnowmanGangsta] = new NPCTypeInfo(ElementArray.Get(Element.ice, Element.dark), ElementArray.Get(Element.ice)); // Snowman Gangsta
+//        types[NPCID.MisterStabby] = new NPCTypeInfo(ElementArray.Get(Element.ice, Element.dark), ElementArray.Get(Element.dark)); // Mister Stabby
+//        types[NPCID.SnowBalla] = new NPCTypeInfo(ElementArray.Get(Element.ice, Element.dark), ElementArray.Get(Element.ice)); // Snow Balla
+//        types[NPCID.IceSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Flammable)); // Ice Slime
+//        types[NPCID.Penguin] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice), ElementArray.Get(Element.normal), new AbilityContainer(AbilityID.Fluffy)); // Penguin
+//        types[NPCID.PenguinBlack] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice), ElementArray.Get(Element.normal), new AbilityContainer(AbilityID.Fluffy)); // Penguin
+//        types[NPCID.CorruptPenguin] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice, Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.Fluffy)); // Corrupt Penguin
+//        types[NPCID.CrimsonPenguin] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice, Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Fluffy)); // Vicious Penguin
+//        types[NPCID.IceBat] = new NPCTypeInfo(ElementArray.Get(Element.ice, Element.flying), ElementArray.Get(Element.ice)); // Ice Bat
+//        types[NPCID.Lavabat] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.flying), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Lava Bat
+//        types[NPCID.GiantFlyingFox] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.normal)); // Giant Flying Fox
+//        types[NPCID.GiantTortoise] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.rock), ElementArray.Get(Element.rock)); // Giant Tortoise
+//        types[NPCID.IceTortoise] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice), ElementArray.Get(Element.ice)); // Ice Tortoise
+//        types[NPCID.Wolf] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.ice), ElementArray.Get(Element.dark)); // Wolf
+//        types[NPCID.RedDevil] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.flying), ElementArray.Get(Element.dark)); // Red Devil
+//        types[NPCID.Arapaima] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Arapaima
+//        types[NPCID.VampireBat] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying), ElementArray.Get(Element.blood)); // Vampire
+//        types[NPCID.Vampire] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Grounded)); // Vampire
+//        types[NPCID.Truffle] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Truffle [npc]
+//        types[NPCID.ZombieEskimo] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ice), ElementArray.Get(Element.ice)); // Frozen Zombie
+//        types[NPCID.Frankenstein] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Frankenstein
+//        types[NPCID.BlackRecluse] = new NPCTypeInfo(ElementArray.Get(Element.poison, Element.bug), ElementArray.Get(Element.poison)); // Black Recluse
+//        types[NPCID.WallCreeper] = new NPCTypeInfo(ElementArray.Get(Element.poison, Element.bug), ElementArray.Get(Element.poison)); // Wall Creeper
+//        types[NPCID.WallCreeperWall] = new NPCTypeInfo(ElementArray.Get(Element.poison, Element.bug), ElementArray.Get(Element.poison)); // Wall Creeper
+//        types[NPCID.SwampThing] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.water), ElementArray.Get(Element.grass)); // Swamp Thing
+//        types[NPCID.UndeadViking] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ice), ElementArray.Get(Element.ice)); // Undead Viking
+//        types[NPCID.IceElemental] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Levitate)); // Ice Elemental
+//        types[NPCID.PigronCorruption] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Pigron
+//        types[NPCID.PigronHallow] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.fairy), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Pigron
+//        types[NPCID.PigronCrimson] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.blood), ElementArray.Get(Element.dragon)); // Pigron
+//        types[NPCID.RuneWizard] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic), ElementArray.Get(Element.bone)); // Rune Wizard
+//        types[NPCID.Crimera] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Levitate)); // Crimera
+//        types[NPCID.Herpling] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Herpling
+//        types[NPCID.AngryTrapper] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Angry Trapper
+//        types[NPCID.MossHornet] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Levitate)); // Moss Hornet
+//        types[NPCID.Derpling] = new NPCTypeInfo(ElementArray.Get(Element.bug), ElementArray.Get(Element.bug)); // Derpling
+//        types[NPCID.Steampunker] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.steel), ElementArray.Get(Element.normal)); // Steampunker
+//        types[NPCID.FaceMonster] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Face Monster
+//        types[NPCID.FloatyGross] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ghost), ElementArray.Get(Element.blood)); // Floaty Gross
+//        types[NPCID.Crimslime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Flammable)); // Crimslime
+//        types[NPCID.SpikedIceSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Flammable)); // Spiked Ice Slime
+//        types[NPCID.SnowFlinx] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Fluffy)); // Snow Flinx
+//        types[NPCID.LostGirl] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.dark), ElementArray.Get(Element.fairy)); // Lost Girl
+//        types[NPCID.Nymph] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.dark), ElementArray.Get(Element.fairy)); // Nymph
+//        types[NPCID.ArmoredViking] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel), ElementArray.Get(Element.bone)); // Armored Viking
+//        types[NPCID.Lihzahrd] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Lihzahrd
+//        types[NPCID.LihzahrdCrawler] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Lihzahrd
+//        types[NPCID.FemaleZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.SpikedJungleSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.grass), ElementArray.Get(Element.grass), new AbilityContainer(AbilityID.Flammable)); // Spiked Jungle Slime
+//        types[NPCID.Moth] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.flying), ElementArray.Get(Element.flying)); // Moth
+//        types[NPCID.IcyMerman] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice)); // Icy Merman
+//        types[NPCID.DyeTrader] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Dye Trader
+//        types[NPCID.PartyGirl] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Party Girl
+//        types[NPCID.Cyborg] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.electric), ElementArray.Get(Element.steel)); // Cyborg
+//        types[NPCID.Bee] = new NPCTypeInfo(ElementArray.Get(Element.bug), ElementArray.Get(Element.bug)); // Bee
+//        types[NPCID.BeeSmall] = new NPCTypeInfo(ElementArray.Get(Element.bug), ElementArray.Get(Element.bug)); // Bee
+//        types[NPCID.PirateDeckhand] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water, Element.fighting), ElementArray.Get(Element.fighting), new AbilityContainer(AbilityID.Scrappy)); // Pirate Deckhand
+//        types[NPCID.PirateCorsair] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.steel)); // Pirate Corsair
+//        types[NPCID.PirateDeadeye] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.normal)); // Pirate Deadeye
+//        types[NPCID.PirateCrossbower] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.normal)); // Pirate Crossbower
+//        types[NPCID.PirateCaptain] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Pirate Captain
+//        types[NPCID.Pirate] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Pirate [NPC]
+//        types[NPCID.PirateGhost] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.water), ElementArray.Get(Element.ghost)); // Pirate's Curse
+//        types[NPCID.PirateShip] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.normal)); // Flying Dutchman
+//        types[NPCID.PirateShipCannon] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.normal)); // Dutchman Cannon
+//        types[NPCID.CochinealBeetle] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.ground), ElementArray.Get(Element.ground)); // Cochineal Beetle
+//        types[NPCID.CyanBeetle] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.ice), ElementArray.Get(Element.ice)); // Cyan Beetle
+//        types[NPCID.LacBeetle] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.grass), ElementArray.Get(Element.grass)); // Lac Beetle
+//        types[NPCID.SeaSnail] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Sea Snail
+//        types[NPCID.Squid] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Squid
+//        types[NPCID.QueenBee] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Queen Bee
+//        types[NPCID.ZombieRaincoat] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.water)); // Raincoat Zombie
+//        types[NPCID.FlyingFish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.flying), ElementArray.Get(Element.flying)); // Flying Fish
+//        types[NPCID.UmbrellaSlime] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Umbrella Slime
+//        types[NPCID.FlyingSnake] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.poison), ElementArray.Get(Element.flying)); // Flying Snake
+//        types[NPCID.Painter] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Painter
+//        types[NPCID.WitchDoctor] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison, Element.psychic), ElementArray.Get(Element.grass)); // Witch Doctor
+//        types[NPCID.GoldfishWalker] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Goldfish
+//        types[NPCID.HornetFatty] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.HornetHoney] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.HornetLeafy] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.HornetSpikey] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.HornetStingy] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Hornet
+//        types[NPCID.JungleCreeper] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.poison)); // Jungle Creeper
+//        types[NPCID.JungleCreeperWall] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.poison)); // Jungle Creeper
+//        types[NPCID.BlackRecluseWall] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.poison), ElementArray.Get(Element.poison)); // Black Recluse
+//        types[NPCID.BloodCrawler] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.bug), ElementArray.Get(Element.bug)); // Blood Crawler
+//        types[NPCID.BloodCrawlerWall] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.bug), ElementArray.Get(Element.bug)); // Blood Crawler
+//        types[NPCID.BloodFeeder] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.blood), ElementArray.Get(Element.water)); // Blood Feeder
+//        types[NPCID.BloodJelly] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.electric, Element.blood), ElementArray.Get(Element.electric), new AbilityContainer(AbilityID.VoltAbsorb)); // Blood Jelly
+//        types[NPCID.IceGolem] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice)); // Ice Golem
+//        types[NPCID.RainbowSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.ColorChange, AbilityID.Flammable)); // Rainbow Slime
+//        types[NPCID.Golem] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.Heatproof)); // Golem
+//        types[NPCID.GolemHead] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.Heatproof)); // Golem Head
+//        types[NPCID.GolemFistLeft] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.fighting), new AbilityContainer(AbilityID.Heatproof)); // Golem Fist
+//        types[NPCID.GolemFistRight] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.fighting), new AbilityContainer(AbilityID.Heatproof)); // Golem Fist
+//        types[NPCID.GolemHeadFree] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.Heatproof)); // Golem Head
+//        types[NPCID.AngryNimbus] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.water, Element.electric), ElementArray.Get(Element.flying), new AbilityContainer(AbilityID.LightningRod)); // Angry Nimbus
+//        types[NPCID.Eyezor] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.psychic), ElementArray.Get(Element.psychic)); // Eyezor
+//        types[NPCID.Parrot] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Parrot
+//        types[NPCID.Reaper] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark)); // Reaper
+//        types[NPCID.ZombieMushroom] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.grass, Element.poison), ElementArray.Get(Element.blood)); // Spore Zombie
+//        types[NPCID.ZombieMushroomHat] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.grass, Element.poison), ElementArray.Get(Element.blood)); // Spore Zombie
+//        types[NPCID.FungoFish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.grass, Element.poison), ElementArray.Get(Element.water)); // Fungo Fish
+//        types[NPCID.AnomuraFungus] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.grass)); // Anomura Fungus
+//        types[NPCID.MushiLadybug] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison, Element.bug), ElementArray.Get(Element.bug)); // Mushi Ladybug
+//        types[NPCID.FungiBulb] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.poison)); // Fungi Bulb
+//        types[NPCID.GiantFungiBulb] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.poison)); // Giant Fungi Bulb
+//        types[NPCID.FungiSpore] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.poison), ElementArray.Get(Element.poison)); // Fungi Spore
+//        types[NPCID.SporeBat] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.grass, Element.poison), ElementArray.Get(Element.grass)); // Spore Bat
+//        types[NPCID.SporeSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.grass, Element.poison), ElementArray.Get(Element.grass)); // Spore Skeleton
+//        types[NPCID.Plantera] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Plantera
+//        types[NPCID.PlanterasHook] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Plantera's Hook
+//        types[NPCID.PlanterasTentacle] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Plantera's Tentacle
+//        types[NPCID.Spore] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Spore
+//        types[NPCID.BrainofCthulhu] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.psychic), ElementArray.Get(Element.psychic)); // Brain of Cthulhu
+//        types[NPCID.Creeper] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Creeper
+//        types[NPCID.IchorSticker] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Ichor Sticker
+//        types[NPCID.RustyArmoredBonesAxe] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel), ElementArray.Get(Element.steel)); // Rusty Armored Bones
+//        types[NPCID.RustyArmoredBonesFlail] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel), ElementArray.Get(Element.steel)); // Rusty Armored Bones
+//        types[NPCID.RustyArmoredBonesSword] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel), ElementArray.Get(Element.steel)); // Rusty Armored Bones
+//        types[NPCID.RustyArmoredBonesSwordNoArmor] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.steel)); // Rusty Armored Bones
+//        types[NPCID.BlueArmoredBones] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.water), ElementArray.Get(Element.water)); // Blue Armored Bones
+//        types[NPCID.BlueArmoredBonesMace] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.water), ElementArray.Get(Element.steel)); // Blue Armored Bones
+//        types[NPCID.BlueArmoredBonesNoPants] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.water), ElementArray.Get(Element.water)); // Blue Armored Bones
+//        types[NPCID.BlueArmoredBonesSword] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.water), ElementArray.Get(Element.steel)); // Blue Armored Bones
+//        types[NPCID.HellArmoredBones] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Hell Armored Bones
+//        types[NPCID.HellArmoredBonesSpikeShield] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Hell Armored Bones
+//        types[NPCID.HellArmoredBonesMace] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Hell Armored Bones
+//        types[NPCID.HellArmoredBonesSword] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.None, AbilityID.None, AbilityID.FlashFire)); // Hell Armored Bones
+//        types[NPCID.RaggedCaster] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic, Element.dark), ElementArray.Get(Element.dark)); // Ragged Caster
+//        types[NPCID.RaggedCasterOpenCoat] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic, Element.dark), ElementArray.Get(Element.dark)); // Ragged Caster
+//        types[NPCID.Necromancer] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic), ElementArray.Get(Element.psychic)); // Necromancer
+//        types[NPCID.NecromancerArmored] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic), ElementArray.Get(Element.psychic)); // Necromancer
+//        types[NPCID.DiabolistRed] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic, Element.fire), ElementArray.Get(Element.fire)); // Diabolist
+//        types[NPCID.DiabolistWhite] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.psychic, Element.fire), ElementArray.Get(Element.fire)); // Diabolist
+//        types[NPCID.BoneLee] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.fighting), ElementArray.Get(Element.fighting), new AbilityContainer(AbilityID.Scrappy)); // Bone Lee
+//        types[NPCID.DungeonSpirit] = new NPCTypeInfo(ElementArray.Get(Element.ghost), ElementArray.Get(Element.ghost)); // Dungeon Spirit
+//        types[NPCID.GiantCursedSkull] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.ghost), ElementArray.Get(Element.bone)); // Giant Cursed Skull
+//        types[NPCID.Paladin] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel, Element.ghost, Element.fighting), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.Justified)); // Paladin
+//        types[NPCID.SkeletonSniper] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton Sniper
+//        types[NPCID.TacticalSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Tactical Skeleton
+//        types[NPCID.SkeletonCommando] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Skeleton Commando
+//        types[NPCID.AngryBonesBig] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Angry Bones
+//        types[NPCID.AngryBonesBigMuscle] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Angry Bones
+//        types[NPCID.AngryBonesBigHelmet] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Angry Bones
+//        types[NPCID.BirdBlue] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Blue Jay
+//        types[NPCID.BirdRed] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Cardinal
+//        types[NPCID.Squirrel] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Squirrel
+//        types[NPCID.Mouse] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Mouse
+//        types[NPCID.Raven] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.flying), ElementArray.Get(Element.dark)); // Raven
+//        types[NPCID.SlimeMasked] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Slime
+//        types[NPCID.BunnySlimed] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bunny
+//        types[NPCID.HoppinJack] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ghost), ElementArray.Get(Element.ghost), new AbilityContainer(AbilityID.Flammable)); // Hoppin' Jack
+//        types[NPCID.Scarecrow1] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow2] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow3] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow4] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow5] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow6] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow7] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow8] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow9] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.Scarecrow10] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Scarecrow
+//        types[NPCID.HeadlessHorseman] = new NPCTypeInfo(ElementArray.Get(Element.ghost), ElementArray.Get(Element.ghost)); // Headless Horseman
+//        types[NPCID.Ghost] = new NPCTypeInfo(ElementArray.Get(Element.ghost), ElementArray.Get(Element.ghost), new AbilityContainer(AbilityID.Levitate)); // Ghost
+//        types[NPCID.MourningWood] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.fire), ElementArray.Get(Element.grass)); // Mourning Wood
+//        types[NPCID.Splinterling] = new NPCTypeInfo(ElementArray.Get(Element.grass), ElementArray.Get(Element.grass)); // Splinterling
+//        types[NPCID.Pumpking] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Pumpking
+//        types[NPCID.PumpkingBlade] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ghost), ElementArray.Get(Element.ghost)); // Pumpking
+//        types[NPCID.Hellhound] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.ghost), ElementArray.Get(Element.dark)); // Hellhound
+//        types[NPCID.Poltergeist] = new NPCTypeInfo(ElementArray.Get(Element.ghost), ElementArray.Get(Element.ghost)); // Poltergeist
+//        types[NPCID.ZombieXmas] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ZombieSweater] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.SlimeRibbonWhite] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Slime
+//        types[NPCID.SlimeRibbonYellow] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Slime
+//        types[NPCID.SlimeRibbonGreen] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Slime
+//        types[NPCID.SlimeRibbonRed] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Slime
+//        types[NPCID.BunnyXmas] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bunny
+//        types[NPCID.ZombieElf] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ice), ElementArray.Get(Element.blood)); // Zombie Elf
+//        types[NPCID.ZombieElfBeard] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ice), ElementArray.Get(Element.blood)); // Zombie Elf
+//        types[NPCID.ZombieElfGirl] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ice), ElementArray.Get(Element.blood)); // Zombie Elf
+//        types[NPCID.PresentMimic] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.ice), ElementArray.Get(Element.steel)); // Present Mimic
+//        types[NPCID.GingerbreadMan] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ice), ElementArray.Get(Element.normal)); // Gingerbread Man
+//        types[NPCID.Yeti] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Fluffy)); // Yeti
+//        types[NPCID.Everscream] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ice), ElementArray.Get(Element.grass)); // Everscream
+//        types[NPCID.IceQueen] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice)); // Ice Queen
+//        types[NPCID.SantaNK1] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Santa-NK1
+//        types[NPCID.ElfCopter] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.flying)); // Elf Copter
+//        types[NPCID.Nutcracker] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ice), ElementArray.Get(Element.ice)); // Nutcracker
+//        types[NPCID.NutcrackerSpinning] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ice), ElementArray.Get(Element.ice)); // Nutcracker
+//        types[NPCID.ElfArcher] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice)); // Elf Archer
+//        types[NPCID.Krampus] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.dark), ElementArray.Get(Element.dark)); // Krampus
+//        types[NPCID.Flocko] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice)); // Flocko
+//        types[NPCID.Stylist] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Stylist
+//        types[NPCID.WebbedStylist] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Webbed Stylist
+//        types[NPCID.Firefly] = new NPCTypeInfo(ElementArray.Get(Element.bug), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Firefly
+//        types[NPCID.Butterfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.flying), ElementArray.Get(Element.flying)); // Butterfly
+//        types[NPCID.Worm] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.ground), ElementArray.Get(Element.ground)); // Worm
+//        types[NPCID.LightningBug] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.electric), ElementArray.Get(Element.electric), new AbilityContainer(AbilityID.VoltAbsorb)); // Lightning Bug
+//        types[NPCID.Snail] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.normal)); // Snail
+//        types[NPCID.GlowingSnail] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.electric), ElementArray.Get(Element.electric)); // Glowing Snail
+//        types[NPCID.Frog] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Frog
+//        types[NPCID.Duck] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Duck
+//        types[NPCID.Duck2] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Duck
+//        types[NPCID.DuckWhite] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Duck
+//        types[NPCID.DuckWhite2] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Duck
+//        types[NPCID.ScorpionBlack] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.poison), ElementArray.Get(Element.poison)); // Scorpion
+//        types[NPCID.Scorpion] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.poison), ElementArray.Get(Element.poison)); // Scorpion
+//        types[NPCID.TravellingMerchant] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Traveling Merchant
+//        types[NPCID.Angler] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Angler
+//        types[NPCID.DukeFishron] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.water), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Duke Fishron
+//        types[NPCID.DetonatingBubble] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Detonating Bubble
+//        types[NPCID.Sharkron] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.water), ElementArray.Get(Element.dragon)); // Sharkron
+//        types[NPCID.Sharkron2] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.water), ElementArray.Get(Element.dragon)); // Sharkron
+//        types[NPCID.TruffleWorm] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dragon), ElementArray.Get(Element.ground)); // Truffle Worm
+//        types[NPCID.TruffleWormDigger] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dragon), ElementArray.Get(Element.ground)); // Truffle Worm
+//        types[NPCID.SleepingAngler] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Sleeping Angler
+//        types[NPCID.Grasshopper] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.grass), ElementArray.Get(Element.grass)); // Grasshopper
+//        types[NPCID.ChatteringTeethBomb] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Chattering Teeth Bomb
+//        types[NPCID.BrainScrambler] = new NPCTypeInfo(ElementArray.Get(Element.psychic, Element.dark), ElementArray.Get(Element.dark)); // Brain Scrambler
+//        types[NPCID.RayGunner] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Ray Gunner
+//        types[NPCID.MartianOfficer] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.psychic)); // Martian Officer
+//        types[NPCID.ForceBubble] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Bubble Shield
+//        types[NPCID.GrayGrunt] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Gray Grunt
+//        types[NPCID.MartianEngineer] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Martian Engineer
+//        types[NPCID.MartianTurret] = new NPCTypeInfo(ElementArray.Get(Element.electric, Element.steel), ElementArray.Get(Element.electric), new AbilityContainer(AbilityID.LightningRod)); // Tesla Turret
+//        types[NPCID.MartianDrone] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.flying)); // Martian Drone
+//        types[NPCID.GigaZapper] = new NPCTypeInfo(ElementArray.Get(Element.electric, Element.fighting), ElementArray.Get(Element.electric)); // Gigazapper
+//        types[NPCID.ScutlixRider] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.psychic)); // Scutlix Gunner
+//        types[NPCID.Scutlix] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Scutlix
+//        types[NPCID.MartianSaucer] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.steel)); // Martian Saucer
+//        types[NPCID.MartianSaucerTurret] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Martian Saucer Turret
+//        types[NPCID.MartianSaucerCannon] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Martian Saucer Cannon
+//        types[NPCID.MartianSaucerCore] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.steel)); // Martian Saucer
+//        types[NPCID.MartianProbe] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.flying), new AbilityContainer(AbilityID.Heatproof)); // Martian Probe
+//        types[NPCID.StardustWormHead] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ground), ElementArray.Get(Element.ground)); // Milkyway Weaver
+//        types[NPCID.StardustWormBody] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ground), ElementArray.Get(Element.ground)); // NPCName.StardustWormBody
+//        types[NPCID.StardustWormTail] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ground), ElementArray.Get(Element.ground)); // NPCName.StardustWormTail
+//        types[NPCID.StardustCellBig] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // Star Cell
+//        types[NPCID.StardustCellSmall] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // Star Cell
+//        types[NPCID.StardustJellyfishBig] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // Flow Invader
+//        types[NPCID.StardustJellyfishSmall] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // NPCName.StardustJellyfishSmall
+//        types[NPCID.StardustSpiderBig] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug)); // Twinkle Popper
+//        types[NPCID.StardustSpiderSmall] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug)); // Twinkle
+//        types[NPCID.StardustSoldier] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.fighting), ElementArray.Get(Element.fighting)); // Stargazer
+//        types[NPCID.SolarCrawltipedeHead] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Levitate)); // Crawltipede
+//        types[NPCID.SolarCrawltipedeBody] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Levitate)); // Crawltipede
+//        types[NPCID.SolarCrawltipedeTail] = new NPCTypeInfo(ElementArray.Get(Element.fire, Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Levitate)); // Crawltipede
+//        types[NPCID.SolarDrakomire] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.rock)); // Drakomire
+//        types[NPCID.SolarDrakomireRider] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.fire)); // Drakomire Rider
+//        types[NPCID.SolarSroller] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.rock)); // Sroller
+//        types[NPCID.SolarCorite] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.rock)); // Corite
+//        types[NPCID.SolarSolenian] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire)); // Selenian
+//        types[NPCID.NebulaBrain] = new NPCTypeInfo(ElementArray.Get(Element.psychic, Element.flying), ElementArray.Get(Element.psychic)); // Nebula Floater
+//        types[NPCID.NebulaHeadcrab] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Brain Suckler
+//        types[NPCID.LunarTowerVortex] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.electric), ElementArray.Get(Element.ground)); // Vortex Pillar
+//        types[NPCID.NebulaBeast] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Evolution Beast
+//        types[NPCID.NebulaSoldier] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Predictor
+//        types[NPCID.VortexRifleman] = new NPCTypeInfo(ElementArray.Get(Element.electric), ElementArray.Get(Element.electric), new AbilityContainer(AbilityID.Levitate)); // Storm Diver
+//        types[NPCID.VortexHornetQueen] = new NPCTypeInfo(ElementArray.Get(Element.electric, Element.bug), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Alien Queen
+//        types[NPCID.VortexHornet] = new NPCTypeInfo(ElementArray.Get(Element.electric, Element.bug), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Alien Hornet
+//        types[NPCID.VortexLarva] = new NPCTypeInfo(ElementArray.Get(Element.electric, Element.bug), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Alien Larva
+//        types[NPCID.VortexSoldier] = new NPCTypeInfo(ElementArray.Get(Element.electric), ElementArray.Get(Element.electric)); // Vortexian
+//        types[NPCID.ArmedZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedZombieEskimo] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.ice), ElementArray.Get(Element.blood)); // Frozen Zombie
+//        types[NPCID.ArmedZombiePincussion] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedZombieSlimed] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedZombieSwamp] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedZombieTwiggy] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedZombieCenx] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.MoonLordHead] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark, Element.psychic), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.PrismArmor)); // Moon Lord
+//        types[NPCID.MoonLordHand] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.PrismArmor)); // Moon Lord's Hand
+//        types[NPCID.MoonLordCore] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.PrismArmor)); // Moon Lord's Core
+//        types[NPCID.MoonLordFreeEye] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.PrismArmor)); // True Eye of Cthulhu
+//        types[NPCID.MoonLordLeechBlob] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark), new AbilityContainer(AbilityID.PrismArmor)); // Moon Leech Clot
+//        types[NPCID.CultistDevote] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dragon, Element.dark), ElementArray.Get(Element.normal)); // Lunatic Devotee
+//        types[NPCID.CultistArcherBlue] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dragon, Element.dark), ElementArray.Get(Element.normal)); // Cultist Archer
+//        types[NPCID.CultistArcherWhite] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dragon, Element.dark), ElementArray.Get(Element.normal)); // Cultist Archer
+//        types[NPCID.CultistBoss] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon)); // Lunatic Cultist
+//        types[NPCID.CultistBossClone] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.dark), ElementArray.Get(Element.dragon)); // Lunatic Cultist
+//        types[NPCID.CultistTablet] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.rock), ElementArray.Get(Element.rock)); // Mysterious Tablet
+//        types[NPCID.CultistDragonHead] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.CultistDragonBody1] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.CultistDragonBody2] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.CultistDragonBody3] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.CultistDragonBody4] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.CultistDragonTail] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Phantasm Dragon
+//        types[NPCID.AncientCultistSquidhead] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.psychic), ElementArray.Get(Element.psychic)); // Ancient Vision
+//        types[NPCID.AncientLight] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.electric), ElementArray.Get(Element.electric)); // Ancient Light
+//        types[NPCID.AncientDoom] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.ghost), ElementArray.Get(Element.ghost)); // Ancient Doom
+//        types[NPCID.TaxCollector] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dark), ElementArray.Get(Element.dark)); // Tax Collector
+//        types[NPCID.DemonTaxCollector] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.dark), ElementArray.Get(Element.dark)); // Tortured Soul
+//        types[NPCID.GoldBird] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.flying), ElementArray.Get(Element.flying)); // Gold Bird
+//        types[NPCID.GoldBunny] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Gold Bunny
+//        types[NPCID.GoldButterfly] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.bug, Element.flying), ElementArray.Get(Element.bug)); // Gold Butterfly
+//        types[NPCID.GoldFrog] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Gold Frog
+//        types[NPCID.GoldGrasshopper] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.grass), ElementArray.Get(Element.grass)); // Gold Grasshopper
+//        types[NPCID.GoldMouse] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Gold Mouse
+//        types[NPCID.GoldWorm] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.ground), ElementArray.Get(Element.ground)); // Gold Worm
+//        types[NPCID.Butcher] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.dark), ElementArray.Get(Element.blood)); // Butcher
+//        types[NPCID.CreatureFromTheDeep] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water)); // Creature from the Deep
+//        types[NPCID.Fritz] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.psychic)); // Fritz
+//        types[NPCID.Nailhead] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Nailhead
+//        types[NPCID.CrimsonBunny] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.dark), ElementArray.Get(Element.dark)); // Vicious Bunny
+//        types[NPCID.CrimsonGoldfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.dark), ElementArray.Get(Element.dark)); // Vicious Goldfish
+//        types[NPCID.Psycho] = new NPCTypeInfo(ElementArray.Get(Element.dark), ElementArray.Get(Element.dark)); // Psycho
+//        types[NPCID.DeadlySphere] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel)); // Deadly Sphere
+//        types[NPCID.DrManFly] = new NPCTypeInfo(ElementArray.Get(Element.psychic, Element.bug, Element.poison), ElementArray.Get(Element.bug)); // Dr. Man Fly
+//        types[NPCID.ThePossessed] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.ghost), ElementArray.Get(Element.dark)); // The Possessed
+//        types[NPCID.BigMimicCorruption] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.dark), ElementArray.Get(Element.dark)); // Corrupt Mimic
+//        types[NPCID.BigMimicCrimson] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.blood), ElementArray.Get(Element.blood)); // Crimson Mimic
+//        types[NPCID.BigMimicHallow] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.fairy), ElementArray.Get(Element.fairy)); // Hallowed Mimic
+//        types[NPCID.BigMimicJungle] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.grass), ElementArray.Get(Element.grass)); // Jungle Mimic
+//        types[NPCID.Mothron] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.flying), ElementArray.Get(Element.flying)); // Mothron
+//        types[NPCID.MothronEgg] = new NPCTypeInfo(ElementArray.Get(Element.bug), ElementArray.Get(Element.bug)); // Mothron Egg
+//        types[NPCID.MothronSpawn] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.flying), ElementArray.Get(Element.bug)); // Baby Mothron
+//        types[NPCID.Medusa] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.poison), ElementArray.Get(Element.rock)); // Medusa
+//        types[NPCID.GreekSkeleton] = new NPCTypeInfo(ElementArray.Get(Element.bone, Element.steel, Element.fighting), ElementArray.Get(Element.fighting)); // Hoplite
+//        types[NPCID.GraniteGolem] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock)); // Granite Golem
+//        types[NPCID.GraniteFlyer] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.Levitate)); // Granite Elemental
+//        types[NPCID.EnchantedNightcrawler] = new NPCTypeInfo(ElementArray.Get(Element.fairy, Element.ground), ElementArray.Get(Element.fairy)); // Enchanted Nightcrawler
+//        types[NPCID.Grubby] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.bug), ElementArray.Get(Element.bug)); // Grubby
+//        types[NPCID.Sluggy] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.bug), ElementArray.Get(Element.bug)); // Sluggy
+//        types[NPCID.Buggy] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.bug), ElementArray.Get(Element.bug)); // Buggy
+//        types[NPCID.BloodZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Blood Zombie
+//        types[NPCID.Drippler] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Levitate)); // Drippler
+//        types[NPCID.LunarTowerStardust] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.dragon), ElementArray.Get(Element.ground)); // Stardust Pillar
+//        types[NPCID.Crawdad] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Crawdad
+//        types[NPCID.Crawdad2] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground)); // Crawdad
+//        types[NPCID.GiantShelly] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock)); // Giant Shelly
+//        types[NPCID.GiantShelly2] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock)); // Giant Shelly
+//        types[NPCID.Salamander] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander2] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander3] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander4] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander5] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander6] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander7] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander8] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.Salamander9] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison), new AbilityContainer(AbilityID.Corrosion)); // Salamander
+//        types[NPCID.LunarTowerNebula] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.psychic), ElementArray.Get(Element.ground)); // Nebula Pillar
+//        types[NPCID.WalkingAntlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.bug)); // Antlion Charger
+//        types[NPCID.GiantWalkingAntlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.bug)); // Giant Antlion Charger
+//        types[NPCID.FlyingAntlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.flying), new AbilityContainer(AbilityID.Levitate)); // Antlion Swarmer
+//        types[NPCID.GiantFlyingAntlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.flying), new AbilityContainer(AbilityID.Levitate)); // Giant Antlion Swarmer
+//        types[NPCID.LarvaeAntlion] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.bug), ElementArray.Get(Element.bug)); // Antlion Larva
+//        types[NPCID.DuneSplicerHead] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Dune Splicer
+//        types[NPCID.DuneSplicerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Dune Splicer
+//        types[NPCID.DuneSplicerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Dune Splicer
+//        types[NPCID.TombCrawlerHead] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Tomb Crawler
+//        types[NPCID.TombCrawlerBody] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Tomb Crawler
+//        types[NPCID.TombCrawlerTail] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.SandForce, AbilityID.MoldBreaker)); // Tomb Crawler
+//        types[NPCID.SolarFlare] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire)); // Solar Flare
+//        types[NPCID.LunarTowerSolar] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.fire), ElementArray.Get(Element.ground)); // Solar Pillar
+//        types[NPCID.SolarSpearman] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.fire)); // Drakanian
+//        types[NPCID.SolarGoop] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire)); // Solar Fragment
+//        types[NPCID.MartianWalker] = new NPCTypeInfo(ElementArray.Get(Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.LightningRod)); // Martian Walker
+//        types[NPCID.DesertGhoul] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.ground), ElementArray.Get(Element.ghost)); // Ghoul
+//        types[NPCID.DesertGhoulCorruption] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.ground, Element.dark), ElementArray.Get(Element.dark)); // Vile Ghoul
+//        types[NPCID.DesertGhoulCrimson] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.ground, Element.blood), ElementArray.Get(Element.blood)); // Tainted Ghoul
+//        types[NPCID.DesertGhoulHallow] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.ground, Element.fairy), ElementArray.Get(Element.fairy)); // Dreamer Ghoul
+//        types[NPCID.DesertLamiaLight] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison)); // Lamia
+//        types[NPCID.DesertLamiaDark] = new NPCTypeInfo(ElementArray.Get(Element.poison), ElementArray.Get(Element.poison)); // Lamia
+//        types[NPCID.DesertScorpionWalk] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.poison), ElementArray.Get(Element.poison)); // Sand Poacher
+//        types[NPCID.DesertScorpionWall] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.poison), ElementArray.Get(Element.poison)); // Sand Poacher
+//        types[NPCID.DesertBeast] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock)); // Basilisk
+//        types[NPCID.DesertDjinn] = new NPCTypeInfo(ElementArray.Get(Element.ghost, Element.ground), ElementArray.Get(Element.ghost)); // Desert Spirit
+//        types[NPCID.SlimeSpiked] = new NPCTypeInfo(ElementArray.Get(Element.water), ElementArray.Get(Element.water), new AbilityContainer(AbilityID.Flammable)); // Spiked Slime
+//        types[NPCID.SandSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.WaterCompaction, AbilityID.Flammable)); // Sand Slime
+//        types[NPCID.SquirrelRed] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Red Squirrel
+//        types[NPCID.SquirrelGold] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.steel), ElementArray.Get(Element.steel)); // Gold Squirrel
+//        types[NPCID.PartyBunny] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bunny
+//        types[NPCID.SandElemental] = new NPCTypeInfo(ElementArray.Get(Element.ground), ElementArray.Get(Element.ground), new AbilityContainer(AbilityID.Levitate)); // Sand Elemental
+//        types[NPCID.SandShark] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.water), ElementArray.Get(Element.ground)); // Sand Shark
+//        types[NPCID.SandsharkCorrupt] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.water, Element.dark), ElementArray.Get(Element.dark)); // Bone Biter
+//        types[NPCID.SandsharkCrimson] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.water, Element.blood), ElementArray.Get(Element.blood)); // Flesh Reaver
+//        types[NPCID.SandsharkHallow] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.water, Element.fairy), ElementArray.Get(Element.fairy)); // Crystal Thresher
+//        types[NPCID.Tumbleweed] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.ground, Element.dark), ElementArray.Get(Element.grass)); // Angry Tumbler
+//        //types[NPCID.DD2AttackerTest] = new NPCTypeInfo(ElementArray.Get(), ElementArray.Get()); // ??? [unused]
+//        //types[NPCID.DD2EterniaCrystal] = new NPCTypeInfo(ElementArray.Get(), ElementArray.Get()); // Eternia Crystal
+//        //types[NPCID.DD2LanePortal] = new NPCTypeInfo(ElementArray.Get(), ElementArray.Get()); // Mysterious Portal
+//        types[NPCID.DD2Bartender] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.fighting), ElementArray.Get(Element.fighting)); // Tavernkeep
+//        types[NPCID.BartenderUnconscious] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.fighting), ElementArray.Get(Element.fighting)); // Unconscious Man
+//        types[NPCID.DD2Betsy] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.fire), ElementArray.Get(Element.dragon), new AbilityContainer(AbilityID.Levitate)); // Betsy
+//        types[NPCID.DD2GoblinT1] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Goblin
+//        types[NPCID.DD2GoblinT2] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Goblin
+//        types[NPCID.DD2GoblinT3] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Goblin
+//        types[NPCID.DD2GoblinBomberT1] = new NPCTypeInfo(ElementArray.Get(Element.fighting, Element.normal), ElementArray.Get(Element.normal)); // Etherian Goblin Bomber
+//        types[NPCID.DD2GoblinBomberT2] = new NPCTypeInfo(ElementArray.Get(Element.fighting, Element.normal), ElementArray.Get(Element.normal)); // Etherian Goblin Bomber
+//        types[NPCID.DD2GoblinBomberT3] = new NPCTypeInfo(ElementArray.Get(Element.fighting, Element.normal), ElementArray.Get(Element.normal)); // Etherian Goblin Bomber
+//        types[NPCID.DD2WyvernT1] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Etherian Wyvern
+//        types[NPCID.DD2WyvernT2] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Etherian Wyvern
+//        types[NPCID.DD2WyvernT3] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.flying), ElementArray.Get(Element.dragon)); // Etherian Wyvern
+//        types[NPCID.DD2JavelinstT1] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Javelin Thrower
+//        types[NPCID.DD2JavelinstT2] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Javelin Thrower
+//        types[NPCID.DD2JavelinstT3] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Etherian Javelin Thrower
+//        types[NPCID.DD2DarkMageT1] = new NPCTypeInfo(ElementArray.Get(Element.psychic, Element.dark), ElementArray.Get(Element.psychic)); // Dark Mage
+//        types[NPCID.DD2DarkMageT3] = new NPCTypeInfo(ElementArray.Get(Element.psychic, Element.dark), ElementArray.Get(Element.psychic)); // Dark Mage
+//        types[NPCID.DD2SkeletonT1] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Old One's Skeleton
+//        types[NPCID.DD2SkeletonT3] = new NPCTypeInfo(ElementArray.Get(Element.bone), ElementArray.Get(Element.bone)); // Old One's Skeleton
+//        types[NPCID.DD2WitherBeastT2] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Wither Beast
+//        types[NPCID.DD2WitherBeastT3] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Wither Beast
+//        types[NPCID.DD2DrakinT2] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // Drakin
+//        types[NPCID.DD2DrakinT3] = new NPCTypeInfo(ElementArray.Get(Element.dragon), ElementArray.Get(Element.dragon)); // Drakin
+//        types[NPCID.DD2KoboldWalkerT2] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Kobold
+//        types[NPCID.DD2KoboldWalkerT3] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Kobold
+//        types[NPCID.DD2KoboldFlyerT2] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Kobold Glider
+//        types[NPCID.DD2KoboldFlyerT3] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Kobold Glider
+//        types[NPCID.DD2OgreT2] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Ogre
+//        types[NPCID.DD2OgreT3] = new NPCTypeInfo(ElementArray.Get(Element.fighting), ElementArray.Get(Element.fighting)); // Ogre
+//        types[NPCID.DD2LightningBugT3] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.electric), ElementArray.Get(Element.electric), new AbilityContainer(AbilityID.Levitate)); // Etherian Lightning Bug
+//        types[NPCID.FairyCritterPink] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy)); // Pink Fairy
+//        types[NPCID.FairyCritterGreen] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy)); // Green Fairy
+//        types[NPCID.FairyCritterBlue] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy)); // Blue Fairy
+//        types[NPCID.ZombieMerman] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.blood)); // Zombie Merman
+//        types[NPCID.EyeballFlyingFish] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.flying, Element.water), ElementArray.Get(Element.blood)); // Wandering Eye Fish
+//        types[NPCID.Golfer] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Golfer
+//        types[NPCID.GolferRescue] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Golfer
+//        types[NPCID.TorchZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.ArmedTorchZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood), ElementArray.Get(Element.blood)); // Zombie
+//        types[NPCID.GoldGoldfish] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water, Element.steel), ElementArray.Get(Element.water)); // Gold Goldfish
+//        types[NPCID.GoldGoldfishWalker] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.steel), ElementArray.Get(Element.water)); // Gold Goldfish [walking]
+//        types[NPCID.WindyBalloon] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.flying), ElementArray.Get(Element.flying)); // Windy Balloon
+//        types[NPCID.BlackDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.BlueDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.GreenDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.OrangeDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.RedDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.YellowDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.Levitate)); // Dragonfly
+//        types[NPCID.GoldDragonfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.dragon, Element.steel), ElementArray.Get(Element.bug)); // Gold Dragonfly
+//        types[NPCID.Seagull] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.flying), ElementArray.Get(Element.flying)); // Seagull
+//        types[NPCID.Seagull2] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.flying), ElementArray.Get(Element.flying)); // Seagull
+//        types[NPCID.LadyBug] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.fairy), ElementArray.Get(Element.bug)); // Ladybug
+//        types[NPCID.GoldLadyBug] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.fairy, Element.steel), ElementArray.Get(Element.bug)); // Gold Ladybug
+//        types[NPCID.Maggot] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.blood), ElementArray.Get(Element.blood)); // Maggot
+//        types[NPCID.Pupfish] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.ground), ElementArray.Get(Element.water)); // Pupfish
+//        types[NPCID.Grebe] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.ground), ElementArray.Get(Element.flying)); // Grebe
+//        types[NPCID.Grebe2] = new NPCTypeInfo(ElementArray.Get(Element.flying, Element.ground), ElementArray.Get(Element.flying)); // Grebe
+//        types[NPCID.Rat] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Rat
+//        types[NPCID.Owl] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.flying), ElementArray.Get(Element.flying)); // Owl
+//        types[NPCID.WaterStrider] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.water), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.WaterBubble)); // Water Strider
+//        types[NPCID.GoldWaterStrider] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.water, Element.steel), ElementArray.Get(Element.bug), new AbilityContainer(AbilityID.WaterBubble)); // Gold Water Strider
+//        types[NPCID.ExplosiveBunny] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Explosive Bunny
+//        types[NPCID.Dolphin] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Dolphin
+//        types[NPCID.Turtle] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.water), ElementArray.Get(Element.water)); // Turtle
+//        types[NPCID.TurtleJungle] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.water), ElementArray.Get(Element.grass)); // Jungle Turtle
+//        types[NPCID.SeaTurtle] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.water), ElementArray.Get(Element.water)); // Sea Turtle
+//        types[NPCID.Seahorse] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.water), ElementArray.Get(Element.dragon)); // Seahorse
+//        types[NPCID.GoldSeahorse] = new NPCTypeInfo(ElementArray.Get(Element.dragon, Element.water, Element.steel), ElementArray.Get(Element.dragon)); // Gold Seahorse
+//        types[NPCID.BloodNautilus] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.water)); // Dreadnautilus
+//        types[NPCID.BloodSquid] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.blood)); // Blood Squid
+//        types[NPCID.GoblinShark] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.water), ElementArray.Get(Element.water)); // Hemogoblin Shark
+//        types[NPCID.BloodEelHead] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.electric), ElementArray.Get(Element.electric)); // Blood Eel
+//        types[NPCID.BloodEelBody] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.electric), ElementArray.Get(Element.electric)); // Blood Eel
+//        types[NPCID.BloodEelTail] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.electric), ElementArray.Get(Element.electric)); // Blood Eel
+//        types[NPCID.Gnome] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.fairy), ElementArray.Get(Element.fairy)); // Gnome
+//        types[NPCID.Dandelion] = new NPCTypeInfo(ElementArray.Get(Element.grass, Element.flying), ElementArray.Get(Element.grass)); // Angry Dandelion
+//        types[NPCID.IceMimic] = new NPCTypeInfo(ElementArray.Get(Element.steel, Element.ice), ElementArray.Get(Element.steel)); // Ice Mimic
+//        types[NPCID.BloodMummy] = new NPCTypeInfo(ElementArray.Get(Element.ground, Element.blood), ElementArray.Get(Element.blood), new AbilityContainer(AbilityID.Mummy)); // Blood Mummy
+//        types[NPCID.RockGolem] = new NPCTypeInfo(ElementArray.Get(Element.rock), ElementArray.Get(Element.rock)); // Rock Golem
+//        types[NPCID.MaggotZombie] = new NPCTypeInfo(ElementArray.Get(Element.blood, Element.bug), ElementArray.Get(Element.blood)); // Maggot Zombie
+//        types[NPCID.BestiaryGirl] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Zoologist
+//        types[NPCID.HallowBoss] = new NPCTypeInfo(ElementArray.Get(Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Levitate)); // Empress of Light
+//        types[NPCID.TownCat] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Cat
+//        types[NPCID.TownDog] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Dog
+//        types[NPCID.GemSquirrelAmethyst] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Amethyst Squirrel
+//        types[NPCID.GemSquirrelTopaz] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Topaz Squirrel
+//        types[NPCID.GemSquirrelSapphire] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Sapphire Squirrel
+//        types[NPCID.GemSquirrelEmerald] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Emerald Squirrel
+//        types[NPCID.GemSquirrelRuby] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Ruby Squirrel
+//        types[NPCID.GemSquirrelDiamond] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Diamond Squirrel
+//        types[NPCID.GemSquirrelAmber] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Amber Squirrel
+//        types[NPCID.GemBunnyAmethyst] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Amethyst Bunny
+//        types[NPCID.GemBunnyTopaz] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Topaz Bunny
+//        types[NPCID.GemBunnySapphire] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Sapphire Bunny
+//        types[NPCID.GemBunnyEmerald] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Emerald Bunny
+//        types[NPCID.GemBunnyRuby] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Ruby Bunny
+//        types[NPCID.GemBunnyDiamond] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Diamond Bunny
+//        types[NPCID.GemBunnyAmber] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fairy), ElementArray.Get(Element.rock)); // Amber Bunny
+//        types[NPCID.HellButterfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.flying, Element.fire), ElementArray.Get(Element.fire)); // Hell Butterfly
+//        types[NPCID.Lavafly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.fire), ElementArray.Get(Element.fire), new AbilityContainer(AbilityID.Levitate)); // Lavafly
+//        types[NPCID.MagmaSnail] = new NPCTypeInfo(ElementArray.Get(Element.rock, Element.fire), ElementArray.Get(Element.fire)); // Magma Snail
+//        types[NPCID.TownBunny] = new NPCTypeInfo(ElementArray.Get(Element.normal), ElementArray.Get(Element.normal)); // Bunny
+//        types[NPCID.QueenSlimeBoss] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Flammable)); // Queen Slime
+//        types[NPCID.QueenSlimeMinionBlue] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.rock, Element.fairy), ElementArray.Get(Element.rock), new AbilityContainer(AbilityID.Flammable)); // Crystal Slime
+//        types[NPCID.QueenSlimeMinionPink] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Flammable)); // Bouncy Slime
+//        types[NPCID.QueenSlimeMinionPurple] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.flying, Element.fairy), ElementArray.Get(Element.flying), new AbilityContainer(AbilityID.Flammable)); // Heavenly Slime
+//        types[NPCID.EmpressButterfly] = new NPCTypeInfo(ElementArray.Get(Element.bug, Element.fairy), ElementArray.Get(Element.fairy), new AbilityContainer(AbilityID.Levitate)); // Prismatic Lacewing
+//        types[NPCID.Princess] = new NPCTypeInfo(ElementArray.Get(Element.normal, Element.fairy), ElementArray.Get(Element.fairy)); // Princess
+//        types[NPCID.TorchGod] = new NPCTypeInfo(ElementArray.Get(Element.fire), ElementArray.Get(Element.fire)); // The Torch God
+//        types[NPCID.ChaosBallTim] = new NPCTypeInfo(ElementArray.Get(Element.psychic), ElementArray.Get(Element.psychic)); // Chaos Ball
+//        types[NPCID.VileSpitEaterOfWorlds] = new NPCTypeInfo(ElementArray.Get(Element.dark, Element.poison), ElementArray.Get(Element.dark)); // Vile Spit
+//        types[NPCID.GoldenSlime] = new NPCTypeInfo(ElementArray.Get(Element.water, Element.steel), ElementArray.Get(Element.steel), new AbilityContainer(AbilityID.Flammable)); // Golden Slime
+//        types[NPCID.Deerclops] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Fluffy)); // Deerclops
+//        types[NPCID.DeerclopsLeg] = new NPCTypeInfo(ElementArray.Get(Element.ice), ElementArray.Get(Element.ice), new AbilityContainer(AbilityID.Fluffy)); // Deerclops Leg
+//    }
+//}
 

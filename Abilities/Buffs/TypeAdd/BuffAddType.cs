@@ -6,23 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.DataTypes;
 
 namespace TerraTyping.Abilities.Buffs.TypeAdd
 {
     public class BuffAddType : ModBuff, IUseModifiedType
     {
         public Element MyElement { get; set; }
+        public ElementArray Elements { get; set; }
 
-        public override bool Autoload(ref string name, ref string texture)
+        public override void SetStaticDefaults()
         {
-            return false;
+            DisplayName.SetDefault($"Adding {LangHelper.MultipleElements(Elements)}");
+            Description.SetDefault($"You are now {LangHelper.MultipleElements(Elements)} in addition to your armor's type.");
+            Main.debuff[Type] = true;
         }
 
-        public override void SetDefaults()
+        public override bool IsLoadingEnabled(Mod mod)
         {
-            DisplayName.SetDefault($"Add {LangHelper.ElementName(MyElement)}");
-            Description.SetDefault($"You are now {LangHelper.ElementName(MyElement)} in addition to your armor's type.");
-            Main.debuff[Type] = true;
+            return false;
         }
     }
 }

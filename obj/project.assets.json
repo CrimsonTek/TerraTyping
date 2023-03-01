@@ -1,88 +1,70 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.5": {
-      "Mono.Cecil/0.11.3": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Mono.Cecil.Mdb.dll": {},
-          "lib/net40/Mono.Cecil.Pdb.dll": {},
-          "lib/net40/Mono.Cecil.Rocks.dll": {},
-          "lib/net40/Mono.Cecil.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Mono.Cecil.Mdb.dll": {},
-          "lib/net40/Mono.Cecil.Pdb.dll": {},
-          "lib/net40/Mono.Cecil.Rocks.dll": {},
-          "lib/net40/Mono.Cecil.dll": {}
-        }
+    "net6.0": {
+      "tModLoader.CodeAssist/0.1.5": {
+        "type": "package"
       }
     }
   },
   "libraries": {
-    "Mono.Cecil/0.11.3": {
-      "sha512": "DNYE+io5XfEE8+E+5padThTPHJARJHbz1mhbhMPNrrWGKVKKqj/KEeLvbawAmbIcT73NuxLV7itHZaYCZcVWGg==",
+    "tModLoader.CodeAssist/0.1.5": {
+      "sha512": "Sg/jKEg/z5eN+Cdi3/9CU4JfJwvXHVH+UDJf4Lipo26uTa+guLLJXH1XDJNPShTFwKK8jMUYbthINP4QhsgHSA==",
       "type": "package",
-      "path": "mono.cecil/0.11.3",
+      "path": "tmodloader.codeassist/0.1.5",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net40/Mono.Cecil.Mdb.dll",
-        "lib/net40/Mono.Cecil.Mdb.pdb",
-        "lib/net40/Mono.Cecil.Pdb.dll",
-        "lib/net40/Mono.Cecil.Pdb.pdb",
-        "lib/net40/Mono.Cecil.Rocks.dll",
-        "lib/net40/Mono.Cecil.Rocks.pdb",
-        "lib/net40/Mono.Cecil.dll",
-        "lib/net40/Mono.Cecil.pdb",
-        "lib/netstandard2.0/Mono.Cecil.Mdb.dll",
-        "lib/netstandard2.0/Mono.Cecil.Mdb.pdb",
-        "lib/netstandard2.0/Mono.Cecil.Pdb.dll",
-        "lib/netstandard2.0/Mono.Cecil.Pdb.pdb",
-        "lib/netstandard2.0/Mono.Cecil.Rocks.dll",
-        "lib/netstandard2.0/Mono.Cecil.Rocks.pdb",
-        "lib/netstandard2.0/Mono.Cecil.dll",
-        "lib/netstandard2.0/Mono.Cecil.pdb",
-        "mono.cecil.0.11.3.nupkg.sha512",
-        "mono.cecil.nuspec"
+        "NugetIcon.png",
+        "analyzers/dotnet/cs/tModLoader.CodeAssist.dll",
+        "tmodloader.codeassist.0.1.5.nupkg.sha512",
+        "tmodloader.codeassist.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
       ]
     }
   },
   "projectFileDependencyGroups": {
-    ".NETFramework,Version=v4.5": [
-      "Mono.Cecil >= 0.11.3"
+    "net6.0": [
+      "tModLoader.CodeAssist >= 0.1.*"
     ]
   },
   "packageFolders": {
     "C:\\Users\\Jack\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\TerraTyping.csproj",
+      "projectUniqueName": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\TerraTyping\\TerraTyping.csproj",
       "projectName": "TerraTyping",
-      "projectPath": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\TerraTyping.csproj",
+      "projectPath": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\TerraTyping\\TerraTyping.csproj",
       "packagesPath": "C:\\Users\\Jack\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\TerraTyping\\obj\\",
+      "outputPath": "C:\\Users\\Jack\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\TerraTyping\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
         "C:\\Users\\Jack\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net45"
+        "net6.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net45": {
+        "net6.0": {
+          "targetAlias": "net6.0",
           "projectReferences": {}
         }
       },
@@ -93,14 +75,31 @@
       }
     },
     "frameworks": {
-      "net45": {
+      "net6.0": {
+        "targetAlias": "net6.0",
         "dependencies": {
-          "Mono.Cecil": {
+          "tModLoader.CodeAssist": {
             "target": "Package",
-            "version": "[0.11.3, )"
+            "version": "[0.1.*, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

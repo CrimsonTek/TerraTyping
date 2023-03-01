@@ -14,17 +14,6 @@ namespace TerraTyping.DataTypes
 
         public static AbilityContainer None => new AbilityContainer(AbilityID.None);
 
-        //[Obsolete]
-        ///// <summary>
-        ///// Will create an Ability Container for an NPC with no secondary or hidden ability.
-        ///// </summary>
-        //public AbilityContainer(AbilityID primaryAbility)
-        //{
-        //    PrimaryAbility = primaryAbility;
-        //    SecondaryAbility = AbilityID.None;
-        //    HiddenAbility = AbilityID.None;
-        //}
-
         /// <summary>
         /// Will create an Ability Container for an NPC with a primary, secondary, and hidden ability.
         /// </summary>

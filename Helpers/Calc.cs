@@ -7,7 +7,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities;
+using TerraTyping.Common.Configs;
 using TerraTyping.DataTypes;
+using TerraTyping.Helpers;
 using static TerraTyping.Abilities.AbilityLookup;
 
 namespace TerraTyping
@@ -16,7 +18,7 @@ namespace TerraTyping
     {
         public static DamageReturn Damage<A, D>(A attacker, D target)
             where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
-            where D : Wrapper, ITarget, IPrimaryType, ISecondaryType, IAbility
+            where D : Wrapper, ITarget, IDefensiveElements, IAbility
         {
             #region Testing
 
@@ -45,20 +47,25 @@ namespace TerraTyping
             Ability attackerAbility = GetAbility(attacker);
             Ability defenderAbility = GetAbility(attackerAbility.ModifyOpponentsAbility(target.GetAbility));
 
-            Element defensePrimary = target.Primary;
-            Element defenseSecondary = target.Secondary;
+            ElementArray defensiveArr = target.DefensiveElements;
+            ElementArray offensiveArr = attackerAbility.ModifyAttackType(attacker.OffensiveElements);
 
-            Element offensive = attacker.Offensive;
-            offensive = attackerAbility.ModifyAttackType(offensive);
-
-            float multiplier1 = Table.Eff((int)offensive, (int)defensePrimary);
-            float multiplier2 = Table.Eff((int)offensive, (int)defenseSecondary);
-            multiplier1 = attackerAbility.ModifyEffectivenessOutgoing(new ModifyEffectivenessOutgoingParameters(offensive, defensePrimary, multiplier1));
             //float powerup = attackerAbility.PowerupType(new PowerupTypeParameters(offensive, attacker, target)).powerupMultiplier;
 
-            float damage = multiplier1 * multiplier2;
-            ModifyDamageReturn modifyDamageReturn = defenderAbility.ModifyDamage(
-                new ModifyDamageParameters(offensive, damage, target, knockback, attacker));
+            float damage = 1;
+            for (int i = 0; i < defensiveArr.Length; i++)
+            {
+                for (int j = 0; j < offensiveArr.Length; j++)
+                {
+                    float baseEffectiveness = Table.Effectiveness(offensiveArr[j], defensiveArr[i]);
+                    attacker.ModifyEffectiveness(ref baseEffectiveness, offensiveArr[j], defensiveArr[i]);
+                    float postDefenderModifierEffectiveness = defenderAbility.ModifyEffectivenessIncoming(new ModifyEffectivenessIncomingParameters(offensiveArr[j], defensiveArr[i], baseEffectiveness));
+                    float postAttackerModifierEffectiveness = attackerAbility.ModifyEffectivenessOutgoing(new ModifyEffectivenessOutgoingParameters(offensiveArr[j], defensiveArr[i], postDefenderModifierEffectiveness));
+                    damage *= postAttackerModifierEffectiveness;
+                }
+            }
+
+            ModifyDamageReturn modifyDamageReturn = defenderAbility.ModifyDamageIncoming(new ModifyDamageParameters(offensiveArr, damage, target, knockback, attacker, attacker));
             damage = modifyDamageReturn.newDamage;
             knockback = modifyDamageReturn.newKnockback;
 
@@ -66,43 +73,77 @@ namespace TerraTyping
         }
 
         public static float Stab<A, D>(A offensiveType, D user)
-            where A : IOffensiveType
-            where D : ITarget, IPrimaryType, ISecondaryType, IAbility
+            where A : Wrapper, IOffensiveType
+            where D : ITarget, IDefensiveElements, IAbility
         {
-            Element defensePrimary = user.Primary;
-            Element defenseSecondary = user.Secondary;
             AbilityID abilityID = user.GetAbility;
             Ability ability = GetAbility(abilityID);
 
-            Element offensive = offensiveType.Offensive;
+            int stabCount = 0;
+            bool countNormally = true;
 
-            float multiplier = 1.0f;
-            bool stab = false;
-
-            if (offensive != Element.none)
+            if (offensiveType is WeaponWrapper weaponWrapper)
             {
-                if (defensePrimary == offensive)
-                    stab = true;
-                if (defenseSecondary == offensive)
-                    stab = true;
+                ForceStabWithItemReturn forceStabWithItemReturn = ability.ForceStabWithItem(new ForceStabWithItemParameters(weaponWrapper));
+
+                if (forceStabWithItemReturn.ReplaceStab)
+                {
+                    countNormally = false;
+                    stabCount = forceStabWithItemReturn.ReplaceCount;
+                }
+                else
+                {
+                    countNormally = true;
+                    stabCount = forceStabWithItemReturn.AddCount;
+                }
             }
 
-            if (ability.ForceStab(offensive))
+            if (countNormally)
             {
-                stab = true;
+                ElementArray defensiveElements = user.DefensiveElements;
+                ElementArray offensiveElements = offensiveType.OffensiveElements;
+
+                for (int i = 0; i < defensiveElements.Length; i++)
+                {
+                    Element element = defensiveElements[i];
+                    if (offensiveElements.HasElement(element))
+                    {
+                        stabCount++;
+                    }
+                }
             }
 
-            if (stab)
+            if (stabCount > 1)
             {
-                multiplier *= ModContent.GetInstance<Config>().STAB;
+                ServerConfig config = ModContent.GetInstance<ServerConfig>();
+                float stabAmount = config.STAB;
+                float dimishingReturnScalar = config.STABDiminishingReturnScalar;
+                if (dimishingReturnScalar == 0)
+                {
+                    return stabAmount;
+                }
+                else if (dimishingReturnScalar == 1)
+                {
+                    return (stabCount * (stabAmount - 1)) + 1;
+                }
+                else
+                {
+                    return (float)(Math.Pow(stabCount, dimishingReturnScalar) * (stabAmount - 1)) + 1;
+                }
             }
-
-            return multiplier;
+            else if (stabCount == 1)
+            {
+                return ModContent.GetInstance<ServerConfig>().STAB;
+            }
+            else
+            {
+                return 1;
+            }
         }
 
         public static void ModifyHitBy<A, D>(A attacker, D target, ref int damage, ref float knockback, ref bool crit)
             where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
-            where D : Wrapper, ITarget, IPrimaryType, ISecondaryType, IAbility
+            where D : Wrapper, ITarget, IDefensiveElements, IAbility
         {
             #region Testing
 
@@ -138,41 +179,43 @@ namespace TerraTyping
             float dmg = damageReturn.damage;
             string text = ((float)(int)(dmg * 100) / 100).ToString() + "x!";
 
-            Color color = new Color(new Vector3(1, 1, 1));
-            if (dmg != 1)
+            Color color = dmg switch
             {
-                if (dmg == 0)
-                    color = new Color(new Vector3(0.2f, 0.2f, 0.2f));
+                0 =>   new Color(r: 0.2f, g: 0.2f, b: 0.2f),
+                > 1 => new Color(r: -(dmg / 3) + 1, g: 1, b: -(dmg / 3) + 1),
+                < 1 => new Color(r: (dmg * 4 / 5) + 0.2f, g: (dmg / 5) + 0.2f, b: 0),
+                _ =>   new Color(r: 1f, g: 1f, b: 1f),
+            };
 
-                else if (dmg > 1)
-                    color = new Color(new Vector3(1 - (dmg / 3), 1, 1 - (dmg / 3)));
-
-                else if (dmg < 1)
-                    color = new Color(new Vector3((dmg * 4) / 5 + 0.2f, (dmg) / 5 + 0.2f, 0));
-            }
-
-            CombatText.NewText(target.GetRect(), color, text, false, true);
+            CombatText.NewText(target.GetRect(), color, text, crit, true);
         }
 
-        public static B CanBeHitBy<A, D, B>(A attack, D defense, B @base, B @false)
-            where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
-            where D : Wrapper, ITarget, IPrimaryType, ISecondaryType, IAbility
-        {
-            DamageReturn damageReturn = Damage(attack, defense);
+        //public static B CanBeHitBy<A, D, B>(A attack, D defense, B @base, B @false)
+        //    where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
+        //    where D : Wrapper, ITarget, IDefensiveElements, IAbility
+        //{
+        //    DamageReturn damageReturn = Damage(attack, defense);
 
-            if (damageReturn.damage != 0)
-            {
-                return @base;
-            }
-            else
-            {
-                return @false;
-            }
+        //    if (damageReturn.damage > 0)
+        //    {
+        //        return @base;
+        //    }
+        //    else
+        //    {
+        //        return @false;
+        //    }
+        //}
+
+        public static bool CanBeHitBy<A, D>(A attack, D defense)
+            where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
+            where D : Wrapper, ITarget, IDefensiveElements, IAbility
+        {
+            return Damage(attack, defense).damage > 0;
         }
 
         public static void OnHit<A, D>(A attacker, D defender)
             where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed
-            where D : Wrapper, ITarget, IPrimaryType, ISecondaryType, IAbility, ITeam
+            where D : Wrapper, ITarget, IDefensiveElements, IAbility, ITeam
         {
             if (attacker.Hitbox.Intersects(defender.GetRect()) && defender.Active && (attacker.GetTeam() != defender.GetTeam()))
             {
@@ -180,12 +223,13 @@ namespace TerraTyping
                 Ability defenderAbility = GetAbility(attackerAbility.ModifyOpponentsAbility(defender.GetAbility));
 
                 DamageReturn damageReturn = Damage(attacker, defender);
-                defenderAbility.BuffOnHit(new BuffOnHitParameters(attacker.Offensive, defender, attacker));
+                defenderAbility.BuffOnHit(new BuffOnHitParameters(attacker.OffensiveElements, defender, attacker));
 
                 if (defender.GetCombatTextCooldown() <= 0)
                 {
-                    Message messageOnHit = defenderAbility.MessageOnHit(new MessageOnHitParameters(attacker.Offensive, defender, attacker, attacker)).message;
-                    Message messageHitEnemy = GetAbility(attacker.GetAbility).MessageHitEnemy(new MessageHitEnemyParameters(attacker.Offensive, defender, defender, defender)).message;
+                    Message messageOnHit = defenderAbility.MessageOnHit(new MessageOnHitParameters(attacker.OffensiveElements, defender, attacker, attacker)).message;
+                    Message messageHitEnemy = GetAbility(attacker.GetAbility).MessageHitEnemy(
+                        new MessageHitEnemyParameters(attacker.OffensiveElements, defender)).message;
                     void ReadMessage(Message message)
                     {
                         if (message.hasMessage && !string.IsNullOrEmpty(message.text))
@@ -217,7 +261,6 @@ namespace TerraTyping
                                 else
                                 {
                                     healPercent = 0.125f;
-
                                 }
                                 break;
                             default:

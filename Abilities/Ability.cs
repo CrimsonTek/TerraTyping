@@ -12,11 +12,11 @@ namespace TerraTyping.Abilities
     {
         public AbilityID ID { get; }
 
-        public ModifyDamage ModifyDamage { get; set; } = ModifyDamageDefault;
-        public ForceStab ForceStab { get; set; } = ForceStabDefault;
+        public ModifyDamage ModifyDamageIncoming { get; set; } = ModifyDamageDefault;
+        public ForceStabWithItem ForceStabWithItem { get; set; } = ForceStabWithItemDefault;
         public ModifyAttackType ModifyAttackType { get; set; } = ModifyAttackTypeDefault;
-        public ModifyEffectivenessIncoming ModifyEffectivenessIncoming { get; set; } = ModifyEffectivenessIncomingDefault;
         public ModifyEffectivenessOutgoing ModifyEffectivenessOutgoing { get; set; } = ModifyEffectivenessOutgoingDefault;
+        public ModifyEffectivenessIncoming ModifyEffectivenessIncoming { get; set; } = ModifyEffectivenessIncomingDefault;
         public ModifyStabAmount ModifyStabAmount { get; set; } = ModifyStabAmountDefault;
         public PowerupType PowerupType { get; set; } = PowerupTypeDefault;
         public UpdateLifeRegen UpdateLifeRegen { get; set; } = UpdateLifeRegenDefault;

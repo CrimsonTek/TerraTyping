@@ -3,16 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 
 namespace TerraTyping.DataTypes.Structs
 {
-    public struct ProjectileTypeInfo
-    {
-        public Element Offensive { get; set; }
-
-        public ProjectileTypeInfo(Element element)
-        {
-            Offensive = element;
-        }
-    }
 }

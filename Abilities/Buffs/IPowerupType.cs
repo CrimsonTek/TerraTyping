@@ -10,7 +10,7 @@ namespace TerraTyping.Abilities.Buffs
 {
     public interface IPowerupType
     {
-        PowerupType PowerupType { get; set; }
+        PowerupType PowerupType { get; }
     }
 
     public delegate PowerupTypeReturn PowerupType(PowerupTypeParameters parameters);

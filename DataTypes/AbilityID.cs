@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TerraTyping.DataTypes
 {
-    public enum AbilityID
+    public enum AbilityID : byte
     {
         None,
         Levitate,
@@ -32,5 +32,8 @@ namespace TerraTyping.DataTypes
         SandForce,
         Scrappy,
         Flammable,
+        Grounded,
+        PrismArmor,
+        DD2Stab // todo: rename? implement
     }
 }

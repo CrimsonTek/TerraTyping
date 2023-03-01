@@ -4,31 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ModLoader;
 using TerraTyping.DataTypes.Structs;
 using Microsoft.Xna.Framework;
+using Microsoft.VisualBasic;
+using IL.Terraria.GameContent.Achievements;
+using TerraTyping.Dictionaries;
+using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes
 {
     public class ProjectileWrapper : Wrapper, IOffensiveType, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed
     {
-        readonly int projectile;
+        readonly int projectileIndex;
+
+        static ProjectileWrapper[] projectileWrappers;
+
         /// <summary>
         /// Only works for player projectiles
         /// </summary>
-        int OwnerIndex => GetProjectile().owner;
+        int PlayerOwnerIndex => Projectile.owner;
+
         public Owner OwnerType
         {
             get
             {
-                if (GetProjectile().npcProj)
+                if (Projectile.npcProj)
                 {
                     return Owner.TownsPerson;
                 }
-                else if (GetProjectile().hostile)
+                else if (Projectile.hostile)
                 {
                     return Owner.NPC;
                 }
-                else if (GetProjectile().friendly)
+                else if (Projectile.friendly)
                 {
                     return Owner.Player;
                 }
@@ -38,21 +47,10 @@ namespace TerraTyping.DataTypes
                 }
             }
         }
-        public Projectile GetProjectile() => Main.projectile[projectile];
+        public Projectile Projectile => Main.projectile[projectileIndex];
 
-        public Element Offensive
-        {
-            get
-            {
-                Element element = Element.none;
-                if (DictionaryHelper.Projectile(GetProjectile()).ContainsKey(GetProjectile().type))
-                {
-                    element = DictionaryHelper.Projectile(GetProjectile())[GetProjectile().type].Offensive;
-                }
+        public ElementArray OffensiveElements => ProjectileTypeLoader.GetElements(Projectile);
 
-                return element;
-            }
-        }
         public AbilityID GetAbility
         {
             get
@@ -60,16 +58,16 @@ namespace TerraTyping.DataTypes
                 switch (OwnerType)
                 {
                     case Owner.Player:
-                        if (OwnerIndex > Main.maxPlayers)
+                        if (PlayerOwnerIndex > Main.maxPlayers)
                         {
                             return AbilityID.None;
                         }
-                        Player player = Main.player[OwnerIndex];
+                        Player player = Main.player[PlayerOwnerIndex];
                         if (player == null || !player.active)
                         {
                             return AbilityID.None;
                         }
-                        PlayerWrapper playerWrapper = new PlayerWrapper(player);
+                        PlayerWrapper playerWrapper = PlayerWrapper.GetWrapper(player);
                         return playerWrapper.GetAbility;
                     case Owner.TownsPerson:
                     case Owner.NPC:
@@ -91,25 +89,54 @@ namespace TerraTyping.DataTypes
             }
         }
 
-        public Rectangle Hitbox => GetProjectile().Hitbox;
-
-        public bool Melee => GetProjectile().melee;
-        public bool Ranged => GetProjectile().ranged;
-        public bool Magic => GetProjectile().magic;
-        public bool Summon => false; // update in 1.14
-
-        public ProjectileWrapper(Projectile proj)
+        public void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement)
         {
-            projectile = proj.whoAmI;
+            ProjectileTypeLoader.ModifyEffectiveness(ref baseEffectiveness, offensiveElement, defensiveElement, Projectile);
+        }
+
+        public Rectangle Hitbox => Projectile.Hitbox;
+
+        public bool Melee => Projectile.CountsAsClass(DamageClass.Melee);
+        public bool Ranged => Projectile.CountsAsClass(DamageClass.Ranged);
+        public bool Magic => Projectile.CountsAsClass(DamageClass.Magic);
+        public bool Summon => Projectile.CountsAsClass(DamageClass.Summon);
+
+        ProjectileWrapper(int index)
+        {
+            projectileIndex = index;
+        }
+
+        public static ProjectileWrapper GetWrapper(int index)
+        {
+            return projectileWrappers[index];
+        }
+
+        public static ProjectileWrapper GetWrapper(Projectile projectile)
+        {
+            return projectileWrappers[projectile.whoAmI];
+        }
+
+        internal static void PostSetupContent()
+        {
+            projectileWrappers = new ProjectileWrapper[Main.maxProjectiles];
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                projectileWrappers[i] = new ProjectileWrapper(i);
+            }
+        }
+
+        internal static void Unload()
+        {
+            projectileWrappers = null;
         }
 
         public Team GetTeam()
         {
-            if (GetProjectile().npcProj || GetProjectile().friendly)
+            if (Projectile.npcProj || Projectile.friendly)
             {
                 return Team.PlayerFriendly;
             }
-            else if (GetProjectile().hostile)
+            else if (Projectile.hostile)
             {
                 return Team.EnemyNPC;
             }
@@ -135,7 +162,7 @@ namespace TerraTyping.DataTypes
 
         public void Kill()
         {
-            GetProjectile().Kill();
+            Projectile.Kill();
         }
     }
 }

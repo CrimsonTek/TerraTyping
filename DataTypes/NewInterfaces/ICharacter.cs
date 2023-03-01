@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TerraTyping.DataTypes.NewInterfaces
 {
-    public interface ICharacter : IPrimaryType, ISecondaryType, ITarget
+    public interface ICharacter : IDefensiveElements, ITarget
     {
     }
 }

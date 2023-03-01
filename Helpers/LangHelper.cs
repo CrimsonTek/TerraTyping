@@ -24,6 +24,33 @@ namespace TerraTyping
             }
         }
 
+        public static string MultipleElements(ElementArray elements, bool useAndBeforeLast = true)
+        {
+            if (elements is null)
+            {
+                throw new ArgumentNullException(nameof(elements));
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            bool first = true;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (first)
+                {
+                    stringBuilder.Append(ElementName(elements[i]));
+                }
+                else if (i < elements.Length - 1)
+                {
+                    stringBuilder.Append($", {ElementName(elements[i])}");
+                }
+                else // last
+                {
+                    stringBuilder.Append($", and {ElementName(elements[i])}");
+                }
+            }
+            return stringBuilder.ToString();
+        }
+
         public static string AbilityName(AbilityID ability)
         {
             return English.Ability[ability];

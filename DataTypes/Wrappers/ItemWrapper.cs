@@ -5,27 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
+using TerraTyping.Dictionaries;
+using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes
 {
-    public class ItemWrapper : Wrapper, IOffensiveType, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed
+    public class WeaponWrapper : Wrapper, IOffensiveType, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed
     {
-        readonly Item item;
+        public readonly Item item;
         public int Player { get; }
 
-        public Element Offensive
-        {
-            get
-            {
-                Element element = Element.none;
-                if (DictionaryHelper.Item(item).ContainsKey(item.type))
-                {
-                    element = DictionaryHelper.Item(item)[item.type].Offensive;
-                }
-
-                return element;
-            }
-        }
+        public bool GetsStab => WeaponTypeLoader.GetsStab(item);
+        public ElementArray OffensiveElements => WeaponTypeLoader.GetElements(item);
         public AbilityID GetAbility
         {
             get
@@ -40,7 +32,7 @@ namespace TerraTyping.DataTypes
                 {
                     return AbilityID.None;
                 }
-                PlayerWrapper playerWrapper = new PlayerWrapper(thisPlayer);
+                PlayerWrapper playerWrapper = PlayerWrapper.GetWrapper(thisPlayer);
 
                 return playerWrapper.GetAbility;
             }
@@ -55,13 +47,14 @@ namespace TerraTyping.DataTypes
             }
         }
 
-        public bool Melee => item.melee;
-        public bool Ranged => item.ranged;
-        public bool Magic => item.magic;
-        public bool Summon => item.summon;
+        public void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement) { }
 
+        public bool Melee => item.CountsAsClass(DamageClass.Melee);
+        public bool Ranged => item.CountsAsClass(DamageClass.Ranged);
+        public bool Magic => item.CountsAsClass(DamageClass.Magic);
+        public bool Summon => item.CountsAsClass(DamageClass.Summon);
 
-        public ItemWrapper(Item item, Player player)
+        public WeaponWrapper(Item item, Player player)
         {
             this.item = item;
             this.Player = player.whoAmI;

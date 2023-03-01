@@ -5,68 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities;
+using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes
 {
     public class NPCWrapper : Wrapper,
-        IPrimaryType, ISecondaryType, IOffensiveType, ITarget, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed, 
+        IDefensiveElements, IOffensiveType, ITarget, IAbility, IDamageClass, IHitbox, ITeam, IStatsBuffed,
         AbilityLookup.IAttractProjectileTarget
     {
-        readonly int npc;
-        public NPC GetNPC() => Main.npc[npc];
-
-        NPCTypeInfo GetTypeInfo()
-        {
-            NPCTypeInfo typeInfo = new NPCTypeInfo(Element.none, Element.none, Element.none);
-            if (DictionaryHelper.NPC(GetNPC()).ContainsKey(GetNPC().type))
-            {
-                typeInfo = DictionaryHelper.NPC(GetNPC())[GetNPC().type];
-            }
-            return typeInfo;
-        }
-
-        public ThreeType GetThreeType()
-        {
-            NPCTypeInfo info = GetTypeInfo();
-            return new ThreeType(info.Primary, info.Secondary, info.Offensive);
-        }
-        public ModifyTypeParameters GetTypeParameters()
-        {
-            return new ModifyTypeParameters(GetThreeType(), GetNPC());
-        }
-
-        public Element Primary => GetNPC().GetGlobalNPC<NPCTyping>().Primary;
-        public Element Secondary => GetNPC().GetGlobalNPC<NPCTyping>().Secondary;
-        public Element Offensive => GetNPC().GetGlobalNPC<NPCTyping>().Offensive;
-        public AbilityID GetAbility
-        {
-            get
-            {
-                NPCTyping npcAbility = GetNPC().GetGlobalNPC<NPCTyping>();
-                return npcAbility.CurrentAbilityID;
-            }
-        }
-
-        public bool Melee => true;
-        public bool Ranged => false;
-        public bool Magic => false;
-        public bool Summon => false;
-
-        public EntityType EntityType => EntityType.NPC;
-        public bool Boss => GetNPC().boss;
-        public int Life => GetNPC().life;
-        public int LifeMax => GetNPC().lifeMax;
-        public bool Active => GetNPC().active;
-        public bool Immortal => GetNPC().immortal;
-        public int LifeRegen { get => GetNPC().lifeRegen; set => GetNPC().lifeRegen = value; }
-        public int LifeRegenTime { get => 0; set => _ = value; }
-        public Rectangle Hitbox => GetRect();
-        public Element ModifyType { get => GetNPC().GetGlobalNPC<NPCTyping>().ModifyType; set => GetNPC().GetGlobalNPC<NPCTyping>().ModifyType = value; }
-
         #region Biomes
-        public Player GetPlayer() => Main.player[GetNPC().FindClosestPlayer()];
+        public Player GetPlayer() => Main.player[NPC.FindClosestPlayer()];
         public bool ZoneBeach { get => GetPlayer().ZoneBeach; }
         public bool ZoneCorrupt { get => GetPlayer().ZoneCorrupt; }
         public bool ZoneCrimson { get => GetPlayer().ZoneCrimson; }
@@ -74,7 +25,7 @@ namespace TerraTyping.DataTypes
         public bool ZoneDirtLayerHeight { get => GetPlayer().ZoneDirtLayerHeight; }
         public bool ZoneDungeon { get => GetPlayer().ZoneDungeon; }
         public bool ZoneGlowshroom { get => GetPlayer().ZoneGlowshroom; }
-        public bool ZoneHoly { get => GetPlayer().ZoneHoly; }
+        public bool ZoneHoly { get => GetPlayer().ZoneHallow; }
         public bool ZoneJungle { get => GetPlayer().ZoneJungle; }
         public bool ZoneMeteor { get => GetPlayer().ZoneMeteor; }
         public bool ZoneOldOneArmy { get => GetPlayer().ZoneOldOneArmy; }
@@ -94,44 +45,102 @@ namespace TerraTyping.DataTypes
         public bool ZoneWaterCandle { get => GetPlayer().ZoneWaterCandle; }
         #endregion
 
+        readonly int npcIndex;
+        readonly int npcType;
+        public NPC NPC => Main.npc[npcIndex];
+        private NPCTyping NPCTyping => NPC.GetGlobalNPC<NPCTyping>();
 
-        public NPCWrapper(NPC npc)
+        public ElementArray DefensiveElements => NPCTyping.Elements;
+        public ElementArray OffensiveElements => NPCTypeLoader.GetOffensiveElements(NPC);
+
+        public AbilityID GetAbility => NPCTyping.AbilityID;
+
+        public void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement) { }
+
+        public bool Melee => true;
+        public bool Ranged => false;
+        public bool Magic => false;
+        public bool Summon => false;
+
+        public EntityType EntityType => EntityType.NPC;
+        public bool Boss => NPC.boss;
+        public int Life => NPC.life;
+        public int LifeMax => NPC.lifeMax;
+        public bool Active => NPC.active;
+        public bool Immortal => NPC.immortal;
+        public int LifeRegen { get => NPC.lifeRegen; set => NPC.lifeRegen = value; }
+        public int LifeRegenTime { get => 0; set => _ = value; }
+        public Rectangle Hitbox => GetRect();
+
+        public AbilityID ModifiedAbility
         {
-            this.npc = npc.whoAmI;
+            get => NPCTyping.ModifiedAbility;
+            set => NPCTyping.ModifiedAbility = value;
+        }
+        public ElementArray ModifiedElements
+        {
+            get => NPCTyping.ModifiedElements;
+            set => NPCTyping.ModifiedElements = value;
+        }
+
+        public bool UseModifiedAbility
+        {
+            get => NPCTyping.UseModifiedAbility;
+            set => NPCTyping.UseModifiedAbility = value;
+        }
+        public bool UseModifiedElements
+        {
+            get => NPCTyping.UseModifiedElements;
+            set => NPCTyping.UseModifiedElements = value;
+        }
+
+
+        private NPCWrapper(NPC npc)
+        {
+            npcIndex = npc.whoAmI;
+            npcType = npc.type;
+        }
+
+        public static NPCWrapper GetWrapper(NPC npc)
+        {
+            return new NPCWrapper(npc);
         }
 
         public void AddBuff(int type, int time, bool quiet = false)
         {
-            GetNPC().AddBuff(type, time, quiet);
+            NPC.AddBuff(type, time, quiet);
         }
         public bool HasBuff(int type)
         {
-            return GetNPC().HasBuff(type);
+            return NPC.HasBuff(type);
         }
         public void DelBuff(int b)
         {
-            GetNPC().DelBuff(b);
+            NPC.DelBuff(b);
         }
         public void RemoveBuff(int type)
         {
             for (int i = 0; i < NPC.maxBuffs; i++)
             {
-                if (GetNPC().buffType[i] > 0 && GetNPC().buffTime[i] > 0 && BuffLoader.CanBeCleared(GetNPC().buffType[i]))
+                if (NPC.buffType[i] > 0 && NPC.buffTime[i] > 0)
                 {
-                    GetNPC().DelBuff(i);
-                    i--;
+                    if (BuffID.Sets.NurseCannotRemoveDebuff[NPC.buffType[i]])
+                    {
+                        NPC.DelBuff(i);
+                        i--;
+                    }
                 }
             }
         }
 
         public Rectangle GetRect()
         {
-            return GetNPC().getRect();
+            return NPC.getRect();
         }
 
         public void HealEffect(int healAmount, bool broadcast = true)
         {
-            GetNPC().HealEffect(healAmount, broadcast);
+            NPC.HealEffect(healAmount, broadcast);
         }
 
         /// <summary>
@@ -139,35 +148,35 @@ namespace TerraTyping.DataTypes
         /// </summary>
         public void Heal(int healAmount, bool broadcast = true)
         {
-            int heal = Math.Min(GetNPC().lifeMax - GetNPC().life, healAmount);
-            GetNPC().life += heal;
-            GetNPC().HealEffect(heal, broadcast);
+            int heal = Math.Min(NPC.lifeMax - NPC.life, healAmount);
+            NPC.life += heal;
+            NPC.HealEffect(heal, broadcast);
         }
 
         public int GetCombatTextCooldown()
         {
-            NPCTyping npcTyping = GetNPC().GetGlobalNPC<NPCTyping>();
+            NPCTyping npcTyping = NPC.GetGlobalNPC<NPCTyping>();
             return npcTyping.CombatTextCooldown;
         }
         public int GetCombatHealCooldown()
         {
-            NPCTyping npcTyping = GetNPC().GetGlobalNPC<NPCTyping>();
+            NPCTyping npcTyping = NPC.GetGlobalNPC<NPCTyping>();
             return npcTyping.CombatHealCooldown;
         }
 
         public void UseCombatTextCooldown()
         {
-            NPCTyping npcTyping = GetNPC().GetGlobalNPC<NPCTyping>();
+            NPCTyping npcTyping = NPC.GetGlobalNPC<NPCTyping>();
             npcTyping.UseCombatTextCooldown();
         }
         public void UseCombatHealCooldown()
         {
-            NPCTyping npcTyping = GetNPC().GetGlobalNPC<NPCTyping>();
+            NPCTyping npcTyping = NPC.GetGlobalNPC<NPCTyping>();
             npcTyping.UseCombatHealCooldown();
         }
 
-        public Team GetTeam() => GetNPC().friendly ? Team.PlayerFriendly : Team.EnemyNPC;
+        public Team GetTeam() => NPC.friendly ? Team.PlayerFriendly : Team.EnemyNPC;
 
-        public float DamageMultiplication() => GetNPC().GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff;
+        public float DamageMultiplication() => NPC.GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff;
     }
 }

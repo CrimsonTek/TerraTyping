@@ -35,8 +35,7 @@ namespace TerraTyping
                 {Element.fairy, "Фантастический" },
                 {Element.blood, "Кровянной" },
                 {Element.bone, "Костянной" },
-                {Element.none, "Никакой" },
-                {Element.levitate, "Левитирующий" }
+                {Element.none, "Никакой" }
             };
         }
 

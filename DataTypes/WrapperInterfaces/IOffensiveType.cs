@@ -12,6 +12,7 @@ namespace TerraTyping.DataTypes
     /// </summary>
     public interface IOffensiveType
     {
-        Element Offensive { get; }
+        ElementArray OffensiveElements { get; }
+        void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement);
     }
 }

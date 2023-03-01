@@ -18,7 +18,7 @@ namespace TerraTyping.Abilities.Buffs
 
         public static void ModifySpeed(Player player)
         {
-            player.accRunSpeed *= AbilityData.motorDriveSpeedBoost;
+            player.runAcceleration *= AbilityData.motorDriveSpeedBoost;
         }
     }
 }

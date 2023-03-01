@@ -46,6 +46,39 @@ namespace TerraTyping.Helpers
         }
         public static Time TimeConverter(int militaryHours, int minutes) => TimeConverter(militaryHours, minutes, 0);
         public static Time TimeConverter(int hours, int minutes, bool am) => TimeConverter(hours, minutes, 0, am);
+
+        public static TValue AddIfMissingAndGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, value);
+            }
+
+            return dictionary[key];
+        }
+
+        public static TValue AddIfMissingAndGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> getValue)
+        {
+            getValue ??= () => default;
+
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, getValue() ?? default);
+            }
+
+            return dictionary[key];
+        }
+
+        public static TValue AddNewIfMissingAndGet<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+            where TValue : new()
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, new TValue());
+            }
+
+            return dictionary[key];
+        }
     }
 
     public struct Time

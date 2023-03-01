@@ -17,19 +17,21 @@ namespace TerraTyping.Abilities.Buffs
             { 
                 return new PowerupTypeReturn(AbilityData.stormDrainDamageBoostPlayer, "Storm Drain"); 
             };
-            set => throw new NotImplementedException();
+        }
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
         }
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            base.Update(npc, ref buffIndex);
-
             npc.GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff *= AbilityData.stormDrainDamageBoostNPC;
         }
 
         public override void Update(Player player, ref int buffIndex)
         {
-            base.Update(player, ref buffIndex);
+            // todo: implement
         }
     }
 }

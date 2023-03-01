@@ -9,21 +9,65 @@ using TerraTyping.DataTypes;
 
 namespace TerraTyping.Abilities.Buffs
 {
+    /// <summary>
+    /// Used for Color Change, and theoretically other buffs
+    /// </summary>
+    public interface IOldBuffModifyType
+    {
+        OldModifyType ModifyType { get; }
+    }
+
+    /// <summary>
+    /// Provides an interface for modifying the type of an entity.
+    /// </summary>
     public interface IBuffModifyType
     {
         ModifyType ModifyType { get; }
     }
+    public delegate void ModifyType(ITarget target, ref ElementArray elements);
 
-    public delegate TypeSet ModifyType(ModifyTypeParameters modifyTypeParameters);
+    public interface IBuffModifyActiveAbility
+    {
+        ModifyAbility ModifyAbility { get; }
+    }
+    public delegate void ModifyAbility(ITarget target, ref AbilityID abilityID);
+
+    public delegate ModifyTypeReturn OldModifyType(ModifyTypeParameters modifyTypeParameters);
     public struct ModifyTypeParameters
     {
-        public TypeSet typeSet;
+        public ElementArray elements;
+        public AbilityID abilityID;
+
         public ITarget targetWrapper;
 
-        public ModifyTypeParameters(TypeSet typeSet, ITarget targetWrapper)
+        public ModifyTypeParameters(ElementArray elements, AbilityID abilityID, ITarget targetWrapper)
         {
-            this.typeSet = typeSet;
+            this.elements = elements;
+            this.abilityID = abilityID;
             this.targetWrapper = targetWrapper;
+        }
+    }
+    public struct ModifyTypeReturn
+    {
+        public ElementArray NewElements { get; private set; }
+        public AbilityID NewAbility { get; private set; }
+
+        public ModifyTypeReturn(ModifyTypeParameters modifyTypeParameters)
+        {
+            NewElements = modifyTypeParameters.elements;
+            NewAbility = modifyTypeParameters.abilityID;
+        }
+
+        public ModifyTypeReturn ReplaceTypes(ElementArray replacementElements)
+        {
+            NewElements = replacementElements;
+            return this;
+        }
+
+        public ModifyTypeReturn ReplaceAbility(AbilityID replacementAbility)
+        {
+            NewAbility = replacementAbility;
+            return this;
         }
     }
 }
