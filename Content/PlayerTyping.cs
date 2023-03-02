@@ -198,17 +198,19 @@ namespace TerraTyping
 
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            float multiplicativeDamage = 1 + allDamageModifiedByAbilities;
+            float multiplicativeDamage = allDamageModifiedByAbilities;
             ElementArray elementArray = WeaponTypeLoader.GetElements(item);
             if (!elementArray.Empty)
             {
                 for (int i = 0; i < elementArray.Length; i++)
                 {
-                    multiplicativeDamage += damageModifiedByAbilities[(int)elementArray[i]];
+                    multiplicativeDamage += (damageModifiedByAbilities[(int)elementArray[i]] - 1);
                 }
             }
 
             damage = damage.CombineWith(new StatModifier(1, multiplicativeDamage, 0, 0));
+
+            Main.NewText($"{damage.Additive}, {damage.Multiplicative}");
         }
 
         public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)

@@ -1,5 +1,5 @@
 author = CrimsonTek
-version = 0.2.0.0
+version = 0.2.0.1
 displayName = TerraTyping
 homepage = https://discord.gg/RvPGKwz
 buildIgnore= *.sln, *csproj, *.user, obj\*, bin\*, .vs\*
