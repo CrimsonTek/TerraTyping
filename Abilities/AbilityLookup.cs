@@ -784,6 +784,7 @@ namespace TerraTyping.Abilities
                     {
                         if (parameters.primaryType.DefensiveElements.HasAnyElement(Element.poison, Element.steel))
                         {
+                            Main.NewText("Corrosion!");
                             return new MessageHitEnemyReturn(new Message("Corrosion!", Element.poison));
                         }
                     }

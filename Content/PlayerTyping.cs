@@ -209,6 +209,8 @@ namespace TerraTyping
             }
 
             damage = damage.CombineWith(new StatModifier(1, multiplicativeDamage, 0, 0));
+
+            Main.NewText($"{damage.Additive}, {damage.Multiplicative}");
         }
 
         public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
