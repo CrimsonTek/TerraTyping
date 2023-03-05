@@ -82,7 +82,7 @@ public abstract class TypeLoader : ILoadable
 
         if (!Mod.FileExists(fileLocation))
         {
-            Logger.Error($"Type Loader: Unable to find file: \'{fileLocation}\'");
+            Logger.Error($"TypeLoader: Unable to find file: \'{fileLocation}\'");
             return;
         }
 
