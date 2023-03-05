@@ -110,10 +110,7 @@ namespace TerraTyping
             }
         }
 
-        public override void OnSpawn(Projectile projectile, IEntitySource source)
-        {
-            base.OnSpawn(projectile, source);
-        }
+        public override void OnSpawn(Projectile projectile, IEntitySource source) { }
 
         struct ClosestTarget
         {

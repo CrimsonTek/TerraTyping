@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using TerraTyping.DataTypes;
 
@@ -12,26 +11,15 @@ namespace TerraTyping
 {
     public class LangHelper
     {
-        [Obsolete]
         public static string ElementName(Element element)
         {
             GameCulture culture = Language.ActiveCulture;
-            int langID;
-            if (culture is not null)
-            {
-                langID = culture.LegacyId;
-            }
-            else
-            {
-                langID = LangID.English;
-            }
 
-            switch (langID)
+            switch (culture.LegacyId)
             {
-                case LangID.German: return German.Name[element];
-                case LangID.French: return French.Name[element];
+                case 2: return German.Name[element];
+                case 4: return French.Name[element];
                 case 6: return Russian.Name[element];
-                case LangID.English:
                 default: return English.Name[element];
             }
         }
