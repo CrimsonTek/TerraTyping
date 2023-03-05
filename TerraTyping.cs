@@ -229,8 +229,7 @@ namespace TerraTyping
             }
         }
 
-        [Obsolete]
-        private void Initialize(Mod mod, ref Dictionary<string, Element> _dict, ref Dictionary<int, Element> dict, bool projectile = false)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Element> _dict, ref Dictionary<int, Element> dict, bool projectile = false)
         {
             if (mod == null)
                 return;
@@ -262,8 +261,7 @@ namespace TerraTyping
                 dict.Add(key, value);
             }
         }
-        [Obsolete]
-        private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element>> dict, ref Dictionary<int, Tuple<Element, Element>> dict2)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element>> dict, ref Dictionary<int, Tuple<Element, Element>> dict2)
         {
             if (mod == null)
                 return;
@@ -300,8 +298,7 @@ namespace TerraTyping
                 }
             }
         }
-        [Obsolete]
-        private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element, Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element, Element, Element>> dict)
+        [Obsolete] private void Initialize(Mod mod, ref Dictionary<string, Tuple<Element, Element, Element, Element>> _dict, ref Dictionary<int, Tuple<Element, Element, Element, Element>> dict)
         {
             if (mod == null)
                 return;
