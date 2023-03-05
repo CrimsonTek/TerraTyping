@@ -33,14 +33,29 @@ namespace TerraTyping.Common
         {
             //icons = null;
             //wikiUserInterface = null;
+            UnloadIcons();
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int index = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Entity Health Bars"));
-            if (index != -1)
+            int healthBarLayerIndex = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Entity Health Bars"));
+            if (healthBarLayerIndex != -1)
             {
-                layers.Insert(index, new LegacyGameInterfaceLayer("TerraTyping: Types UI", DrawTypes, InterfaceScaleType.Game));
+                layers.Insert(healthBarLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Types UI", DrawTypes, InterfaceScaleType.Game));
+            }
+
+            int inventoryLayerIndex = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Inventory"));
+            if (inventoryLayerIndex != -1)
+            {
+                //layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Wiki UI", Wiki, InterfaceScaleType.UI));
+            }
+        }
+
+        public override void UpdateUI(GameTime gameTime)
+        {
+            if (wikiUserInterface?.CurrentState is not null)
+            {
+                wikiUserInterface.Update(gameTime);
             }
         }
 
@@ -117,23 +132,46 @@ namespace TerraTyping.Common
             //PlayerInput.SetZoom_UI();
         }
 
-        void LoadIcons()
+        private bool Wiki()
         {
-            if (iconsLoaded)
+            if (wikiUserInterface?.CurrentState is not null)
             {
-                return;
+                wikiUserInterface.Draw(Main.spriteBatch, new GameTime());
             }
 
-            Element[] elements = ElementHelper.GetAllIncludeNone();
+            return true;
+        }
 
-            icons = new Asset<Texture2D>[elements.Length];
-
-            for (int i = 0; i < elements.Length; i++)
+        private void LoadIcons()
+        {
+            try
             {
-                icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{Formal.Name[elements[i]]}");
-            }
+                if (iconsLoaded)
+                {
+                    return;
+                }
 
-            iconsLoaded = true;
+                Element[] elements = ElementHelper.GetAllIncludeNone();
+
+                icons = new Asset<Texture2D>[elements.Length];
+
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    //icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{LangHelper.ElementName(elements[i])}");
+                }
+
+                iconsLoaded = true;
+            }
+            catch (Exception e)
+            {
+                TerraTyping.Instance.Logger.Error("Caught exception while loading icons.", e);
+            }
+        }
+
+        private void UnloadIcons()
+        {
+            icons = null;
+            iconsLoaded = false;
         }
     }
 }
