@@ -10,13 +10,14 @@ namespace TerraTyping.Common.Configs;
 
 public class ServerConfig : ModConfig
 {
-    public override ConfigScope Mode => ConfigScope.ServerSide;
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
+    public static ServerConfig Instance;
 
-    public event Action OnChangedEvent;
+    public override ConfigScope Mode => ConfigScope.ServerSide;
 
     public override void OnChanged()
     {
-        OnChangedEvent?.Invoke();
+        //Table.NewTable(this);
     }
 
     [Label("Multiplier")]

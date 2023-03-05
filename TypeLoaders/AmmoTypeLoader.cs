@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using Terraria.ModLoader;
 using TerraTyping.DataTypes;
 
@@ -15,6 +16,30 @@ public class AmmoTypeLoader : TypeLoader
     protected override string CSVFileName => "ammoTypes";
 
     public static AmmoTypeLoader Instance { get; private set; }
+
+    public static ElementArray GetElements(Item item)
+    {
+        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out AmmoTypeInfo ammoTypeInfo))
+        {
+            return ammoTypeInfo.elements;
+        }
+        else
+        {
+            return ElementArray.Default;
+        }
+    }
+
+    public static ElementArray GetElements(int itemType)
+    {
+        if (Instance.typeInfos.TryGetValue(itemType, out AmmoTypeInfo ammoTypeInfo))
+        {
+            return ammoTypeInfo.elements;
+        }
+        else
+        {
+            return ElementArray.Default;
+        }
+    }
 
     protected override void InitTypeInfoCollection()
     {
@@ -52,7 +77,7 @@ public class AmmoTypeLoader : TypeLoader
 
     class AmmoTypeInfo
     {
-        private readonly ElementArray elements;
+        public readonly ElementArray elements;
 
         public AmmoTypeInfo(ElementArray elements)
         {

@@ -104,22 +104,60 @@ namespace TerraTyping
 
         public override void Load()
         {
-            Instance = this;
-
-            Static.Load();
-
-            Type[] arrType = Code.GetTypes();
-            foreach (Type type in arrType)
+            try
             {
-                LoadAttribute loadAttribute = type.GetCustomAttribute<LoadAttribute>();
-                if (loadAttribute != null)
-                {
-                    MethodInfo methodInfo = type.GetMethod("Load", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    methodInfo.Invoke(null, null);
-                }
-            }
+                Instance = this;
 
-            errors.Clear();
+                ElementHelper.Load();
+                ElementArray.Load();
+
+                Type[] arrType = Code.GetTypes();
+                foreach (Type type in arrType)
+                {
+                    LoadAttribute loadAttribute = type.GetCustomAttribute<LoadAttribute>();
+                    if (loadAttribute != null)
+                    {
+                        MethodInfo methodInfo = type.GetMethod("Load", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                        methodInfo.Invoke(null, null);
+                    }
+                }
+
+                errors.Clear();
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Caught exception while loading TerraTyping.", e);
+            }
+        }
+
+        public override void PostSetupContent()
+        {
+            try
+            {
+                TypeLoader.Logger = Logger;
+                TypeLoader.IsLoadingTypes = true;
+
+                SpecialTooltip.StaticLoad();
+
+                NPCTypeLoader.Instance.SetupTypes();
+                WeaponTypeLoader.Instance.SetupTypes();
+                AmmoTypeLoader.Instance.SetupTypes();
+                ArmorTypeLoader.Instance.SetupTypes();
+                ProjectileTypeLoader.Instance.SetupTypes();
+                SpecialItemTypeLoader.Instance.SetupTypes();
+
+                ProjectileWrapper.PostSetupContent();
+
+                SpecialTooltip.Finish();
+
+                ElementArray.Clean();
+
+                TypeLoader.IsLoadingTypes = false;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Caught exception while loading TerraTyping.", e);
+            }
         }
 
         public override void Unload()
@@ -140,43 +178,17 @@ namespace TerraTyping
                 BuffUtils.addTypeBuffs = null;
                 BuffUtils.replaceTypeBuffs = null;
 
-                Static.Unload();
+                ProjectileWrapper.Unload();
+                ElementArray.Unload();
+                ElementHelper.Unload();
             }
             catch (Exception exception)
             {
                 Logger.Error("An error occured during the unloading process.", exception);
             }
 
+            SpecialTooltip.StaticUnload();
             Instance = null;
-        }
-
-        public override void PostSetupContent()
-        {
-            TypeLoader.Logger = Logger;
-            TypeLoader.IsLoadingTypes = true;
-
-            SpecialTooltip.StaticLoad();
-
-            //Enemies.SetupTypes();
-            NPCTypeLoader.Instance.SetupTypes();
-            //Items.SetupTypes();
-            WeaponTypeLoader.Instance.SetupTypes();
-            AmmoTypeLoader.Instance.SetupTypes();
-            
-            //Armors.SetupTypes();
-            ArmorTypeLoader.Instance.SetupTypes();
-            //Projectiles.SetupTypes();
-            ProjectileTypeLoader.Instance.SetupTypes();
-
-            //Items.LoadSpecialTooltips();
-
-            Static.PostSetupContent();
-
-            SpecialTooltip.Finish();
-
-            ElementArray.Clean();
-
-            TypeLoader.IsLoadingTypes = false;
         }
 
         private void Initialize<T>(

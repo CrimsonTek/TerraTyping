@@ -5,13 +5,14 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Terraria.ModLoader;
+using TerraTyping.Common;
 using TerraTyping.DataTypes;
 
 namespace TerraTyping.TypeLoaders;
 
 public class SpecialTooltip
 {
-    internal static Stack<DelayedTooltip> delayedTooltips;
+    private static Stack<DelayedTooltip> delayedTooltips;
 
     public string TooltipString { get; private set; }
 
@@ -60,11 +61,6 @@ public class SpecialTooltip
         return specialTooltip;
     }
 
-    internal static void StaticLoad()
-    {
-        delayedTooltips = new Stack<DelayedTooltip>();
-    }
-
     internal static void Finish()
     {
         while (delayedTooltips.TryPop(out var result))
@@ -79,7 +75,7 @@ public class SpecialTooltip
                 };
 
                 result.specialTooltip.TooltipString = string.Format(result.Tooltip, string.Join(", ", elements));
-                result.specialTooltip.Colors = elements.Select(element => ElementColors.GetColor(element)).ToArray();
+                result.specialTooltip.Colors = elements.Select(element => TerraTypingColors.GetColor(element)).ToArray();
             }
             else
             {
@@ -90,9 +86,23 @@ public class SpecialTooltip
         delayedTooltips = null;
     }
 
+    internal static void StaticLoad()
+    {
+        delayedTooltips = new Stack<DelayedTooltip>();
+    }
+
+    internal static void StaticUnload()
+    {
+        delayedTooltips = null;
+    }
+
     internal class DelayedTooltip
     {
         public SpecialTooltip specialTooltip;
+        /// <summary>
+        /// The type of the items this belongs to.
+        /// </summary>
+        public int itemType;
 
         public int Id = -1;
         public TypeFrom? TypeFrom = null;

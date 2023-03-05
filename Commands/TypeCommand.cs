@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Common;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
 using TerraTyping.TypeLoaders;
@@ -58,7 +59,7 @@ namespace TerraTyping.Commands
 
             if (Enum.TryParse(args[0], true, out Element result))
             {
-                Color color = ElementColors.GetColor(result);
+                Color color = TerraTypingColors.GetColor(result);
                 string elementName = LangHelper.ElementName(result);
 
                 // element is defender
@@ -188,14 +189,14 @@ namespace TerraTyping.Commands
                 for (int i = 0; i < defensiveTypes.Length; i++)
                 {
                     Element element = defensiveTypes[i];
-                    caller.Reply($" > {LangHelper.ElementName(element)}", ElementColors.GetColor(element));
+                    caller.Reply($" > {LangHelper.ElementName(element)}", TerraTypingColors.GetColor(element));
                 }
 
                 caller.Reply($"{npc.TypeName} melee attack:");
                 for (int i = 0; i < contactTypes.Length; i++)
                 {
                     Element element = contactTypes[i];
-                    caller.Reply($" > {LangHelper.ElementName(element)}", ElementColors.GetColor(element));
+                    caller.Reply($" > {LangHelper.ElementName(element)}", TerraTypingColors.GetColor(element));
                 }
 
                 if (_primaryAbility != AbilityID.None) caller.Reply($"  Primary Ability: {LangHelper.AbilityName(_primaryAbility)}");

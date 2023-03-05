@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities.Buffs;
+using TerraTyping.Common;
 using TerraTyping.Data;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
@@ -333,7 +334,7 @@ namespace TerraTyping.Abilities
                 hasMessage = true;
                 this.text = text;
                 setColor = true;
-                textColor = ElementColors.GetColor(type);
+                textColor = TerraTypingColors.GetColor(type);
             }
         }
         struct BuffOnHitData
