@@ -72,7 +72,7 @@ public abstract class TypeLoader : ILoadable
 
     private void LoadFile()
     {
-        string testLocation = $"CsvTypes/Vanilla/{CSVFileName}.csv";
+        string fileLocation = $"CsvTypes/Vanilla/{CSVFileName}.csv";
 
         if (Mod is null)
         {
@@ -80,13 +80,13 @@ public abstract class TypeLoader : ILoadable
             return;
         }
 
-        if (!Mod.FileExists(testLocation))
+        if (!Mod.FileExists(fileLocation))
         {
-            Logger.Error($"Type Loader: Unable to find file: \'{testLocation}\'");
+            Logger.Error($"Type Loader: Unable to find file: \'{fileLocation}\'");
             return;
         }
 
-        using Stream stream = Mod.GetFileStream(testLocation, true); // newFileStream must be true otherwise it crashes
+        using Stream stream = Mod.GetFileStream(fileLocation, true); // newFileStream must be true otherwise it crashes
         StreamReader streamReader = new StreamReader(stream);
 
         int lineCount = 0;

@@ -14,7 +14,7 @@ using Terraria.ID;
 using ReLogic.Content;
 using TerraTyping.Helpers;
 
-namespace TerraTyping
+namespace TerraTyping.Common
 {
     public class MySystem : ModSystem
     {
@@ -30,10 +30,10 @@ namespace TerraTyping
             }
 
             Element[] elements = ElementHelper.GetAllIncludeNone();
-            
+
             icons = new Asset<Texture2D>[elements.Length];
 
-            for (int i = 0; i < (elements.Length); i++)
+            for (int i = 0; i < elements.Length; i++)
             {
                 icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{Formal.Name[elements[i]]}");
             }
@@ -75,7 +75,7 @@ namespace TerraTyping
                 NPC npc = Main.npc[index];
                 if (npc.active)
                 {
-                    Rectangle npcFrame = new Rectangle((int)npc.Bottom.X - (npc.frame.Width / 2),
+                    Rectangle npcFrame = new Rectangle((int)npc.Bottom.X - npc.frame.Width / 2,
                         (int)npc.Bottom.Y - npc.frame.Height, npc.frame.Width, npc.frame.Height);
                     if (npc.type >= NPCID.WyvernHead && npc.type <= NPCID.WyvernTail)
                     {
@@ -98,7 +98,7 @@ namespace TerraTyping
                             Texture2D icon = icons[(int)npcWrapper.DefensiveElements[i]].Value;
                             Main.spriteBatch.Draw(icon, defensiveIconsVector, null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
                             defensiveIconsVector.X += (icon.Width + buffer) * Main.UIScale;
-                            float calculatedContactIconY = topLeft.Y + ((icon.Height + buffer) * Main.UIScale);
+                            float calculatedContactIconY = topLeft.Y + (icon.Height + buffer) * Main.UIScale;
                             if (calculatedContactIconY > contactIconVector.Y)
                             {
                                 contactIconVector.Y = calculatedContactIconY;
@@ -184,7 +184,7 @@ namespace TerraTyping
         //                    {
         //                        Texture2D icon = icons[(int)npcWrapper.DefensiveElements[i]].Value;
         //                        Main.spriteBatch.Draw(icon, new Vector2(x, startY), null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
-                                
+
         //                        x += (icon.Width + buffer) * Main.UIScale;
         //                        float bottomPlusBuffer = startY + (icon.Height + buffer) * Main.UIScale;
         //                        if (bottomPlusBuffer > contactIconsY)

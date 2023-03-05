@@ -106,7 +106,8 @@ namespace TerraTyping
         {
             Instance = this;
 
-            Static.Load();
+            ElementHelper.Load();
+            ElementArray.Load();
 
             Type[] arrType = Code.GetTypes();
             foreach (Type type in arrType)
@@ -140,13 +141,16 @@ namespace TerraTyping
                 BuffUtils.addTypeBuffs = null;
                 BuffUtils.replaceTypeBuffs = null;
 
-                Static.Unload();
+                ProjectileWrapper.Unload();
+                ElementArray.Unload();
+                ElementHelper.Unload();
             }
             catch (Exception exception)
             {
                 Logger.Error("An error occured during the unloading process.", exception);
             }
 
+            SpecialTooltip.StaticUnload();
             Instance = null;
         }
 
@@ -170,7 +174,7 @@ namespace TerraTyping
 
             //Items.LoadSpecialTooltips();
 
-            Static.PostSetupContent();
+            ProjectileWrapper.PostSetupContent();
 
             SpecialTooltip.Finish();
 
