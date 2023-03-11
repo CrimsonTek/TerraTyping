@@ -77,6 +77,34 @@ namespace TerraTyping
         }
 
         public static Dictionary<Element, string> Name;
+        public static string ElementName(Element element)
+        {
+            return element switch
+            {
+                Element.normal => "Normal",
+                Element.fire => "Fire",
+                Element.water => "Water",
+                Element.electric => "Electric",
+                Element.grass => "Grass",
+                Element.ice => "Ice",
+                Element.fighting => "Fighting",
+                Element.poison => "Poison",
+                Element.ground => "Ground",
+                Element.flying => "Flying",
+                Element.psychic => "Psychic",
+                Element.bug => "Bug",
+                Element.rock => "Rock",
+                Element.ghost => "Ghost",
+                Element.dragon => "Dragon",
+                Element.dark => "Dark",
+                Element.steel => "Steel",
+                Element.fairy => "Fairy",
+                Element.blood => "Blood",
+                Element.bone => "Bone",
+                Element.none => "None",
+                _ => throw new ArgumentException("Unexpected element: {element}.")
+            };
+        }
 
         public static Dictionary<AbilityID, string> Ability;
     }

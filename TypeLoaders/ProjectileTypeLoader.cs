@@ -113,7 +113,7 @@ public class ProjectileTypeLoader : TypeLoader
                 {
                     if (defensive == Element.water)
                     {
-                        baseEffectiveness = Table.Mult;
+                        baseEffectiveness = Table.Multiplier;
                     }
                 };
             default: return null;

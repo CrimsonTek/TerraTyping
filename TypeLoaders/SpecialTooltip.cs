@@ -18,26 +18,40 @@ public class SpecialTooltip
 
     public Color[] Colors { get; private set; }
 
-    public static SpecialTooltip[] Parse(string input)
+    public static SpecialTooltip[] Parse(string input, out bool overrideSpecialTooltip)
     {
         List<SpecialTooltip> specialTooltips = new List<SpecialTooltip>();
+        try
+        {
+            var jObject = JsonConvert.DeserializeObject(input) as JObject;
 
-        object obj = JsonConvert.DeserializeObject(input);
-        if (obj is JArray array)
-        {
-            for (int i = 0; i < array.Count; i++)
+            bool dontOverride = jObject.Value<bool>("DontOverride");
+
+            if (dontOverride)
             {
-                JToken jToken = array[i];
-                specialTooltips.Add(ParseJToken(jToken));
+                TerraTyping.Instance.Logger.Debug($"{nameof(dontOverride)} is true for \"{input}\"");
             }
+
+            JArray jArray = jObject.Value<JArray>("Tooltips") ?? new JArray();
+            for (int i = 0; i < jArray.Count; i++)
+            {
+                specialTooltips.Add(ParseJToken(jArray[i]));
+            }
+
+            if (dontOverride)
+            {
+                overrideSpecialTooltip = false;
+            }
+            else
+            {
+                overrideSpecialTooltip = specialTooltips.Count > 0;
+            }
+
+            //overrideSpecialTooltip = !dontOverride || specialTooltips.Count > 0;
         }
-        else if (obj is JToken jToken)
+        catch (Exception e)
         {
-            specialTooltips.Add(ParseJToken(jToken));
-        }
-        else
-        {
-            throw new Exception($"Parse input: \"{input}\" is not a json array.");
+            throw new Exception($"Threw exception while parsing \"{input}\"", e);
         }
 
         return specialTooltips.ToArray();
@@ -99,10 +113,6 @@ public class SpecialTooltip
     internal class DelayedTooltip
     {
         public SpecialTooltip specialTooltip;
-        /// <summary>
-        /// The type of the items this belongs to.
-        /// </summary>
-        public int itemType;
 
         public int Id = -1;
         public TypeFrom? TypeFrom = null;

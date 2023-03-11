@@ -11,8 +11,8 @@ namespace TerraTyping.Abilities.Buffs
 {
     public class Justified : ModBuff, IPowerupType
     {
-        public PowerupType PowerupType =>
-            (parameters) => new PowerupTypeReturn(AbilityData.justifiedDamageBoostPlayer, "Justified");
+        public BuffPowerupType PowerupType =>
+            (parameters) => new BuffPowerupTypeReturn(AbilityData.justifiedDamageBoostPlayer, "Justified");
 
         public override void Update(NPC npc, ref int buffIndex)
         {

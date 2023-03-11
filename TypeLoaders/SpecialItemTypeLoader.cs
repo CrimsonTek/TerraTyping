@@ -40,14 +40,16 @@ public class SpecialItemTypeLoader : TypeLoader
         }
     }
 
-    public static SpecialTooltip[] GetSpecialTooltips(Item item)
+    public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
         if (item is not null && Instance.typeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
         {
+            overrideTypeTooltip = itemTypeInfo.overrideTypeTooltip;
             return itemTypeInfo.specialTooltips;
         }
         else
         {
+            overrideTypeTooltip = false;
             return Array.Empty<SpecialTooltip>();
         }
     }
@@ -67,12 +69,13 @@ public class SpecialItemTypeLoader : TypeLoader
         int itemID = int.Parse(cells[0]);
 
         SpecialTooltip[] specialTooltips = Array.Empty<SpecialTooltip>();
+        bool overrideSpecialTooltip = false;
         if (!string.IsNullOrWhiteSpace(cells[ColumnToIndex.D]))
         {
-            specialTooltips = SpecialTooltip.Parse(cells[ColumnToIndex.D]);
+            specialTooltips = SpecialTooltip.Parse(cells[ColumnToIndex.D], out overrideSpecialTooltip);
         }
 
-        typeInfos[itemID] = new ItemTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.D]), specialTooltips);
+        typeInfos[itemID] = new ItemTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.D]), specialTooltips, overrideSpecialTooltip);
     }
 
     public override void Load()
@@ -89,11 +92,13 @@ public class SpecialItemTypeLoader : TypeLoader
     {
         public readonly ElementArray elements;
         public readonly SpecialTooltip[] specialTooltips;
+        public readonly bool overrideTypeTooltip;
 
-        public ItemTypeInfo(ElementArray elements, SpecialTooltip[] specialTooltips)
+        public ItemTypeInfo(ElementArray elements, SpecialTooltip[] specialTooltips, bool overrideTypeTooltip)
         {
             this.elements = elements;
             this.specialTooltips = specialTooltips;
+            this.overrideTypeTooltip = overrideTypeTooltip;
         }
     }
 }

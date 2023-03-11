@@ -1,5 +1,5 @@
 id,types1,types2,tooltipOverride
-937,Normal,,"[{""Id"":92,""TypeFrom"":""Projectile"",""Tooltip"": ""Star is {0}""},{""Id"":181,""TypeFrom"":""Projectile"",""Tooltip"": ""Bees are {0}""}]"
+937,Normal,,"{""Tooltips"": [{""Id"":92,""TypeFrom"":""Projectile"",""Tooltip"": ""Star is {0}""},{""Id"":181,""TypeFrom"":""Projectile"",""Tooltip"": ""Bees are {0}""}]}"
 532,Flying,,
 1247,Flying,,
 862,Flying,,

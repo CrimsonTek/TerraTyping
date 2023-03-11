@@ -7,43 +7,35 @@ using TerraTyping.Attributes;
 
 namespace TerraTyping
 {
-    [Load]
-    [Unload]
     public class German
     {
-        public static void Load()
+        public static string ElementName(Element element)
         {
-            Name = new Dictionary<Element, string>
+            return element switch
             {
-                {Element.normal, "Normal" },
-                {Element.fire, "Feuer" },
-                {Element.water, "Wasser" },
-                {Element.electric, "Elektro" },
-                {Element.grass, "Pflanze" },
-                {Element.ice, "Eis" },
-                {Element.fighting, "Kampf" },
-                {Element.poison, "Gift" },
-                {Element.ground, "Boden" },
-                {Element.flying, "Flug" },
-                {Element.psychic, "Psycho" },
-                {Element.bug, "Käfer" },
-                {Element.rock, "Gestein" },
-                {Element.ghost, "Geist" },
-                {Element.dragon, "Drache" },
-                {Element.dark, "Unlicht" },
-                {Element.steel, "Stahl" },
-                {Element.fairy, "Fee" },
-                {Element.blood, "Blut" },
-                {Element.bone, "Knochen" },
-                {Element.none, "Keine" }
+                Element.normal => "Normal",
+                Element.fire => "Feuer",
+                Element.water => "Wasser",
+                Element.electric => "Elektro",
+                Element.grass => "Pflanze",
+                Element.ice => "Eis",
+                Element.fighting => "Kampf",
+                Element.poison => "Gift",
+                Element.ground => "Boden",
+                Element.flying => "Flug",
+                Element.psychic => "Psycho",
+                Element.bug => "Käfer",
+                Element.rock => "Gestein",
+                Element.ghost => "Geist",
+                Element.dragon => "Drache",
+                Element.dark => "Unlicht",
+                Element.steel => "Stahl",
+                Element.fairy => "Fee",
+                Element.blood => "Blut",
+                Element.bone => "Knochen",
+                Element.none => "Keine",
+                _ => throw new ArgumentException("Unexpected element: {element}.")
             };
         }
-
-        public static void Unload()
-        {
-            Name = null;
-        }
-
-        public static Dictionary<Element, string> Name;
     }
 }

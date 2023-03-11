@@ -60,6 +60,6 @@ namespace TerraTyping.Data
         public const float sandStormDamageBoost = 1.3f;
 
         public const float flammableDamageMultiplierFire = 2;
-        public const float flammableDamageMultiplierWater = 0.5f;
+        public const float flammableDamageMultiplierWater = 1;
     }
 }

@@ -10,26 +10,26 @@ namespace TerraTyping.Abilities.Buffs
 {
     public interface IPowerupType
     {
-        PowerupType PowerupType { get; }
+        BuffPowerupType PowerupType { get; }
     }
 
-    public delegate PowerupTypeReturn PowerupType(PowerupTypeParameters parameters);
-    public struct PowerupTypeParameters
+    public delegate BuffPowerupTypeReturn BuffPowerupType(BuffPowerupTypeParameters parameters);
+    public struct BuffPowerupTypeParameters
     {
         public Element element;
         public Wrapper user;
 
-        public PowerupTypeParameters(Element element, Wrapper user)
+        public BuffPowerupTypeParameters(Element element, Wrapper user)
         {
             this.element = element;
             this.user = user;
         }
     }
-    public struct PowerupTypeReturn
+    public struct BuffPowerupTypeReturn
     {
         public Boost boost;
 
-        public PowerupTypeReturn(float multiply, string name)
+        public BuffPowerupTypeReturn(float multiply, string name)
         {
             boost = new Boost(multiply, name);
         }

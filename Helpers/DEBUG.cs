@@ -31,13 +31,74 @@ public class DEBUG : ModSystem
         }
     }
 
+    /// <summary>
+    /// Prints if a condition is true.
+    /// </summary>
+    public static void PRINTIF(bool condition, string message)
+    {
+        if (condition)
+        {
+            TerraTyping.Instance.Logger.Debug(message);
+        }
+    }
+
     public static void PRINT(object obj)
     {
+        if (TerraTyping.Instance is null)
+        {
+            string message = $"{nameof(TerraTyping)}.{nameof(TerraTyping.Instance)} is null.";
+
+            if (ModContent.GetInstance<TerraTyping>() is null)
+            {
+                message += $" No instance of {typeof(TerraTyping)} exists.";
+            }
+            else
+            {
+                message += $" An instance of {typeof(TerraTyping)} exists.";
+            }
+
+            throw new Exception(message);
+        }
+        else if (TerraTyping.Instance.Logger is null)
+        {
+            throw new Exception($"{nameof(TerraTyping)}.{nameof(TerraTyping.Instance)}.{nameof(TerraTyping.Instance.Logger)} is null.");
+        }
+
         TerraTyping.Instance.Logger.Debug(obj);
     }
 
     public override void PreUpdateTime()
     {
 
+    }
+}
+
+[Obsolete]
+public class PRINTER
+{
+    public string name;
+    public int counter;
+
+    public PRINTER()
+    {
+        counter = 0;
+    }
+
+    public PRINTER(string name)
+    {
+        counter = 0;
+        this.name = name;
+    }
+
+    public void PRINTNEXT()
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            DEBUG.PRINT(counter++);
+        }
+        else
+        {
+            DEBUG.PRINT($"{name}: {counter++}");
+        }
     }
 }

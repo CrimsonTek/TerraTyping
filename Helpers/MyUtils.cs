@@ -79,6 +79,21 @@ namespace TerraTyping.Helpers
 
             return dictionary[key];
         }
+
+        public static T[] FilledArray<T>(Func<T> filler, int count)
+        {
+            if (filler is null)
+            {
+                throw new ArgumentNullException(nameof(filler));
+            }
+
+            T[] values = new T[count];
+            for (int i = 0; i < count; i++)
+            {
+                values[i] = filler();
+            }
+            return values;
+        }
     }
 
     public struct Time

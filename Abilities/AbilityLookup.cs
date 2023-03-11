@@ -177,13 +177,13 @@ namespace TerraTyping.Abilities
         };
         public struct PowerupTypeParameters
         {
-            public Element type;
+            public Element element;
             public Wrapper user;
             public Wrapper target;
 
             public PowerupTypeParameters(Element type, Wrapper user, Wrapper target)
             {
-                this.type = type;
+                this.element = type;
                 this.user = user;
                 this.target = target;
             }
@@ -224,7 +224,7 @@ namespace TerraTyping.Abilities
         /// Used when text should appear when hit by a specific type, eg Dry Skin.
         /// </summary>
         public delegate MessageOnHitReturn MessageOnHit(MessageOnHitParameters messageOnHitParameters);
-        public static MessageOnHit MessageOnHitDefault => (parameters) => { return default; };
+        public static MessageOnHit MessageOnHitDefault => (parameters) => default;
         public struct MessageOnHitParameters
         {
             public ITarget target;
@@ -306,11 +306,13 @@ namespace TerraTyping.Abilities
             public string text;
             public bool setColor;
             public Color textColor;
+            public ElementArray elements;
 
             public static Message None => new Message()
             {
                 hasMessage = false,
                 text = string.Empty,
+                elements = ElementArray.Default
             };
 
             public Message(string text)
@@ -319,6 +321,7 @@ namespace TerraTyping.Abilities
                 this.text = text;
                 setColor = false;
                 textColor = default;
+                elements = ElementArray.Default;
             }
 
             public Message(string text, Color color)
@@ -327,14 +330,25 @@ namespace TerraTyping.Abilities
                 this.text = text;
                 setColor = true;
                 textColor = color;
+                elements = ElementArray.Default;
             }
-            
+
             public Message(string text, Element type)
             {
                 hasMessage = true;
                 this.text = text;
                 setColor = true;
                 textColor = TerraTypingColors.GetColor(type);
+                elements = ElementArray.Default;
+            }
+
+            public Message(string text, ElementArray elements)
+            {
+                hasMessage = true;
+                this.text = text;
+                setColor = true;
+                textColor = default;
+                this.elements = elements;
             }
         }
         struct BuffOnHitData
@@ -440,7 +454,7 @@ namespace TerraTyping.Abilities
         }
         public static Ability GetAbility(IAbility abilityEntity)
         {
-            AbilityID ability = abilityEntity.GetAbility;
+            AbilityID ability = abilityEntity?.GetAbility ?? AbilityID.None;
             if (abilityLookupTable.ContainsKey(ability))
             {
                 return abilityLookupTable[ability];
@@ -457,21 +471,21 @@ namespace TerraTyping.Abilities
             AddAbility(AbilityID.None, new Ability(AbilityID.None));
             AddAbility(AbilityID.Levitate, new Ability(AbilityID.Levitate)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.ground, false)
+                modifyDamageIncoming = AbsorbFactory(Element.ground, false)
             });
             AddAbility(AbilityID.VoltAbsorb, new Ability(AbilityID.VoltAbsorb)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.electric, true),
-                MessageOnHit = MessageOnHitFactory(Element.electric, "Volt Absorb!")
+                modifyDamageIncoming = AbsorbFactory(Element.electric, true),
+                messageOnHit = MessageOnHitFactory(Element.electric, "Volt Absorb!")
             });
             AddAbility(AbilityID.LightningRod, new Ability(AbilityID.LightningRod)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.electric, false),
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<LightningRod>(),
+                modifyDamageIncoming = AbsorbFactory(Element.electric, false),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<LightningRod>(),
                 AbilityData.lightningRodDurationPlayer,
                 AbilityData.lightningRodDurationNPC, false), Element.electric),
-                MessageOnHit = MessageOnHitFactory(Element.electric, "Lightning Rod!"),
-                AttractProjectile = (parameters) =>
+                messageOnHit = MessageOnHitFactory(Element.electric, "Lightning Rod!"),
+                attractProjectile = (parameters) =>
                 {
                     if (parameters.target is ITeam targetTeam &&
                         parameters.target is ITarget targetTarget)
@@ -488,12 +502,12 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.StormDrain, new Ability(AbilityID.StormDrain)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.water, false),
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<StormDrain>(),
+                modifyDamageIncoming = AbsorbFactory(Element.water, false),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<StormDrain>(),
                 AbilityData.stormDrainDurationPlayer,
                 AbilityData.stormDrainDurationNPC, false), Element.water),
-                MessageOnHit = MessageOnHitFactory(Element.water, "Storm Drain!"),
-                AttractProjectile = (parameters) =>
+                messageOnHit = MessageOnHitFactory(Element.water, "Storm Drain!"),
+                attractProjectile = (parameters) =>
                 {
                     if (parameters.target is ITeam targetTeam &&
                         parameters.target is ITarget targetTarget)
@@ -510,33 +524,33 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.MotorDrive, new Ability(AbilityID.MotorDrive)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.electric, false),
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<MotorDrive>(),
+                modifyDamageIncoming = AbsorbFactory(Element.electric, false),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<MotorDrive>(),
                 AbilityData.motorDriveDurationPlayer,
                 AbilityData.motorDriveDurationNPC, false), Element.electric),
-                MessageOnHit = MessageOnHitFactory(Element.electric, "Motor Drive!")
+                messageOnHit = MessageOnHitFactory(Element.electric, "Motor Drive!")
             });
             AddAbility(AbilityID.WaterAbsorb, new Ability(AbilityID.WaterAbsorb)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.water, true),
-                MessageOnHit = MessageOnHitFactory(Element.water, "Water Absorb!")
+                modifyDamageIncoming = AbsorbFactory(Element.water, true),
+                messageOnHit = MessageOnHitFactory(Element.water, "Water Absorb!")
             });
             AddAbility(AbilityID.FlashFire, new Ability(AbilityID.FlashFire)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.fire, false),
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<FlashFire>(),
+                modifyDamageIncoming = AbsorbFactory(Element.fire, false),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<FlashFire>(),
                 AbilityData.flashFireDurationPlayer,
                 AbilityData.flashFireDurationNPC, false), Element.fire),
-                MessageOnHit = MessageOnHitFactory(Element.fire, "Flash Fire!")
+                messageOnHit = MessageOnHitFactory(Element.fire, "Flash Fire!")
             });
             AddAbility(AbilityID.SapSipper, new Ability(AbilityID.SapSipper)
             {
-                ModifyDamageIncoming = AbsorbFactory(Element.grass, false),
-                MessageOnHit = MessageOnHitFactory(Element.grass, "Sap Sipper!")
+                modifyDamageIncoming = AbsorbFactory(Element.grass, false),
+                messageOnHit = MessageOnHitFactory(Element.grass, "Sap Sipper!")
             });
             AddAbility(AbilityID.ThickFat, new Ability(AbilityID.ThickFat)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
 
@@ -547,7 +561,7 @@ namespace TerraTyping.Abilities
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);
                 },
-                MessageOnHit = (parameters) =>
+                messageOnHit = (parameters) =>
                 {
                     if (parameters.incoming.HasAnyElement(Element.ice, Element.fire, out Element firstFound))
                     {
@@ -558,7 +572,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Heatproof, new Ability(AbilityID.Heatproof)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     if (parameters.incomingElements.HasElement(Element.fire))
                     {
@@ -566,11 +580,11 @@ namespace TerraTyping.Abilities
                     }
                     return new ModifyDamageReturn(parameters.damage, false, parameters.knockback);
                 },
-                MessageOnHit = MessageOnHitFactory(Element.fire, "Heatproof!")
+                messageOnHit = MessageOnHitFactory(Element.fire, "Heatproof!")
             });
             AddAbility(AbilityID.WaterBubble, new Ability(AbilityID.WaterBubble)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     if (parameters.incomingElements.HasElement(Element.fire))
                     {
@@ -578,9 +592,9 @@ namespace TerraTyping.Abilities
                     }
                     return new ModifyDamageReturn(parameters.damage, false, parameters.knockback);
                 },
-                PowerupType = (parameters) =>
+                powerupType = (parameters) =>
                 {
-                    if (parameters.type == Element.water)
+                    if (parameters.element == Element.water)
                     {
                         return new PowerupTypeReturn(AbilityData.waterBubbleWaterDamageBoost);
                     }
@@ -589,11 +603,11 @@ namespace TerraTyping.Abilities
                         return new PowerupTypeReturn(1);
                     }
                 },
-                MessageOnHit = MessageOnHitFactory(Element.fire, "Water Bubble!")
+                messageOnHit = MessageOnHitFactory(Element.fire, "Water Bubble!")
             });
             AddAbility(AbilityID.Fluffy, new Ability(AbilityID.Fluffy)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
                     if (parameters.damageClass.Melee)
@@ -608,7 +622,7 @@ namespace TerraTyping.Abilities
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);
                 },
-                MessageOnHit = (parameters) =>
+                messageOnHit = (parameters) =>
                 {
                     if (parameters.incoming.HasElement(Element.fire))
                     {
@@ -625,14 +639,14 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Justified, new Ability(AbilityID.Justified)
             {
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<Justified>(),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<Justified>(),
                 AbilityData.justifiedDurationPlayer,
                 AbilityData.justifiedDurationNPC, false), Element.dark),
-                MessageOnHit = MessageOnHitFactory(Element.dark, "Justified!")
+                messageOnHit = MessageOnHitFactory(Element.dark, "Justified!")
             });
             AddAbility(AbilityID.WaterCompaction, new Ability(AbilityID.WaterCompaction)
             {
-                BuffOnHit = (parameters) =>
+                buffOnHit = (parameters) =>
                 {
                     if (parameters.incoming.HasElement(Element.water))
                     {
@@ -647,14 +661,14 @@ namespace TerraTyping.Abilities
                         }
                     }
                 },
-                MessageOnHit = MessageOnHitFactory(Element.water, "Water Compaction!")
+                messageOnHit = MessageOnHitFactory(Element.water, "Water Compaction!")
             });
             AddAbility(AbilityID.SteamEngine, new Ability(AbilityID.SteamEngine)
             {
-                BuffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<SteamEngine>(),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<SteamEngine>(),
                 AbilityData.steamEngineDurationPlayer,
                 AbilityData.steamEngineDurationNPC, false), new Element[] { Element.water, Element.fire }),
-                MessageOnHit = (parameters) =>
+                messageOnHit = (parameters) =>
                 {
                     if (parameters.incoming.HasAnyElement(Element.water, Element.fire, out Element selected))
                     {
@@ -668,7 +682,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.DrySkin, new Ability(AbilityID.DrySkin)
             {
-                UpdateLifeRegen = (target, targetType) =>
+                updateLifeRegen = (target, targetType) =>
                 {
                     bool raining = Main.raining && !target.ZoneDesert && !target.ZoneSnow;
                     bool snowing = Main.raining && target.ZoneSnow;
@@ -705,7 +719,7 @@ namespace TerraTyping.Abilities
                         target.LifeRegen -= 4;
                     }
                 },
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
                     bool heal = false;
@@ -724,11 +738,11 @@ namespace TerraTyping.Abilities
                     }
                     return new ModifyDamageReturn(damage, heal, parameters.knockback);
                 },
-                MessageOnHit = MessageOnHitFactory(new Element[] { Element.fire, Element.water }, "Dry Skin!")
+                messageOnHit = MessageOnHitFactory(new Element[] { Element.fire, Element.water }, "Dry Skin!")
             });
             AddAbility(AbilityID.Mummy, new Ability(AbilityID.Mummy)
             {
-                BuffOnHit = (parameters) =>
+                buffOnHit = (parameters) =>
                 {
                     if (parameters.attacker is WeaponWrapper itemWrapper)
                     {
@@ -749,7 +763,7 @@ namespace TerraTyping.Abilities
                         npc.AddBuff(ModContent.BuffType<Mummy>(), AbilityData.mummyDurationNPC);
                     }
                 },
-                MessageOnHit = (parameters) =>
+                messageOnHit = (parameters) =>
                 {
                     if (parameters.attacker is WeaponWrapper ||
                         parameters.attacker is ProjectileWrapper ||
@@ -763,7 +777,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Corrosion, new Ability(AbilityID.Corrosion)
             {
-                ModifyEffectivenessOutgoing = (parameters) =>
+                modifyEffectivenessOutgoing = (parameters) =>
                 {
                     if (parameters.outgoingType == Element.poison)
                     {
@@ -778,7 +792,7 @@ namespace TerraTyping.Abilities
 
                     return parameters.normalEffectiveness;
                 },
-                MessageHitEnemy = (parameters) => // todo: why isn't this working :(
+                messageHitEnemy = (parameters) => // todo: why isn't this working :(
                 {
                     if (parameters.outgoing.HasElement(Element.poison))
                     {
@@ -792,7 +806,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(new Ability(AbilityID.ColorChange)
             {
-                BuffOnHit = (parameters) =>
+                buffOnHit = (parameters) =>
                 {
                     int duration;
                     if (parameters.target is PlayerWrapper)
@@ -808,24 +822,25 @@ namespace TerraTyping.Abilities
                     parameters.target.ModifiedElements = parameters.incoming;
                     parameters.target.AddBuff(colorChangeBuffID, duration);
                 },
-                MessageOnHit = (parameters) =>
+                messageOnHit = (parameters) =>
                 {
                     Element elementForColor = parameters.incoming.FirstOrDefault(); // todo: do something cooler
-                    return new MessageOnHitReturn("Color Change!", elementForColor);
+                    return new MessageOnHitReturn(new Message("Color Change!", parameters.incoming));
                 }
             });
+            // todo: make this work different
             AddAbility(AbilityID.MoldBreaker, new Ability(AbilityID.MoldBreaker)
             {
-                ModifyOpponentsAbility = (defaultAbility) =>
+                modifyOpponentsAbility = (defaultAbility) =>
                 {
                     return AbilityID.None;
                 }
             });
             AddAbility(AbilityID.SandForce, new Ability(AbilityID.SandForce)
             {
-                PowerupType = (parameters) =>
+                powerupType = (parameters) =>
                 {
-                    Element type = parameters.type;
+                    Element type = parameters.element;
                     bool appropriateType = false;
 
                     switch (type)
@@ -852,7 +867,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Scrappy, new Ability(AbilityID.Scrappy)
             {
-                ModifyEffectivenessOutgoing = (parameters) =>
+                modifyEffectivenessOutgoing = (parameters) =>
                 {
                     if (parameters.defendingType == Element.ghost)
                     {
@@ -870,7 +885,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Flammable, new Ability(AbilityID.Flammable)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
                     for (int i = 0; i < parameters.incomingElements.Length; i++)
@@ -891,7 +906,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Grounded, new Ability(AbilityID.Grounded)
             {
-                ModifyEffectivenessIncoming = (parameters) =>
+                modifyEffectivenessIncoming = (parameters) =>
                 {
                     if (parameters.defendingElement == Element.flying && parameters.incomingElement == Element.ground && parameters.normalEffectiveness < 1)
                     {
@@ -903,7 +918,7 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.PrismArmor, new Ability(AbilityID.PrismArmor)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
                     if (parameters.damage > 1)
@@ -922,13 +937,13 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.DD2Stab, new Ability(AbilityID.DD2Stab)
             {
-                ModifyDamageIncoming = (parameters) =>
+                modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);
                 },
-                ForceStabWithItem = (parameters) =>
+                forceStabWithItem = (parameters) =>
                 {
                     if (parameters.weaponWrapper is not WeaponWrapper weaponWrapper)
                     {
@@ -990,12 +1005,12 @@ namespace TerraTyping.Abilities
 
         private static void AddAbility(AbilityID none, Ability ability)
         {
-            abilityLookupTable.Add(ability.ID, ability);
+            abilityLookupTable.Add(ability.id, ability);
         }
 
         private static void AddAbility(Ability ability)
         {
-            abilityLookupTable.Add(ability.ID, ability);
+            abilityLookupTable.Add(ability.id, ability);
         }
     }
 }

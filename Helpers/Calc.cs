@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities;
+using TerraTyping.Common;
 using TerraTyping.Common.Configs;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
@@ -20,27 +21,15 @@ namespace TerraTyping
             where A : Wrapper, IOffensiveType, IAbility, IDamageClass, IStatsBuffed
             where D : Wrapper, ITarget, IDefensiveElements, IAbility
         {
-            #region Testing
+            if (attacker is null)
+            {
+                throw new ArgumentNullException(nameof(attacker));
+            }
 
-            //bool testing = false;
-            //if (target is NPCWrapper npc && attacker is ProjectileWrapper proj)
-            //{
-            //    switch (npc.GetNPC().type)
-            //    {
-            //        case NPCID.BlueJellyfish:
-            //        case NPCID.GreenJellyfish:
-            //        case NPCID.PinkJellyfish:
-            //        case NPCID.BloodJelly:
-            //        case NPCID.FungoFish:
-            //            if (proj.Projectile.type == ProjectileID.WaterBolt)
-            //            {
-            //                testing = true;
-            //            }
-            //            break;
-            //    }
-            //}
-
-            #endregion
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             float knockback = 1;
 
@@ -53,22 +42,34 @@ namespace TerraTyping
             //float powerup = attackerAbility.PowerupType(new PowerupTypeParameters(offensive, attacker, target)).powerupMultiplier;
 
             float damage = 1;
+
+            bool conditionWasSatisfied = false;
             for (int i = 0; i < defensiveArr.Length; i++)
             {
                 for (int j = 0; j < offensiveArr.Length; j++)
                 {
+                    bool condition = offensiveArr[j] == Element.water && defensiveArr[i] == Element.water;
+                    conditionWasSatisfied |= condition;
+
                     float baseEffectiveness = Table.Effectiveness(offensiveArr[j], defensiveArr[i]);
+                    DEBUG.PRINTIF(condition, $"Base Effectiveness: {baseEffectiveness}");
                     attacker.ModifyEffectiveness(ref baseEffectiveness, offensiveArr[j], defensiveArr[i]);
+                    DEBUG.PRINTIF(condition, $"Post modify: {baseEffectiveness}");
                     float postDefenderModifierEffectiveness = defenderAbility.ModifyEffectivenessIncoming(new ModifyEffectivenessIncomingParameters(offensiveArr[j], defensiveArr[i], baseEffectiveness));
                     float postAttackerModifierEffectiveness = attackerAbility.ModifyEffectivenessOutgoing(new ModifyEffectivenessOutgoingParameters(offensiveArr[j], defensiveArr[i], postDefenderModifierEffectiveness));
+                    DEBUG.PRINTIF(condition, $"After ability modify: {postAttackerModifierEffectiveness}");
+                    DEBUG.PRINTIF(condition, $"Damage before: {damage}");
                     damage *= postAttackerModifierEffectiveness;
+                    DEBUG.PRINTIF(condition, $"Damage after: {damage}");
                 }
             }
 
+            DEBUG.PRINTIF(conditionWasSatisfied, $"Damage: {damage}");
             ModifyDamageReturn modifyDamageReturn = defenderAbility.ModifyDamageIncoming(new ModifyDamageParameters(offensiveArr, damage, target, knockback, attacker, attacker));
+            DEBUG.PRINTIF(conditionWasSatisfied, $"Damage after defender's ability: {modifyDamageReturn.newDamage}");
+            DEBUG.PRINTIF(conditionWasSatisfied, $"Defender ability: {defenderAbility.id}");
             damage = modifyDamageReturn.newDamage;
             knockback = modifyDamageReturn.newKnockback;
-
             return new DamageReturn(damage, modifyDamageReturn.heal, knockback);
         }
 
@@ -235,7 +236,11 @@ namespace TerraTyping
                         if (message.hasMessage && !string.IsNullOrEmpty(message.text))
                         {
                             Color color = message.setColor ? message.textColor : new Color(255, 255, 255);
-                            CombatText.NewText(defender.GetRect(), color, message.text);
+                            int ct = CombatText.NewText(defender.GetRect(), color, message.text);
+                            if (ct != Main.maxCombatText)
+                            {
+                                ModContent.GetInstance<MySystem>().TrackCombatText(ct, message.elements);
+                            }
                             defender.UseCombatTextCooldown();
                         }
                     }

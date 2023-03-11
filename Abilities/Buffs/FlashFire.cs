@@ -12,7 +12,7 @@ namespace TerraTyping.Abilities.Buffs
 {
     public class FlashFire : ModBuff, IPowerupType
     {
-        public PowerupType PowerupType
+        public BuffPowerupType PowerupType
         {
             get => (parameters) =>
             {
@@ -20,14 +20,14 @@ namespace TerraTyping.Abilities.Buffs
                 {
                     if (parameters.user is NPCWrapper npcWrapper)
                     {
-                        return new PowerupTypeReturn(AbilityData.flashFireDamageBoostNPC, "Flash Fire");
+                        return new BuffPowerupTypeReturn(AbilityData.flashFireDamageBoostNPC, "Flash Fire");
                     }
                     else if (parameters.user is PlayerWrapper playerWrapper)
                     {
-                        return new PowerupTypeReturn(AbilityData.flashFireDamageBoostPlayer, "Flash Fire");
+                        return new BuffPowerupTypeReturn(AbilityData.flashFireDamageBoostPlayer, "Flash Fire");
                     }
                 }
-                return new PowerupTypeReturn(1, string.Empty);
+                return new BuffPowerupTypeReturn(1, string.Empty);
             };
         }
 

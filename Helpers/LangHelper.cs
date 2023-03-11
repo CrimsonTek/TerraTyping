@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using TerraTyping.DataTypes;
 
@@ -17,10 +18,10 @@ namespace TerraTyping
 
             switch (culture.LegacyId)
             {
-                case 2: return German.Name[element];
-                case 4: return French.Name[element];
-                case 6: return Russian.Name[element];
-                default: return English.Name[element];
+                case LangID.German: return German.ElementName(element);
+                case LangID.French: return French.ElementName(element);
+                case 6: return Russian.ElementName(element);
+                default: return English.ElementName(element);
             }
         }
 

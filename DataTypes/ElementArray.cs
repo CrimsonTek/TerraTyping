@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Terraria.ModLoader;
 
 namespace TerraTyping.DataTypes
@@ -18,10 +19,9 @@ namespace TerraTyping.DataTypes
         /// </summary>
         Element[] Elements { get; }
 
+        private static Dictionary<Element[], WeakReference<ElementArray>> instantiatedElementArrays;
         internal static int uniqueElementArrays;
         internal static int totalElementArraysUsed;
-        static Dictionary<Element[], ElementArray> instantiatedElementArrays;
-        static Dictionary<Element[], WeakReference<ElementArray>> _instantiatedElementArrays;
 
         public Element this[int index] => Elements[index];
 
@@ -32,12 +32,16 @@ namespace TerraTyping.DataTypes
         /// <summary>
         /// An empty array.
         /// </summary>
-        public static ElementArray Default => Get();
+        public static ElementArray Default { get; private set; }
 
         internal static void Load()
         {
-            instantiatedElementArrays = new Dictionary<Element[], ElementArray>(new ElementArrayComparer());
-            _instantiatedElementArrays = new Dictionary<Element[], WeakReference<ElementArray>>(new ElementArrayComparer());
+            ElementArray @default = new ElementArray();
+            Default = @default;
+            instantiatedElementArrays = new Dictionary<Element[], WeakReference<ElementArray>>(new ElementArrayComparer())
+            {
+                { Array.Empty<Element>(), new WeakReference<ElementArray>(@default) }
+            };
             uniqueElementArrays = 0;
             totalElementArraysUsed = 0;
         }
@@ -45,7 +49,6 @@ namespace TerraTyping.DataTypes
         internal static void Unload()
         {
             instantiatedElementArrays = null;
-            _instantiatedElementArrays = null;
             uniqueElementArrays = 0;
             totalElementArraysUsed = 0;
         }
@@ -59,7 +62,7 @@ namespace TerraTyping.DataTypes
 
             Stopwatch stopwatch = Stopwatch.StartNew();
             List<Element[]> unusedKVPs = new List<Element[]>();
-            foreach ((Element[] key, WeakReference<ElementArray> value) in _instantiatedElementArrays)
+            foreach ((Element[] key, WeakReference<ElementArray> value) in instantiatedElementArrays)
             {
                 if (!value.TryGetTarget(out _))
                 {
@@ -69,7 +72,7 @@ namespace TerraTyping.DataTypes
 
             for (int i = 0; i < unusedKVPs.Count; i++)
             {
-                _instantiatedElementArrays.Remove(unusedKVPs[i]);
+                instantiatedElementArrays.Remove(unusedKVPs[i]);
 
                 if (log && unusedKVPs.Count < 10)
                 {
@@ -330,7 +333,7 @@ namespace TerraTyping.DataTypes
             // todo: remove 'Element.none's? Check for length?
 
             ElementArray elementArray;
-            if (_instantiatedElementArrays.TryGetValue(elements, out WeakReference<ElementArray> weakReference))
+            if (instantiatedElementArrays.TryGetValue(elements, out WeakReference<ElementArray> weakReference))
             {
                 if (weakReference.TryGetTarget(out elementArray))
                 {
@@ -346,19 +349,9 @@ namespace TerraTyping.DataTypes
             else
             {
                 elementArray = new ElementArray(elements);
-                _instantiatedElementArrays[elements] = new WeakReference<ElementArray>(elementArray);
+                instantiatedElementArrays[elements] = new WeakReference<ElementArray>(elementArray);
                 return elementArray;
             }
-        }
-
-        private static ElementArray OldGet(params Element[] elements)
-        {
-            if (!instantiatedElementArrays.ContainsKey(elements))
-            {
-                instantiatedElementArrays[elements] = new ElementArray(elements);
-            }
-
-            return instantiatedElementArrays[elements];
         }
 
         struct ElementArrayComparer : IEqualityComparer<Element[]>
@@ -383,16 +376,21 @@ namespace TerraTyping.DataTypes
 
             public int GetHashCode([DisallowNull] Element[] obj)
             {
-                // todo: figure out what happens with 5 elements
-                // element1 element2 element3 element4
+                // 32 bits, groups of 8: (supports 4 elements)
                 // 00000000 00000000 00000000 00000000
+                // 32 bits, groups of 5: (supports 6 elements)
+                // 00 00000 00000 00000 00000 00000 00000
+                // 32 bits, groups of 6: (supports 5 elements)
+                // 00 000000 000000 000000 000000 000000
+
+                const int ElementBitLength = 5; // with 32 or more element types, this should be changed to 6
 
                 int hash = 0;
                 for (int i = 0; i < obj.Length; i++)
                 {
-                    hash ^= ((int)obj[i] << (i * 8));
+                    hash ^= (((int)obj[i] + 1) << (i * ElementBitLength));
                 }
-                return hash + 1;
+                return hash;
             }
         }
     }

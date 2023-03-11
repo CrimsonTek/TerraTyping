@@ -42,14 +42,16 @@ public class WeaponTypeLoader : TypeLoader
         }
     }
 
-    public static SpecialTooltip[] GetSpecialTooltips(Item item)
+    public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
         if (item is not null && Instance.typeInfos.TryGetValue(item.type, out WeaponTypeInfo weaponTypeInfo))
         {
+            overrideTypeTooltip = weaponTypeInfo.overrideTypeTooltip;
             return weaponTypeInfo.specialTooltips;
         }
         else
         {
+            overrideTypeTooltip = false;
             return Array.Empty<SpecialTooltip>();
         }
     }
@@ -74,12 +76,13 @@ public class WeaponTypeLoader : TypeLoader
         int itemID = int.Parse(cells[0]);
 
         SpecialTooltip[] specialTooltips = Array.Empty<SpecialTooltip>();
+        bool overrideSpecialTooltip = false;
         if (!string.IsNullOrWhiteSpace(cells[ColumnToIndex.D]))
         {
-            specialTooltips = SpecialTooltip.Parse(cells[ColumnToIndex.D]);
+            specialTooltips = SpecialTooltip.Parse(cells[ColumnToIndex.D], out overrideSpecialTooltip);
         }
 
-        typeInfos[itemID] = new WeaponTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.D]), specialTooltips);
+        typeInfos[itemID] = new WeaponTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.D]), specialTooltips, overrideSpecialTooltip);
     }
 
     public override void Load()
@@ -96,11 +99,13 @@ public class WeaponTypeLoader : TypeLoader
     {
         public readonly ElementArray elements;
         public readonly SpecialTooltip[] specialTooltips;
+        public readonly bool overrideTypeTooltip;
 
-        public WeaponTypeInfo(ElementArray elements, SpecialTooltip[] specialTooltips)
+        public WeaponTypeInfo(ElementArray elements, SpecialTooltip[] specialTooltips, bool overrideTypeTooltip)
         {
             this.elements = elements;
             this.specialTooltips = specialTooltips;
+            this.overrideTypeTooltip = overrideTypeTooltip;
         }
     }
 }

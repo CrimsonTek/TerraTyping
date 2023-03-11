@@ -13,6 +13,8 @@ using TerraTyping.DataTypes;
 using Terraria.ID;
 using ReLogic.Content;
 using TerraTyping.Helpers;
+using TerraTyping.Common.UI;
+using Terraria.Audio;
 
 namespace TerraTyping.Common
 {
@@ -20,20 +22,30 @@ namespace TerraTyping.Common
     {
         private bool iconsLoaded;
         private Asset<Texture2D>[] icons;
+        private WikiUIState wikiUIState;
         private UserInterface wikiUserInterface;
+        private bool[] combatTextsToTrack;
+        private int[] combatTextsTimeTracked;
+        private ElementArray[] combatTextsTypes;
 
         public override void Load()
         {
-            //wikiUserInterface = new UserInterface();
-            //wikiUserInterface.SetState(new WikiUIState());
             LoadIcons();
+            wikiUserInterface = new UserInterface();
+            wikiUIState = new WikiUIState();
+            combatTextsToTrack = new bool[Main.maxCombatText];
+            combatTextsTimeTracked = new int[Main.maxCombatText];
+            combatTextsTypes = MyUtils.FilledArray(() => ElementArray.Default, Main.maxCombatText);
         }
 
         public override void Unload()
         {
-            //icons = null;
-            //wikiUserInterface = null;
             UnloadIcons();
+            wikiUserInterface = null;
+            wikiUIState = null;
+            combatTextsToTrack = null;
+            combatTextsTimeTracked = null;
+            combatTextsTypes = null;
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -47,7 +59,13 @@ namespace TerraTyping.Common
             int inventoryLayerIndex = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Inventory"));
             if (inventoryLayerIndex != -1)
             {
-                //layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Wiki UI", Wiki, InterfaceScaleType.UI));
+                layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Wiki UI", Wiki, InterfaceScaleType.UI));
+                layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Wiki UI Button",
+                    delegate
+                    {
+
+                        return true;
+                    }, InterfaceScaleType.UI));
             }
         }
 
@@ -56,6 +74,65 @@ namespace TerraTyping.Common
             if (wikiUserInterface?.CurrentState is not null)
             {
                 wikiUserInterface.Update(gameTime);
+            }
+        }
+
+        public override void PostUpdateEverything()
+        {
+            const int CombatTextLifeTimeDefault = 60;
+
+            for (int i = 0; i < Main.maxCombatText; i++)
+            {
+                if (!combatTextsToTrack[i])
+                {
+                    continue;
+                }
+
+                var combatText = Main.combatText[i];
+                if (combatText is null || !combatText.active)
+                {
+                    combatTextsToTrack[i] = false;
+                    combatTextsTimeTracked[i] = 0;
+                    continue;
+                }
+
+                ElementArray elementArray = combatTextsTypes[i];
+
+                int elementIndex = elementArray.Length * (combatTextsTimeTracked[i]) / CombatTextLifeTimeDefault;
+                Element element = elementArray[elementIndex];
+                combatText.color = TerraTypingColors.GetColor(element);
+                combatTextsTimeTracked[i]++;
+            }
+        }
+
+        public void ActivateWikiUI()
+        {
+            Main.LocalPlayer.SetTalkNPC(-1);
+            Main.npcChatCornerItem = 0;
+            Main.npcChatText = "";
+            SoundEngine.PlaySound(SoundID.MenuOpen);
+            Main.playerInventory = false;
+            Main.editChest = false;
+            wikiUserInterface.SetState(wikiUIState);
+        }
+
+        public void DeactivateWikiUI()
+        {
+            SoundEngine.PlaySound(SoundID.MenuClose);
+            if (Main.gameMenu)
+            {
+                Main.menuMode = 0;
+            }
+            wikiUserInterface.SetState(null);
+        }
+
+        public void TrackCombatText(int combatTextIndex, ElementArray elements)
+        {
+            if (elements is not null && !elements.Empty)
+            {
+                combatTextsToTrack[combatTextIndex] = true;
+                combatTextsTimeTracked[combatTextIndex] = 0;
+                combatTextsTypes[combatTextIndex] = elements;
             }
         }
 
@@ -104,7 +181,25 @@ namespace TerraTyping.Common
 
                         for (int i = 0; i < npcWrapper.DefensiveElements.Length; i++)
                         {
+                            if (npcWrapper.DefensiveElements is null)
+                            {
+                                TerraTyping.Instance.Logger.Warn($"npcWrapper.DefensiveElements is null");
+                                continue;
+                            }
+
+                            if (icons is null)
+                            {
+                                TerraTyping.Instance.Logger.Warn($"Icons is null");
+                            }
+
                             Texture2D icon = icons[(int)npcWrapper.DefensiveElements[i]].Value;
+
+                            if (icon is null)
+                            {
+                                TerraTyping.Instance.Logger.Warn($"Icon is null");
+                                continue;
+                            }
+
                             Main.spriteBatch.Draw(icon, defensiveIconsVector, null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
                             defensiveIconsVector.X += (icon.Width + buffer) * Main.UIScale;
                             float calculatedContactIconY = topLeft.Y + (icon.Height + buffer) * Main.UIScale;
@@ -157,7 +252,7 @@ namespace TerraTyping.Common
 
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    //icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{LangHelper.ElementName(elements[i])}");
+                    icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{LangHelper.ElementName(elements[i])}");
                 }
 
                 iconsLoaded = true;

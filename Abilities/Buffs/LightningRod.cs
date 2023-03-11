@@ -11,11 +11,11 @@ namespace TerraTyping.Abilities.Buffs
 {
     public class LightningRod : ModBuff, IPowerupType
     {
-        public PowerupType PowerupType 
+        public BuffPowerupType PowerupType 
         {
             get => (parameters) => 
             {
-                return new PowerupTypeReturn(AbilityData.lightningRodDamageBoostPlayer, "Lightning Rod");
+                return new BuffPowerupTypeReturn(AbilityData.lightningRodDamageBoostPlayer, "Lightning Rod");
             }; 
         }
 

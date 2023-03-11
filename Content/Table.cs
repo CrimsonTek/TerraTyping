@@ -6,39 +6,33 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using TerraTyping.Common.Configs;
+using TerraTyping.Helpers;
 
 namespace TerraTyping;
 
-public class Table : ILoadable
+public class Table
 {
-    private static Mod mod;
+    private const int TableSize = 21;
 
-    public static float Mult { get; private set; }
-    public static float Divi { get; private set; }
+    public static float Multiplier { get; private set; }
+    public static float Divisor { get; private set; }
     public static float[,] EffectivenessTable { get; private set; }
 
-    void ILoadable.Load(Mod mod)
+    public static void Load()
     {
-        Table.mod = mod;
+        NewTable(ModContent.GetInstance<ServerConfig>());
     }
 
-    void ILoadable.Unload()
+    public static void Unload()
     {
         EffectivenessTable = null;
     }
 
     public static void NewTable(ServerConfig serverConfig)
     {
-        Mult = serverConfig.Multiplier;
-        Divi = serverConfig.Divisor;
-        try
-        {
-            EffectivenessTable = BuildTable();
-        }
-        catch (Exception e)
-        {
-            TerraTyping.Instance.Logger.Error($"Unable to create table.", e);
-        }
+        Multiplier = serverConfig.Multiplier;
+        Divisor = serverConfig.Divisor;
+        EffectivenessTable = BuildNewTable();
     }
 
     public static float Effectiveness(Element attack, Element defense)
@@ -67,17 +61,16 @@ public class Table : ILoadable
 
     private static float[,] BuildNewTable()
     {
-        const int arraySize = 21;
-        float[,] table = new float[arraySize, arraySize];
-        string fileLocation = $"CsvTypes/Vanilla/table.csv";
+        float[,] table = new float[TableSize, TableSize];
+        const string fileLocation = $"CsvTypes/Vanilla/tableData.csv";
 
-        if (!mod.FileExists(fileLocation))
+        if (!TerraTyping.Instance.FileExists(fileLocation))
         {
-            mod.Logger.Error($"Table: Unable to find file: \'{fileLocation}\'");
-            return NewBlankArray(arraySize, arraySize, 1);
+            TerraTyping.Instance.Logger.Error($"Table: Unable to find file: \'{fileLocation}\'");
+            return BlankTable();
         }
 
-        using Stream stream = mod.GetFileStream(fileLocation, true); // newFileStream must be true otherwise it probably crashes, according to TypeLoader.cs
+        using Stream stream = TerraTyping.Instance.GetFileStream(fileLocation, false); // newFileStream must be true otherwise it probably crashes, according to TypeLoader.cs
         StreamReader streamReader = new StreamReader(stream);
 
         int i = 0;
@@ -86,8 +79,8 @@ public class Table : ILoadable
         {
             if (i >= table.GetLength(0))
             {
-                mod.Logger.Error($"Table file has too many rows.");
-                return NewBlankArray(arraySize, arraySize, 1);
+                TerraTyping.Instance.Logger.Error($"Table file has too many rows.");
+                return BlankTable();
             }
 
             string[] cells = line.Split(',');
@@ -95,25 +88,25 @@ public class Table : ILoadable
             {
                 if (j >= table.GetLength(1))
                 {
-                    mod.Logger.Error($"Table file has too many columns.");
-                    return NewBlankArray(arraySize, arraySize, 1);
+                    TerraTyping.Instance.Logger.Error($"Table file has too many columns.");
+                    return BlankTable();
                 }
 
                 string cell = cells[j];
                 if (!float.TryParse(cell, out float f))
                 {
-                    mod.Logger.Error($"Could not parse {cell} to float.");
-                    return NewBlankArray(arraySize, arraySize, 1);
+                    TerraTyping.Instance.Logger.Error($"Could not parse {cell} to float.");
+                    return BlankTable();
                 }
 
                 switch (f)
                 {
                     case 2:
-                        table[i, j] = Mult;
+                        table[i, j] = Multiplier;
                         break;
 
                     case 0.5f:
-                        table[i, j] = Divi;
+                        table[i, j] = Divisor;
                         break;
 
                     case 1:
@@ -122,8 +115,8 @@ public class Table : ILoadable
                         break;
 
                     default:
-                        mod.Logger.Error($"{cell} is not an acceptable value. (Acceptable values: 0, 0.5, 1, 2)");
-                        return NewBlankArray(arraySize, arraySize, 1);
+                        TerraTyping.Instance.Logger.Error($"{cell} is not an acceptable value. (Acceptable values: 0, 0.5, 1, 2)");
+                        return BlankTable();
                 }
             }
 
@@ -138,39 +131,39 @@ public class Table : ILoadable
         return new float[21, 21]
         {
         //         Nor   Fir   Wat   Ele   Gra   Ice   Fig   Poi   Gro   Fly   Psy   Bug   Roc   Gho   Dra   Dar   Ste   Fai   Blo   Bon   Non
-        /* Nor */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Divi,   0f,   1f,   1f, Divi,   1f,   1f,   1f,  1f},
-        /* Fir */ { 1f, Divi, Divi,   1f, Mult, Mult,   1f,   1f,   1f,   1f,   1f, Mult, Divi,   1f, Divi,   1f, Mult,   1f, Mult,   1f,  1f},
-        /* Wat */ { 1f, Mult, Divi,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f,   1f, Mult,   1f, Divi,   1f,   1f,   1f, Mult,   1f,  1f},
-        /* Ele */ { 1f,   1f, Mult, Divi, Divi,   1f,   1f,   1f,   0f, Mult,   1f,   1f,   1f,   1f, Divi,   1f,   1f,   1f,   1f,   1f,  1f},
-        /* Gra */ { 1f, Divi, Mult,   1f, Divi,   1f,   1f, Divi, Mult, Divi,   1f, Divi, Mult,   1f, Divi,   1f, Divi,   1f,   1f, Divi,  1f},
-        /* Ice */ { 1f, Divi, Divi,   1f, Mult, Divi,   1f,   1f, Mult, Mult,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   1f,   1f,   1f,  1f},
-        /* Fig */ { 2f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   1f, Divi, Divi, Divi, Mult,   0f,   1f, Mult, Mult, Divi, Mult, Mult,  1f},
-        /* Poi */ { 1f,   1f,   1f,   1f, Mult,   1f,   1f, Divi, Divi,   1f,   1f,   1f, Divi, Divi,   1f,   1f,   0f, Mult, Mult,   0f,  1f},
-        /* Gro */ { 1f, Mult,   1f, Mult, Divi,   1f,   1f, Mult,   1f,   0f,   1f, Divi, Mult,   1f,   1f,   1f, Mult,   1f,   1f,   1f,  1f},
-        /* Fly */ { 1f,   1f,   1f, Divi, Mult,   1f, Mult,   1f,   1f,   1f,   1f, Mult, Divi,   1f,   1f,   1f, Divi,   1f,   1f,   1f,  1f},
-        /* Psy */ { 1f,   1f,   1f,   1f,   1f,   1f, Mult, Mult,   1f,   1f, Divi,   1f,   1f,   1f,   1f,   0f, Divi,   1f, Divi, Divi,  1f},
-        /* Bug */ { 1f, Divi,   1f,   1f, Mult,   1f, Divi, Divi,   1f, Divi, Mult,   1f,   1f, Divi,   1f, Mult, Divi, Divi,   1f,   1f,  1f},
-        /* Roc */ { 1f, Mult,   1f,   1f,   1f, Mult, Divi,   1f, Divi, Mult,   1f, Mult,   1f,   1f,   1f,   1f, Divi,   1f,   1f, Mult,  1f},
-        /* Gho */ { 0f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f,   1f, Mult,   1f, Divi,   1f,   1f, Divi, Divi,  1f},             
-        /* Dra */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f, Divi,   0f, Divi, Mult,  1f},
-        /* Dar */ { 1f,   1f,   1f,   1f,   1f,   1f, Divi,   1f,   1f,   1f, Mult,   1f,   1f, Mult,   1f, Divi,   1f, Divi, Divi,   1f,  1f},
-        /* Ste */ { 1f, Divi, Divi, Divi,   1f, Mult,   1f,   1f,   1f,   1f,   1f,   1f, Mult,   1f,   1f,   1f, Divi, Mult,   1f, Mult,  1f},
-        /* Fai */ { 1f, Divi,   1f,   1f,   1f,   1f, Mult, Divi,   1f,   1f,   1f,   1f,   1f,   1f, Mult, Mult, Divi,   1f, Mult,   1f,  1f},
-        /* Blo */ { 1f,   1f, Divi,   1f,   1f, Mult, Mult, Mult,   1f,   1f, Mult,   1f,   1f, Divi,   1f,   1f, Divi, Divi, Divi, Mult,  1f},
-        /* Bon */ { 1f, Divi,   1f,   1f,   1f, Divi, Mult,   1f, Mult,   1f, Mult,   1f, Divi, Divi,   1f, Mult, Divi,   1f, Mult, Divi,  1f},
+        /* Nor */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Divisor,   0f,   1f,   1f, Divisor,   1f,   1f,   1f,  1f},
+        /* Fir */ { 1f, Divisor, Divisor,   1f, Multiplier, Multiplier,   1f,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f, Divisor,   1f, Multiplier,   1f, Multiplier,   1f,  1f},
+        /* Wat */ { 1f, Multiplier, Divisor,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,  1f},
+        /* Ele */ { 1f,   1f, Multiplier, Divisor, Divisor,   1f,   1f,   1f,   0f, Multiplier,   1f,   1f,   1f,   1f, Divisor,   1f,   1f,   1f,   1f,   1f,  1f},
+        /* Gra */ { 1f, Divisor, Multiplier,   1f, Divisor,   1f,   1f, Divisor, Multiplier, Divisor,   1f, Divisor, Multiplier,   1f, Divisor,   1f, Divisor,   1f,   1f, Divisor,  1f},
+        /* Ice */ { 1f, Divisor, Divisor,   1f, Multiplier, Divisor,   1f,   1f, Multiplier, Multiplier,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f,   1f,  1f},
+        /* Fig */ { 2f,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f, Divisor, Divisor, Divisor, Multiplier,   0f,   1f, Multiplier, Multiplier, Divisor, Multiplier, Multiplier,  1f},
+        /* Poi */ { 1f,   1f,   1f,   1f, Multiplier,   1f,   1f, Divisor, Divisor,   1f,   1f,   1f, Divisor, Divisor,   1f,   1f,   0f, Multiplier, Multiplier,   0f,  1f},
+        /* Gro */ { 1f, Multiplier,   1f, Multiplier, Divisor,   1f,   1f, Multiplier,   1f,   0f,   1f, Divisor, Multiplier,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f,  1f},
+        /* Fly */ { 1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f,   1f,   1f, Divisor,   1f,   1f,   1f,  1f},
+        /* Psy */ { 1f,   1f,   1f,   1f,   1f,   1f, Multiplier, Multiplier,   1f,   1f, Divisor,   1f,   1f,   1f,   1f,   0f, Divisor,   1f, Divisor, Divisor,  1f},
+        /* Bug */ { 1f, Divisor,   1f,   1f, Multiplier,   1f, Divisor, Divisor,   1f, Divisor, Multiplier,   1f,   1f, Divisor,   1f, Multiplier, Divisor, Divisor,   1f,   1f,  1f},
+        /* Roc */ { 1f, Multiplier,   1f,   1f,   1f, Multiplier, Divisor,   1f, Divisor, Multiplier,   1f, Multiplier,   1f,   1f,   1f,   1f, Divisor,   1f,   1f, Multiplier,  1f},
+        /* Gho */ { 0f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f, Divisor, Divisor,  1f},             
+        /* Dra */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   0f, Divisor, Multiplier,  1f},
+        /* Dar */ { 1f,   1f,   1f,   1f,   1f,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,   1f, Multiplier,   1f, Divisor,   1f, Divisor, Divisor,   1f,  1f},
+        /* Ste */ { 1f, Divisor, Divisor, Divisor,   1f, Multiplier,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,  1f},
+        /* Fai */ { 1f, Divisor,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier, Multiplier, Divisor,   1f, Multiplier,   1f,  1f},
+        /* Blo */ { 1f,   1f, Divisor,   1f,   1f, Multiplier, Multiplier, Multiplier,   1f,   1f, Multiplier,   1f,   1f, Divisor,   1f,   1f, Divisor, Divisor, Divisor, Multiplier,  1f},
+        /* Bon */ { 1f, Divisor,   1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,   1f, Multiplier,   1f, Divisor, Divisor,   1f, Multiplier, Divisor,   1f, Multiplier, Divisor,  1f},
         /* Non */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,  1f},
         };
     }
 
-    private static float[,] NewBlankArray(int length, int height, int defaultValue)
+    private static float[,] BlankTable()
     {
-        float[,] floats = new float[length, height];
+        float[,] floats = new float[TableSize, TableSize];
 
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < TableSize; i++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j < TableSize; j++)
             {
-                floats[i, j] = defaultValue;
+                floats[i, j] = 1;
             }
         }
 

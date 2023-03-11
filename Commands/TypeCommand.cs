@@ -80,11 +80,11 @@ namespace TerraTyping.Commands
                     float e = Table.EffectivenessTable[(int)result, i];
                     if (e == 0f)
                         nothingAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Divi)
+                    else if (e == Table.Divisor)
                         weakAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
                     else if (e == 1f)
                         neutralAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Mult)
+                    else if (e == Table.Multiplier)
                         strongAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
                     else
                         throw new Exception("Unexpected effectiveness case.");
@@ -96,11 +96,11 @@ namespace TerraTyping.Commands
                     float e = Table.EffectivenessTable[i, (int)result];
                     if (e == 0f)
                         immuneTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Divi)
+                    else if (e == Table.Divisor)
                         resistantTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
                     else if (e == 1f)
                         neutralTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Mult)
+                    else if (e == Table.Multiplier)
                         susceptibleTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
                     else
                         throw new Exception("Unexpected effectiveness case.");

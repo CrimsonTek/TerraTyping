@@ -71,9 +71,14 @@ namespace TerraTyping
 
         private void WeaponTooltip(Item item, List<TooltipLine> tooltips, ElementArray weaponElements)
         {
-            SpecialTooltip[] specialTooltips = WeaponTypeLoader.GetSpecialTooltips(item);
+            SpecialTooltip[] specialTooltips = WeaponTypeLoader.GetSpecialTooltips(item, out bool overrideTypeTooltip);
             if (specialTooltips is not null)
             {
+                if (!overrideTypeTooltip)
+                {
+                    AddTooltipsForElementArray(tooltips, weaponElements);
+                }
+
                 if (specialTooltips.Length != 0)
                 {
                     for (int i = 0; i < specialTooltips.Length; i++)
@@ -86,10 +91,6 @@ namespace TerraTyping
                             OverrideColor = CyclingColorsIfNeeded(CycleSpeed, colors)
                         });
                     }
-                }
-                else
-                {
-                    AddTooltipsForElementArray(tooltips, weaponElements);
                 }
             }
             else
@@ -107,9 +108,14 @@ namespace TerraTyping
 
         private void SpecialItemTooltip(Item item, List<TooltipLine> tooltips, ElementArray specialItemElements)
         {
-            SpecialTooltip[] specialTooltips = SpecialItemTypeLoader.GetSpecialTooltips(item);
+            SpecialTooltip[] specialTooltips = SpecialItemTypeLoader.GetSpecialTooltips(item, out bool overrideTypeTooltip);
             if (specialTooltips is not null)
             {
+                if (!overrideTypeTooltip)
+                {
+                    AddTooltipsForElementArray(tooltips, specialItemElements);
+                }
+
                 if (specialTooltips.Length != 0)
                 {
                     for (int i = 0; i < specialTooltips.Length; i++)
@@ -122,10 +128,6 @@ namespace TerraTyping
                             OverrideColor = CyclingColorsIfNeeded(CycleSpeed, colors)
                         });
                     }
-                }
-                else
-                {
-                    AddTooltipsForElementArray(tooltips, specialItemElements);
                 }
             }
             else

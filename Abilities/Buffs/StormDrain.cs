@@ -11,11 +11,11 @@ namespace TerraTyping.Abilities.Buffs
 {
     public class StormDrain : ModBuff, IPowerupType
     {
-        public PowerupType PowerupType 
+        public BuffPowerupType PowerupType 
         { 
             get => (paramters) => 
             { 
-                return new PowerupTypeReturn(AbilityData.stormDrainDamageBoostPlayer, "Storm Drain"); 
+                return new BuffPowerupTypeReturn(AbilityData.stormDrainDamageBoostPlayer, "Storm Drain"); 
             };
         }
 

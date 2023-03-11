@@ -175,7 +175,7 @@ namespace TerraTyping
                     {
                         for (int j = 0; j < elements.Length; j++)
                         {
-                            buffBoosts[i] = powerupType.PowerupType(new PowerupTypeParameters(elements[i], PlayerWrapper.GetWrapper(player))).boost;
+                            buffBoosts[i] = powerupType.PowerupType(new BuffPowerupTypeParameters(elements[i], PlayerWrapper.GetWrapper(player))).boost;
                         }
                     }
                 }
