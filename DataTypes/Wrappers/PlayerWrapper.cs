@@ -9,7 +9,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities;
 using TerraTyping.DataTypes.NewInterfaces;
-using TerraTyping.Dictionaries;
 
 namespace TerraTyping.DataTypes
 {

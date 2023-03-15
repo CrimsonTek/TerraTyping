@@ -13,7 +13,7 @@ public class AmmoTypeLoader : TypeLoader
 {
     Dictionary<int, AmmoTypeInfo> typeInfos;
 
-    protected override string CSVFileName => "ammoTypes";
+    protected override string CSVFileName => CSVFileNames.Ammo;
 
     public static AmmoTypeLoader Instance { get; private set; }
 

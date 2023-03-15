@@ -14,32 +14,41 @@ public class Table
 {
     private const int TableSize = 21;
 
+    private static float[,] effectivenessTable;
+
     public static float Multiplier { get; private set; }
     public static float Divisor { get; private set; }
-    public static float[,] EffectivenessTable { get; private set; }
 
     public static void Load()
     {
-        NewTable(ModContent.GetInstance<ServerConfig>());
+        effectivenessTable = BuildNewTable();
     }
 
     public static void Unload()
     {
-        EffectivenessTable = null;
+        effectivenessTable = null;
     }
 
-    public static void NewTable(ServerConfig serverConfig)
+    public static void NewMultiplierAndDivisorValues(ServerConfig serverConfig)
     {
         Multiplier = serverConfig.Multiplier;
         Divisor = serverConfig.Divisor;
-        EffectivenessTable = BuildNewTable();
     }
 
-    public static float Effectiveness(Element attack, Element defense)
+    public static float EffectivenessScaled(Element attack, Element defense)
     {
-        if ((int)attack < 20 && (int)defense < 20)
+        int attackInt = (int)attack;
+        int defenseInt = (int)defense;
+        if (attackInt < TableSize && defenseInt < TableSize)
         {
-            return EffectivenessTable[(int)attack, (int)defense];
+            return effectivenessTable[attackInt, defenseInt] switch
+            {
+                2 => Multiplier,
+                0.5f => Divisor,
+                0 => 0,
+                1 => 1,
+                _ => throw new NotImplementedException(),
+            };
         }
         else
         {
@@ -47,11 +56,13 @@ public class Table
         }
     }
 
-    public static float Effectiveness(int attack, int defense)
+    public static float EffectivenessUnscaled(Element attack, Element defense)
     {
-        if (attack < 20 && defense < 20)
+        int attackInt = (int)attack;
+        int defenseInt = (int)defense;
+        if (attackInt < TableSize && defenseInt < TableSize)
         {
-            return EffectivenessTable[attack, defense];
+            return effectivenessTable[attackInt, defenseInt];
         }
         else
         {
@@ -62,7 +73,7 @@ public class Table
     private static float[,] BuildNewTable()
     {
         float[,] table = new float[TableSize, TableSize];
-        const string fileLocation = $"CsvTypes/Vanilla/tableData.csv";
+        const string fileLocation = $"CsvTypes/Vanilla/table.csv";
 
         if (!TerraTyping.Instance.FileExists(fileLocation))
         {
@@ -99,24 +110,14 @@ public class Table
                     return BlankTable();
                 }
 
-                switch (f)
+                if (f == 2 || f == 1 || f == 0.5f || f == 0)
                 {
-                    case 2:
-                        table[i, j] = Multiplier;
-                        break;
-
-                    case 0.5f:
-                        table[i, j] = Divisor;
-                        break;
-
-                    case 1:
-                    case 0:
-                        table[i, j] = f;
-                        break;
-
-                    default:
-                        TerraTyping.Instance.Logger.Error($"{cell} is not an acceptable value. (Acceptable values: 0, 0.5, 1, 2)");
-                        return BlankTable();
+                    table[i, j] = f;
+                }
+                else
+                {
+                    TerraTyping.Instance.Logger.Error($"{cell} is not an acceptable value. (Acceptable values: 0, 0.5, 1, 2)");
+                    return BlankTable();
                 }
             }
 
@@ -124,35 +125,6 @@ public class Table
         }
 
         return table;
-    }
-
-    public static float[,] BuildTable()
-    {
-        return new float[21, 21]
-        {
-        //         Nor   Fir   Wat   Ele   Gra   Ice   Fig   Poi   Gro   Fly   Psy   Bug   Roc   Gho   Dra   Dar   Ste   Fai   Blo   Bon   Non
-        /* Nor */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Divisor,   0f,   1f,   1f, Divisor,   1f,   1f,   1f,  1f},
-        /* Fir */ { 1f, Divisor, Divisor,   1f, Multiplier, Multiplier,   1f,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f, Divisor,   1f, Multiplier,   1f, Multiplier,   1f,  1f},
-        /* Wat */ { 1f, Multiplier, Divisor,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,  1f},
-        /* Ele */ { 1f,   1f, Multiplier, Divisor, Divisor,   1f,   1f,   1f,   0f, Multiplier,   1f,   1f,   1f,   1f, Divisor,   1f,   1f,   1f,   1f,   1f,  1f},
-        /* Gra */ { 1f, Divisor, Multiplier,   1f, Divisor,   1f,   1f, Divisor, Multiplier, Divisor,   1f, Divisor, Multiplier,   1f, Divisor,   1f, Divisor,   1f,   1f, Divisor,  1f},
-        /* Ice */ { 1f, Divisor, Divisor,   1f, Multiplier, Divisor,   1f,   1f, Multiplier, Multiplier,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f,   1f,  1f},
-        /* Fig */ { 2f,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   1f, Divisor, Divisor, Divisor, Multiplier,   0f,   1f, Multiplier, Multiplier, Divisor, Multiplier, Multiplier,  1f},
-        /* Poi */ { 1f,   1f,   1f,   1f, Multiplier,   1f,   1f, Divisor, Divisor,   1f,   1f,   1f, Divisor, Divisor,   1f,   1f,   0f, Multiplier, Multiplier,   0f,  1f},
-        /* Gro */ { 1f, Multiplier,   1f, Multiplier, Divisor,   1f,   1f, Multiplier,   1f,   0f,   1f, Divisor, Multiplier,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f,  1f},
-        /* Fly */ { 1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f,   1f,   1f, Divisor,   1f,   1f,   1f,  1f},
-        /* Psy */ { 1f,   1f,   1f,   1f,   1f,   1f, Multiplier, Multiplier,   1f,   1f, Divisor,   1f,   1f,   1f,   1f,   0f, Divisor,   1f, Divisor, Divisor,  1f},
-        /* Bug */ { 1f, Divisor,   1f,   1f, Multiplier,   1f, Divisor, Divisor,   1f, Divisor, Multiplier,   1f,   1f, Divisor,   1f, Multiplier, Divisor, Divisor,   1f,   1f,  1f},
-        /* Roc */ { 1f, Multiplier,   1f,   1f,   1f, Multiplier, Divisor,   1f, Divisor, Multiplier,   1f, Multiplier,   1f,   1f,   1f,   1f, Divisor,   1f,   1f, Multiplier,  1f},
-        /* Gho */ { 0f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f,   1f, Multiplier,   1f, Divisor,   1f,   1f, Divisor, Divisor,  1f},             
-        /* Dra */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f, Divisor,   0f, Divisor, Multiplier,  1f},
-        /* Dar */ { 1f,   1f,   1f,   1f,   1f,   1f, Divisor,   1f,   1f,   1f, Multiplier,   1f,   1f, Multiplier,   1f, Divisor,   1f, Divisor, Divisor,   1f,  1f},
-        /* Ste */ { 1f, Divisor, Divisor, Divisor,   1f, Multiplier,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier,   1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,  1f},
-        /* Fai */ { 1f, Divisor,   1f,   1f,   1f,   1f, Multiplier, Divisor,   1f,   1f,   1f,   1f,   1f,   1f, Multiplier, Multiplier, Divisor,   1f, Multiplier,   1f,  1f},
-        /* Blo */ { 1f,   1f, Divisor,   1f,   1f, Multiplier, Multiplier, Multiplier,   1f,   1f, Multiplier,   1f,   1f, Divisor,   1f,   1f, Divisor, Divisor, Divisor, Multiplier,  1f},
-        /* Bon */ { 1f, Divisor,   1f,   1f,   1f, Divisor, Multiplier,   1f, Multiplier,   1f, Multiplier,   1f, Divisor, Divisor,   1f, Multiplier, Divisor,   1f, Multiplier, Divisor,  1f},
-        /* Non */ { 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,  1f},
-        };
     }
 
     private static float[,] BlankTable()

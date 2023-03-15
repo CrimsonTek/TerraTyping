@@ -8,7 +8,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.DataTypes;
 using TerraTyping.DataTypes.Structs;
-using TerraTyping.Dictionaries;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -18,7 +17,7 @@ public class ProjectileTypeLoader : TypeLoader
     ElementArray[] pewmaticHornElements;
     ElementArray[] deerclopsDebrisElements;
 
-    protected override string CSVFileName => "projectileTypes";
+    protected override string CSVFileName => CSVFileNames.Projectiles;
     
     public static ProjectileTypeLoader Instance { get; private set; }
 

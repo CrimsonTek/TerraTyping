@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Terraria;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
-using TerraTyping.Dictionaries;
 using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes

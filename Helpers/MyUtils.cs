@@ -94,6 +94,11 @@ namespace TerraTyping.Helpers
             }
             return values;
         }
+
+        public static void ThrowExceptionIfThrowingEnabled(Exception exception)
+        {
+            throw exception;
+        }
     }
 
     public struct Time

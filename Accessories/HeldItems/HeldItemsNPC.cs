@@ -12,7 +12,7 @@ namespace TerraTyping.Accessories.HeldItems
         private static ModItem magnet;
         private static ModItem twistedSpoon;
         private static ModItem silverPowder;
-        private static ModItem ghostTag;
+        private static ModItem spellTag;
         private static ModItem bloodyHeart;
         private static ModItem poisonBarb;
         private static ModItem sharpBeak;
@@ -21,18 +21,18 @@ namespace TerraTyping.Accessories.HeldItems
         private static ModItem miracleSeed;
         private static ModItem hardStone;
 
-        public ModItem Charcoal { get { if (charcoal is null) charcoal = Mod.Find<ModItem>("Charcoal"); return charcoal; } }
-        public ModItem Magnet { get { if (magnet is null) magnet = Mod.Find<ModItem>("Magnet"); return magnet; } }
-        public ModItem TwistedSpoon { get { if (twistedSpoon is null) twistedSpoon = Mod.Find<ModItem>("TwistedSpoon"); return twistedSpoon; } }
-        public ModItem SilverPowder { get { if (silverPowder is null) silverPowder = Mod.Find<ModItem>("SilverPowder"); return silverPowder; } }
-        public ModItem GhostTag { get { if (ghostTag is null) ghostTag = Mod.Find<ModItem>("GhostTag"); return ghostTag; } }
-        public ModItem BloodyHeart { get { if (bloodyHeart is null) bloodyHeart = Mod.Find<ModItem>("BloodyHeart"); return bloodyHeart; } }
-        public ModItem PoisonBarb { get { if (poisonBarb is null) poisonBarb = Mod.Find<ModItem>("PoisonBarb"); return poisonBarb; } }
-        public ModItem SharpBeak { get { if (sharpBeak is null) sharpBeak = Mod.Find<ModItem>("SharpBeak"); return sharpBeak; } }
-        public ModItem DragonFang { get { if (dragonFang is null) dragonFang = Mod.Find<ModItem>("DragonFang"); return dragonFang; } }
-        public ModItem DustySkull { get { if (dustySkull is null) dustySkull = Mod.Find<ModItem>("DustySkull"); return dustySkull; } }
-        public ModItem MiracleSeed { get { if (miracleSeed is null) miracleSeed = Mod.Find<ModItem>("MiracleSeed"); return miracleSeed; } }
-        public ModItem HardStone { get { if (hardStone is null) hardStone = Mod.Find<ModItem>("HardStone"); return hardStone; } }
+        public ModItem Charcoal { get { charcoal ??= Mod.Find<ModItem>("Charcoal"); return charcoal; } }
+        public ModItem Magnet { get { magnet ??= Mod.Find<ModItem>("Magnet"); return magnet; } }
+        public ModItem TwistedSpoon { get { twistedSpoon ??= Mod.Find<ModItem>("TwistedSpoon"); return twistedSpoon; } }
+        public ModItem SilverPowder { get { silverPowder ??= Mod.Find<ModItem>("SilverPowder"); return silverPowder; } }
+        public ModItem SpellTag { get { spellTag ??= Mod.Find<ModItem>("SpellTag"); return spellTag; } }
+        public ModItem BloodyHeart { get { bloodyHeart ??= Mod.Find<ModItem>("BloodyHeart"); return bloodyHeart; } }
+        public ModItem PoisonBarb { get { poisonBarb ??= Mod.Find<ModItem>("PoisonBarb"); return poisonBarb; } }
+        public ModItem SharpBeak { get { sharpBeak ??= Mod.Find<ModItem>("SharpBeak"); return sharpBeak; } }
+        public ModItem DragonFang { get { dragonFang ??= Mod.Find<ModItem>("DragonFang"); return dragonFang; } }
+        public ModItem DustySkull { get { dustySkull ??= Mod.Find<ModItem>("DustySkull"); return dustySkull; } }
+        public ModItem MiracleSeed { get { miracleSeed ??= Mod.Find<ModItem>("MiracleSeed"); return miracleSeed; } }
+        public ModItem HardStone { get { hardStone ??= Mod.Find<ModItem>("HardStone"); return hardStone; } }
 
         public override bool InstancePerEntity => true;
 
@@ -42,7 +42,7 @@ namespace TerraTyping.Accessories.HeldItems
             magnet = null;
             twistedSpoon = null;
             silverPowder = null;
-            ghostTag = null;
+            spellTag = null;
             bloodyHeart = null;
             poisonBarb = null;
             sharpBeak = null;
@@ -56,12 +56,19 @@ namespace TerraTyping.Accessories.HeldItems
         {
             CharcoalDrop(npc, npcLoot);
             MagnetDrop(npc, npcLoot);
+            TwistedSpoonDrop(npc, npcLoot);
+            SilverPowderDrop(npc, npcLoot);
+            SpellTagDrop(npc, npcLoot);
+            BloodyHeartDrop(npc, npcLoot);
+            MiscEnemyDrops(npc, npcLoot);
+
+            LeadingConditionRule notExpert = new LeadingConditionRule(new Conditions.NotExpert());
+            notExpert.OnSuccess(ItemDropRule.Common(PoisonBarb.Type));
         }
 
         private void CharcoalDrop(NPC npc, NPCLoot npcLoot)
         {
-            npcLoot.Add(ConditionalDropChanceChangeInExpert(new ItemDropRuleCondition(
-                (dropAttemtInfo) => dropAttemtInfo.player.ZoneUnderworldHeight, true, "Drops in the underworld."), Charcoal.Type, 150, 100));
+            npcLoot.Add(ConditionalDropChanceChangeInExpert(new ItemDropRuleCondition((dropAttemtInfo) => dropAttemtInfo.player.ZoneUnderworldHeight, true, "Drops in the underworld."), Charcoal.Type, 150, 100));
         }
 
         private void MagnetDrop(NPC npc, NPCLoot npcLoot)
@@ -80,15 +87,15 @@ namespace TerraTyping.Accessories.HeldItems
         {
             if (npc.catchItem != 0)
             {
-                npcLoot.Add(ItemDropRule.Common(twistedSpoon.Type, 25));
+                npcLoot.Add(ItemDropRule.Common(TwistedSpoon.Type, 25));
             }
         }
 
-        private void GhostTagDrop(NPC npc, NPCLoot npcLoot)
+        private void SpellTagDrop(NPC npc, NPCLoot npcLoot)
         {
             npcLoot.Add(ConditionalDropChanceChangeInExpert(new ItemDropRuleCondition(
                 (dropAttemptInfo) => Main.moonPhase == 0 && !Main.dayTime && !dropAttemptInfo.IsInSimulation,
-                true, "Drops during the new moon."), GhostTag.Type, 75, 50));
+                true, "Drops during the new moon."), SpellTag.Type, 75, 50));
         }
 
         private void BloodyHeartDrop(NPC npc, NPCLoot npcLoot)

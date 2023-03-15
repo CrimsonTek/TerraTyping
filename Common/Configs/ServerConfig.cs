@@ -17,7 +17,7 @@ public class ServerConfig : ModConfig
 
     public override void OnChanged()
     {
-        //Table.NewTable(this);
+        Table.NewMultiplierAndDivisorValues(this);
     }
 
     [Label("Multiplier")]

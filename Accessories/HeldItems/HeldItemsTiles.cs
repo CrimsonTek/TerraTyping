@@ -9,12 +9,13 @@ namespace TerraTyping.Accessories.HeldItems
     {
         public override bool Drop(int i, int j, int type)
         {
-            int chance = 650;
-            if (Main.expertMode)
-                chance = 500;
+            int chance = Main.expertMode ? 500 : 650;
             if (type == TileID.Stone && Main.rand.NextBool(chance))
+            {
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16 + 8, j * 16 + 8, 0, 0, Mod.Find<ModItem>("HardStone").Type);
-            return base.Drop(i, j, type);
+            }
+
+            return true;
         }
     }
 }

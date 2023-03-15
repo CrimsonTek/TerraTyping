@@ -63,7 +63,6 @@ namespace TerraTyping.Common
                 layers.Insert(inventoryLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Wiki UI Button",
                     delegate
                     {
-
                         return true;
                     }, InterfaceScaleType.UI));
             }
@@ -98,7 +97,9 @@ namespace TerraTyping.Common
 
                 ElementArray elementArray = combatTextsTypes[i];
 
-                int elementIndex = elementArray.Length * (combatTextsTimeTracked[i]) / CombatTextLifeTimeDefault;
+                // todo: edit this to automatically use CombatText.lifeTime instead of tracking that myself
+                int elementIndex = Math.Clamp(elementArray.Length * (combatTextsTimeTracked[i]) / (CombatTextLifeTimeDefault + 1), 0, elementArray.Length - 1);
+
                 Element element = elementArray[elementIndex];
                 combatText.color = TerraTypingColors.GetColor(element);
                 combatTextsTimeTracked[i]++;
@@ -128,7 +129,12 @@ namespace TerraTyping.Common
 
         public void TrackCombatText(int combatTextIndex, ElementArray elements)
         {
-            if (elements is not null && !elements.Empty)
+            Main.NewText($"{Main.combatText[combatTextIndex].lifeTime}");
+
+            if (combatTextIndex >= 0
+                && combatTextIndex < Main.maxCombatText
+                && elements is not null
+                && !elements.Empty)
             {
                 combatTextsToTrack[combatTextIndex] = true;
                 combatTextsTimeTracked[combatTextIndex] = 0;
@@ -252,7 +258,7 @@ namespace TerraTyping.Common
 
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    icons[i] = ModContent.Request<Texture2D>($"TerraTyping/Types/{LangHelper.ElementName(elements[i])}");
+                    icons[i] = ModContent.Request<Texture2D>($"TerraTyping/TypeIcons/Circle17/{LangHelper.ElementName(elements[i])}");
                 }
 
                 iconsLoaded = true;

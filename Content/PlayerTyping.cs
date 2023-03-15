@@ -8,7 +8,6 @@ using TerraTyping.Abilities.Buffs;
 using TerraTyping.Accessories.AbilityAccessories;
 using TerraTyping.Common.Configs;
 using TerraTyping.DataTypes;
-using TerraTyping.Dictionaries;
 using TerraTyping.Helpers;
 using TerraTyping.TypeLoaders;
 

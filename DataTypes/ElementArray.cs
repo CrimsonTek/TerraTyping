@@ -248,12 +248,19 @@ namespace TerraTyping.DataTypes
             return false;
         }
 
-        public float DamageFrom(Element element)
+        public float DamageFrom(Element element, bool scaled)
         {
             float f = 1;
             for (int i = 0; i < Length; i++)
             {
-                f *= Table.Effectiveness(element, Elements[i]);
+                if (scaled)
+                {
+                    f *= Table.EffectivenessScaled(element, Elements[i]);
+                }
+                else
+                {
+                    f *= Table.EffectivenessUnscaled(element, Elements[i]);
+                }
             }
             return f;
         }

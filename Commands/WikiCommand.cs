@@ -18,4 +18,9 @@ public class WikiCommand : ModCommand
     {
         ModContent.GetInstance<MySystem>().ActivateWikiUI();
     }
+
+    public override bool IsLoadingEnabled(Mod mod)
+    {
+        return false;
+    }
 }

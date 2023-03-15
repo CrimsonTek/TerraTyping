@@ -9,7 +9,6 @@ using TerraTyping.DataTypes.Structs;
 using Microsoft.Xna.Framework;
 using Microsoft.VisualBasic;
 using IL.Terraria.GameContent.Achievements;
-using TerraTyping.Dictionaries;
 using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes

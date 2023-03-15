@@ -51,23 +51,15 @@ namespace TerraTyping
                     bool condition = offensiveArr[j] == Element.water && defensiveArr[i] == Element.water;
                     conditionWasSatisfied |= condition;
 
-                    float baseEffectiveness = Table.Effectiveness(offensiveArr[j], defensiveArr[i]);
-                    DEBUG.PRINTIF(condition, $"Base Effectiveness: {baseEffectiveness}");
+                    float baseEffectiveness = Table.EffectivenessScaled(offensiveArr[j], defensiveArr[i]);
                     attacker.ModifyEffectiveness(ref baseEffectiveness, offensiveArr[j], defensiveArr[i]);
-                    DEBUG.PRINTIF(condition, $"Post modify: {baseEffectiveness}");
                     float postDefenderModifierEffectiveness = defenderAbility.ModifyEffectivenessIncoming(new ModifyEffectivenessIncomingParameters(offensiveArr[j], defensiveArr[i], baseEffectiveness));
                     float postAttackerModifierEffectiveness = attackerAbility.ModifyEffectivenessOutgoing(new ModifyEffectivenessOutgoingParameters(offensiveArr[j], defensiveArr[i], postDefenderModifierEffectiveness));
-                    DEBUG.PRINTIF(condition, $"After ability modify: {postAttackerModifierEffectiveness}");
-                    DEBUG.PRINTIF(condition, $"Damage before: {damage}");
                     damage *= postAttackerModifierEffectiveness;
-                    DEBUG.PRINTIF(condition, $"Damage after: {damage}");
                 }
             }
 
-            DEBUG.PRINTIF(conditionWasSatisfied, $"Damage: {damage}");
             ModifyDamageReturn modifyDamageReturn = defenderAbility.ModifyDamageIncoming(new ModifyDamageParameters(offensiveArr, damage, target, knockback, attacker, attacker));
-            DEBUG.PRINTIF(conditionWasSatisfied, $"Damage after defender's ability: {modifyDamageReturn.newDamage}");
-            DEBUG.PRINTIF(conditionWasSatisfied, $"Defender ability: {defenderAbility.id}");
             damage = modifyDamageReturn.newDamage;
             knockback = modifyDamageReturn.newKnockback;
             return new DamageReturn(damage, modifyDamageReturn.heal, knockback);

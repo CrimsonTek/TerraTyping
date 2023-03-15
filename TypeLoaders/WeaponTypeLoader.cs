@@ -14,7 +14,7 @@ public class WeaponTypeLoader : TypeLoader
 {
     Dictionary<int, WeaponTypeInfo> typeInfos;
 
-    protected override string CSVFileName => "weaponTypes";
+    protected override string CSVFileName => CSVFileNames.Weapons;
 
     public static WeaponTypeLoader Instance { get; private set; }
 

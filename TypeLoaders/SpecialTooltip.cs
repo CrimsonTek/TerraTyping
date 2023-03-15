@@ -23,14 +23,9 @@ public class SpecialTooltip
         List<SpecialTooltip> specialTooltips = new List<SpecialTooltip>();
         try
         {
-            var jObject = JsonConvert.DeserializeObject(input) as JObject;
+            JObject jObject = (JsonConvert.DeserializeObject(input) as JObject) ?? new JObject();
 
             bool dontOverride = jObject.Value<bool>("DontOverride");
-
-            if (dontOverride)
-            {
-                TerraTyping.Instance.Logger.Debug($"{nameof(dontOverride)} is true for \"{input}\"");
-            }
 
             JArray jArray = jObject.Value<JArray>("Tooltips") ?? new JArray();
             for (int i = 0; i < jArray.Count; i++)
@@ -46,12 +41,15 @@ public class SpecialTooltip
             {
                 overrideSpecialTooltip = specialTooltips.Count > 0;
             }
-
-            //overrideSpecialTooltip = !dontOverride || specialTooltips.Count > 0;
         }
         catch (Exception e)
         {
             throw new Exception($"Threw exception while parsing \"{input}\"", e);
+        }
+
+        if (specialTooltips.Count == 0)
+        {
+            return Array.Empty<SpecialTooltip>();
         }
 
         return specialTooltips.ToArray();

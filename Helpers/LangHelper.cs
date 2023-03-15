@@ -112,7 +112,7 @@ namespace TerraTyping
 
         public static string AbilityName(AbilityID ability)
         {
-            return English.Ability[ability];
+            return English.AbilityName(ability);
         }
     }
 }

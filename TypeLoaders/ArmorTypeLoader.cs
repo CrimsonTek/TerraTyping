@@ -13,7 +13,7 @@ public class ArmorTypeLoader : TypeLoader
 {
     Dictionary<int, ArmorTypeInfo> typeInfos;
 
-    protected override string CSVFileName => "armorTypes";
+    protected override string CSVFileName => CSVFileNames.Armor;
 
     public static ArmorTypeLoader Instance { get; private set; }
 

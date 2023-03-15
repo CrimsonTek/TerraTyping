@@ -11,10 +11,8 @@ using TerraTyping.DataTypes;
 using TerraTyping.Abilities.Buffs.TypeAdd;
 using TerraTyping.Abilities.Buffs.TypeReplace;
 using System.Reflection;
-using TerraTyping.Attributes;
 using TerraTyping.Abilities.Buffs;
 using TerraTyping.Helpers;
-using TerraTyping.Dictionaries;
 using TerraTyping.TypeLoaders;
 using log4net;
 
@@ -37,17 +35,6 @@ namespace TerraTyping
 
             ElementHelper.Load();
             ElementArray.Load();
-
-            Type[] arrType = Code.GetTypes();
-            foreach (Type type in arrType)
-            {
-                LoadAttribute loadAttribute = type.GetCustomAttribute<LoadAttribute>();
-                if (loadAttribute != null)
-                {
-                    MethodInfo methodInfo = type.GetMethod("Load", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    methodInfo?.Invoke(null, null);
-                }
-            }
 
             errors.Clear();
         }
@@ -78,17 +65,6 @@ namespace TerraTyping
 
         public override void Unload()
         {
-            Type[] arrType = Code.GetTypes();
-            foreach (Type type in arrType)
-            {
-                UnloadAttribute unloadAttribute = type.GetCustomAttribute<UnloadAttribute>();
-                if (unloadAttribute != null)
-                {
-                    MethodInfo methodInfo = type.GetMethod("Unload", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    methodInfo?.Invoke(null, null);
-                }
-            }
-
             BuffUtils.addTypeBuffs = null;
             BuffUtils.replaceTypeBuffs = null;
 

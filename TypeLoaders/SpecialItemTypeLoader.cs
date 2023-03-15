@@ -12,7 +12,7 @@ public class SpecialItemTypeLoader : TypeLoader
 {
     Dictionary<int, ItemTypeInfo> typeInfos;
 
-    protected override string CSVFileName => "specialItemTypes";
+    protected override string CSVFileName => CSVFileNames.SpecialItems;
 
     public static SpecialItemTypeLoader Instance { get; private set; }
 

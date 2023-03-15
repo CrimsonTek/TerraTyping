@@ -225,13 +225,7 @@ namespace TerraTyping.Accessories.HeldItems
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.IronBar, 20);
-            recipe.AddIngredient(ItemID.Diamond, 3);
-            recipe.AddTile(TileID.Anvils);
-            recipe.Register();
-
-            recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.LeadBar, 20);
+            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 20);
             recipe.AddIngredient(ItemID.Diamond, 3);
             recipe.AddTile(TileID.Anvils);
             recipe.Register();
@@ -265,7 +259,7 @@ namespace TerraTyping.Accessories.HeldItems
     }
     public class DustySkull : HeldItems
     {
-        public override string DispName => "DispName";
+        public override string DispName => "Dusty Skull";
         public override Element Element => Element.bone;
         public override int Rarity => 1;
         public override int Value => 100000;

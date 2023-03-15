@@ -15,7 +15,7 @@ public class NPCTypeLoader : TypeLoader
 {
     NPCTypeInfo[] typeInfos;
 
-    protected override string CSVFileName => "npcTypes";
+    protected override string CSVFileName => CSVFileNames.NPCs;
 
     public static NPCTypeLoader Instance { get; private set; }
 

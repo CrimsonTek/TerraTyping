@@ -74,36 +74,48 @@ namespace TerraTyping.Commands
                 List<string> weakAgainst = new List<string>();
                 List<string> nothingAgainst = new List<string>();
 
-                int defenseCount = Table.EffectivenessTable.GetLength(0);
-                for (int i = 0; i < defenseCount; i++)
+                foreach (Element element in ElementHelper.GetAll(false))
                 {
-                    float e = Table.EffectivenessTable[(int)result, i];
-                    if (e == 0f)
-                        nothingAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Divisor)
-                        weakAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == 1f)
-                        neutralAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Multiplier)
-                        strongAgainst.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else
-                        throw new Exception("Unexpected effectiveness case.");
+                    float eff = Table.EffectivenessUnscaled(result, element);
+                    switch (eff)
+                    {
+                        case 0f:
+                            nothingAgainst.Add(LangHelper.ElementName(element));
+                            break;
+                        case 0.5f:
+                            weakAgainst.Add(LangHelper.ElementName(element));
+                            break;
+                        case 1f:
+                            neutralAgainst.Add(LangHelper.ElementName(element));
+                            break;
+                        case 2:
+                            strongAgainst.Add(LangHelper.ElementName(element));
+                            break;
+                        default:
+                            throw new Exception($"Unexpected effectiveness case: {eff}.");
+                    }
                 }
 
-                int attackCount = Table.EffectivenessTable.GetLength(1);
-                for (int i = 0; i < attackCount; i++)
+                foreach (Element element in ElementHelper.GetAll(false))
                 {
-                    float e = Table.EffectivenessTable[i, (int)result];
-                    if (e == 0f)
-                        immuneTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Divisor)
-                        resistantTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == 1f)
-                        neutralTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else if (e == Table.Multiplier)
-                        susceptibleTo.Add(LangHelper.ElementName(ElementHelper.FromIndex(i)));
-                    else
-                        throw new Exception("Unexpected effectiveness case.");
+                    float eff = Table.EffectivenessUnscaled(element, result);
+                    switch (eff)
+                    {
+                        case 0f:
+                            immuneTo.Add(LangHelper.ElementName(element));
+                            break;
+                        case 0.5f:
+                            resistantTo.Add(LangHelper.ElementName(element));
+                            break;
+                        case 1f:
+                            neutralTo.Add(LangHelper.ElementName(element));
+                            break;
+                        case 2:
+                            susceptibleTo.Add(LangHelper.ElementName(element));
+                            break;
+                        default:
+                            throw new Exception($"Unexpected effectiveness case: {eff}.");
+                    }
                 }
 
                 caller.Reply($"{elementName} Defensive Stats:", color);
@@ -161,28 +173,19 @@ namespace TerraTyping.Commands
                 npc.SetDefaults(chosenIndexes[0]);
                 AbilityContainer abilities = NPCTypeLoader.GetAbilities(chosenIndexes[0]);
 
-                AbilityID _primaryAbility = abilities.PrimaryAbility;
-                AbilityID _secondaryAbility = abilities.SecondaryAbility;
-                AbilityID _hiddenAbility = abilities.HiddenAbility;
-
-                // element is defender
-                List<string> superSusceptibleTo = new List<string>();
-                List<string> susceptibleTo = new List<string>();
-                List<string> neutralTo = new List<string>();
-                List<string> resistantTo = new List<string>();
-                List<string> superResistantTo = new List<string>();
-                List<string> immuneTo = new List<string>();
+                AbilityID primaryAbility = abilities.PrimaryAbility;
+                AbilityID secondaryAbility = abilities.SecondaryAbility;
+                AbilityID hiddenAbility = abilities.HiddenAbility;
 
                 ElementArray defensiveTypes = NPCTypeLoader.GetDefensiveElements(npc);
                 ElementArray contactTypes = NPCTypeLoader.GetOffensiveElements(npc);
                 var resistancesToTypes = new Dictionary<float, List<Element>>();
 
-                int attackCount = Table.EffectivenessTable.GetLength(1);
-                for (int i = 0; i < attackCount; i++)
+                foreach (Element element in ElementUtils.GetAll(false))
                 {
-                    Element attackElement = ElementHelper.FromIndex(i);
-                    float damage = defensiveTypes.DamageFrom(attackElement);
-                    resistancesToTypes.AddIfMissingAndGet(damage, new List<Element>()).Add(attackElement);
+                    // element here is attacker
+                    float damage = defensiveTypes.DamageFrom(element, true);
+                    resistancesToTypes.AddIfMissingAndGet(damage, new List<Element>()).Add(element);
                 }
 
                 caller.Reply($"{npc.TypeName} typing:");
@@ -199,28 +202,15 @@ namespace TerraTyping.Commands
                     caller.Reply($" > {LangHelper.ElementName(element)}", TerraTypingColors.GetColor(element));
                 }
 
-                if (_primaryAbility != AbilityID.None) caller.Reply($"  Primary Ability: {LangHelper.AbilityName(_primaryAbility)}");
-                if (_secondaryAbility != AbilityID.None) caller.Reply($"  Secondary Ability: {LangHelper.AbilityName(_secondaryAbility)}");
-                if (_hiddenAbility != AbilityID.None) caller.Reply($"  Hidden Ability: {LangHelper.AbilityName(_hiddenAbility)}");
+                if (primaryAbility != AbilityID.None) caller.Reply($"  Primary Ability: {LangHelper.AbilityName(primaryAbility)}");
+                if (secondaryAbility != AbilityID.None) caller.Reply($"  Secondary Ability: {LangHelper.AbilityName(secondaryAbility)}");
+                if (hiddenAbility != AbilityID.None) caller.Reply($"  Hidden Ability: {LangHelper.AbilityName(hiddenAbility)}");
 
                 IOrderedEnumerable<KeyValuePair<float, List<Element>>> orderedEnumerable = resistancesToTypes.OrderBy((kvp) => kvp.Value);
                 foreach (KeyValuePair<float, List<Element>> kvp in orderedEnumerable)
                 {
                     caller.Reply($" [{kvp.Key}x]: {kvp.Value}");
                 }
-                
-                //if (superSusceptibleTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is very susceptible to: {string.Join(", ", superSusceptibleTo)}", superEffectiveColor);
-                //if (susceptibleTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is susceptible to: {string.Join(", ", susceptibleTo)}", effectiveColor);
-                //if (neutralTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is neutral to: {string.Join(", ", neutralTo)}", neutralColor);
-                //if (resistantTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is resistant to: {string.Join(", ", resistantTo)}", ineffectiveColor);
-                //if (superResistantTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is very resistant to: {string.Join(", ", superResistantTo)}", superIneffectiveColor);
-                //if (immuneTo.Count > 0)
-                //    caller.Reply($" {npc.TypeName} is immune to: {string.Join(", ", immuneTo)}", immuneColor);
 
                 return true;
             }
