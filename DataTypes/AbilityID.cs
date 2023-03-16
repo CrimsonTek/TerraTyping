@@ -34,6 +34,6 @@ namespace TerraTyping.DataTypes
         Flammable,
         Grounded,
         PrismArmor,
-        DD2Stab // todo: rename? implement
+        DD2Stab
     }
 }

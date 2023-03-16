@@ -16,7 +16,6 @@ namespace TerraTyping.Abilities.Buffs
             Main.debuff[Type] = true;
             DisplayName.SetDefault("Color Change");
             Description.SetDefault("Your type is different.");
-            // todo: names, descriptions for buffs
         }
 
         public override void Update(NPC npc, ref int buffIndex)

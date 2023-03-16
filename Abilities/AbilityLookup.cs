@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Abilities.Buffs;
 using TerraTyping.Common;
+using TerraTyping.Common.Configs;
 using TerraTyping.Data;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
@@ -18,6 +19,8 @@ namespace TerraTyping.Abilities
 {
     public static class AbilityLookup
     {
+        public static ServerConfig.AbilityConfig AbilityConfig => ServerConfig.Instance.AbilityConfigInstance;
+
         static AbilityLookup()
         {
             InitializeAbilityLookupTable();
@@ -355,25 +358,27 @@ namespace TerraTyping.Abilities
         {
             public bool addBuff;
             public int modBuff;
-            public int time;
-            public int timeNPC;
             public bool quiet;
+            private readonly Func<float> timePlayer;
+            private readonly Func<float> timeNPC;
 
             public static BuffOnHitData DoNothing => new BuffOnHitData()
             {
                 addBuff = false,
                 modBuff = -1,
-                time = 0,
                 quiet = false,
             };
 
-            public BuffOnHitData(int modBuff, int timePlayer, int timeNPC, bool quiet)
+            public int TimePlayer { get => (int)(timePlayer.Invoke() * 60); }
+            public int TimeNPC { get => (int)(timeNPC.Invoke() * 60); }
+
+            public BuffOnHitData(int modBuff, bool quiet, Func<float> timePlayer, Func<float> timeNPC)
             {
                 addBuff = true;
                 this.modBuff = modBuff;
-                this.time = timePlayer;
-                this.timeNPC = timeNPC;
                 this.quiet = quiet;
+                this.timePlayer = timePlayer ?? throw new ArgumentNullException(nameof(timePlayer));
+                this.timeNPC = timeNPC ?? throw new ArgumentNullException(nameof(timeNPC));
             }
         }
 
@@ -396,10 +401,10 @@ namespace TerraTyping.Abilities
                 // typesThatBuff.Contains(parameters.incoming)
                 if (buffOnHitData.addBuff && parameters.incoming.HasAnyElement(typesThatBuff))
                 {
-                    int time = buffOnHitData.time;
+                    int time = buffOnHitData.TimePlayer;
                     if (parameters.target.EntityType == EntityType.NPC)
                     {
-                        time = buffOnHitData.timeNPC;
+                        time = buffOnHitData.TimeNPC;
                     }
                     parameters.target.AddBuff(buffOnHitData.modBuff, time, buffOnHitData.quiet);
                 }
@@ -481,9 +486,9 @@ namespace TerraTyping.Abilities
             AddAbility(AbilityID.LightningRod, new Ability(AbilityID.LightningRod)
             {
                 modifyDamageIncoming = AbsorbFactory(Element.electric, false),
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<LightningRod>(),
-                AbilityData.lightningRodDurationPlayer,
-                AbilityData.lightningRodDurationNPC, false), Element.electric),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<LightningRod>(), false,
+                () => AbilityConfig.LightningRodDurationPlayer,
+                () => AbilityConfig.LightningRodDurationNPC), Element.electric),
                 messageOnHit = MessageOnHitFactory(Element.electric, "Lightning Rod!"),
                 attractProjectile = (parameters) =>
                 {
@@ -503,9 +508,9 @@ namespace TerraTyping.Abilities
             AddAbility(AbilityID.StormDrain, new Ability(AbilityID.StormDrain)
             {
                 modifyDamageIncoming = AbsorbFactory(Element.water, false),
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<StormDrain>(),
-                AbilityData.stormDrainDurationPlayer,
-                AbilityData.stormDrainDurationNPC, false), Element.water),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<StormDrain>(), false,
+                () => AbilityConfig.StormDrainDurationPlayer,
+                () => AbilityConfig.StormDrainDurationNPC), Element.water),
                 messageOnHit = MessageOnHitFactory(Element.water, "Storm Drain!"),
                 attractProjectile = (parameters) =>
                 {
@@ -525,9 +530,9 @@ namespace TerraTyping.Abilities
             AddAbility(AbilityID.MotorDrive, new Ability(AbilityID.MotorDrive)
             {
                 modifyDamageIncoming = AbsorbFactory(Element.electric, false),
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<MotorDrive>(),
-                AbilityData.motorDriveDurationPlayer,
-                AbilityData.motorDriveDurationNPC, false), Element.electric),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<MotorDrive>(), false,
+                () => AbilityConfig.MotorDriveDurationPlayer,
+                () => AbilityConfig.MotorDriveDurationNPC), Element.electric),
                 messageOnHit = MessageOnHitFactory(Element.electric, "Motor Drive!")
             });
             AddAbility(AbilityID.WaterAbsorb, new Ability(AbilityID.WaterAbsorb)
@@ -538,9 +543,9 @@ namespace TerraTyping.Abilities
             AddAbility(AbilityID.FlashFire, new Ability(AbilityID.FlashFire)
             {
                 modifyDamageIncoming = AbsorbFactory(Element.fire, false),
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<FlashFire>(),
-                AbilityData.flashFireDurationPlayer,
-                AbilityData.flashFireDurationNPC, false), Element.fire),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<FlashFire>(), false,
+                () => AbilityConfig.FlashFireDurationPlayer,
+                () => AbilityConfig.FlashFireDurationNPC), Element.fire),
                 messageOnHit = MessageOnHitFactory(Element.fire, "Flash Fire!")
             });
             AddAbility(AbilityID.SapSipper, new Ability(AbilityID.SapSipper)
@@ -556,7 +561,7 @@ namespace TerraTyping.Abilities
 
                     if (parameters.incomingElements.HasAnyElement(Element.ice, Element.fire))
                     {
-                        damage *= AbilityData.thickFatFireIceDamageTaken;
+                        damage *= Table.Divisor;
                     }
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);
@@ -576,7 +581,7 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.incomingElements.HasElement(Element.fire))
                     {
-                        return new ModifyDamageReturn(parameters.damage * AbilityData.heatproofFireDamageTaken, false, parameters.knockback);
+                        return new ModifyDamageReturn(parameters.damage * Table.Divisor, false, parameters.knockback);
                     }
                     return new ModifyDamageReturn(parameters.damage, false, parameters.knockback);
                 },
@@ -588,7 +593,7 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.incomingElements.HasElement(Element.fire))
                     {
-                        return new ModifyDamageReturn(parameters.damage * AbilityData.waterBubbleFireDamageTaken, false, parameters.knockback);
+                        return new ModifyDamageReturn(parameters.damage * Table.Divisor, false, parameters.knockback);
                     }
                     return new ModifyDamageReturn(parameters.damage, false, parameters.knockback);
                 },
@@ -596,7 +601,7 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.element == Element.water)
                     {
-                        return new PowerupTypeReturn(AbilityData.waterBubbleWaterDamageBoost);
+                        return new PowerupTypeReturn(Table.Multiplier);
                     }
                     else
                     {
@@ -612,12 +617,12 @@ namespace TerraTyping.Abilities
                     float damage = parameters.damage;
                     if (parameters.damageClass.Melee)
                     {
-                        damage *= AbilityData.fluffyMeleeDamageTaken;
+                        damage *= Table.Divisor;
                     }
 
                     if (parameters.incomingElements.HasElement(Element.fire))
                     {
-                        damage *= AbilityData.fluffyFireDamageTaken;
+                        damage *= Table.Multiplier;
                     }
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);
@@ -639,9 +644,9 @@ namespace TerraTyping.Abilities
             });
             AddAbility(AbilityID.Justified, new Ability(AbilityID.Justified)
             {
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<Justified>(),
-                AbilityData.justifiedDurationPlayer,
-                AbilityData.justifiedDurationNPC, false), Element.dark),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<Justified>(), false,
+                () => AbilityConfig.JustifiedDurationPlayer,
+                () => AbilityConfig.JustifiedDurationNPC), Element.dark),
                 messageOnHit = MessageOnHitFactory(Element.dark, "Justified!")
             });
             AddAbility(AbilityID.WaterCompaction, new Ability(AbilityID.WaterCompaction)
@@ -650,24 +655,25 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.incoming.HasElement(Element.water))
                     {
+                        int time;
                         if (parameters.target is NPCWrapper npcWrapper)
                         {
-                            npcWrapper.NPC.defense += AbilityData.waterCompactionDefenseBoostNPC;
+                            time = (int)(AbilityConfig.WaterCompactionDurationNPC * 180);
                         }
                         else
                         {
-                            int time = AbilityData.waterCompactionDurationPlayer;
-                            parameters.target.AddBuff(ModContent.BuffType<WaterCompaction>(), time, false);
+                            time = (int)(AbilityConfig.WaterCompactionDurationPlayer * 180);
                         }
+                        parameters.target.AddBuff(ModContent.BuffType<WaterCompaction>(), time, false);
                     }
                 },
                 messageOnHit = MessageOnHitFactory(Element.water, "Water Compaction!")
             });
             AddAbility(AbilityID.SteamEngine, new Ability(AbilityID.SteamEngine)
             {
-                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<SteamEngine>(),
-                AbilityData.steamEngineDurationPlayer,
-                AbilityData.steamEngineDurationNPC, false), new Element[] { Element.water, Element.fire }),
+                buffOnHit = BuffOnHitFactory(new BuffOnHitData(ModContent.BuffType<SteamEngine>(), false,
+                () => AbilityConfig.SteamEngineDurationPlayer,
+                () => AbilityConfig.SteamEngineDurationNPC), new Element[] { Element.water, Element.fire }),
                 messageOnHit = (parameters) =>
                 {
                     if (parameters.incoming.HasAnyElement(Element.water, Element.fire, out Element selected))
@@ -747,27 +753,25 @@ namespace TerraTyping.Abilities
                     if (parameters.attacker is WeaponWrapper itemWrapper)
                     {
                         Player player = Main.player[itemWrapper.Player];
-                        player.AddBuff(ModContent.BuffType<Mummy>(), AbilityData.mummyDurationPlayer);
+                        player.AddBuff(ModContent.BuffType<Mummy>(), (int)(AbilityConfig.MummyDurationPlayer * 180));
                     }
                     else if (parameters.attacker is ProjectileWrapper projWrapper)
                     {
                         if (projWrapper.OwnerType == Owner.Player)
                         {
                             Player player = Main.player[projWrapper.Projectile.owner];
-                            player.AddBuff(ModContent.BuffType<Mummy>(), AbilityData.mummyDurationPlayer);
+                            player.AddBuff(ModContent.BuffType<Mummy>(), (int)(AbilityConfig.MummyDurationPlayer * 180));
                         }
                     }
                     else if (parameters.attacker is NPCWrapper npcWrapper)
                     {
                         NPC npc = npcWrapper.NPC;
-                        npc.AddBuff(ModContent.BuffType<Mummy>(), AbilityData.mummyDurationNPC);
+                        npc.AddBuff(ModContent.BuffType<Mummy>(), (int)(AbilityConfig.MummyDurationNPC * 180));
                     }
                 },
                 messageOnHit = (parameters) =>
                 {
-                    if (parameters.attacker is WeaponWrapper ||
-                        parameters.attacker is ProjectileWrapper ||
-                        parameters.attacker is NPCWrapper)
+                    if (parameters.attacker is WeaponWrapper or ProjectileWrapper or NPCWrapper)
                     {
                         return new MessageOnHitReturn("Mummy!", Element.ghost);
                     }
@@ -781,7 +785,7 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.outgoingType == Element.poison)
                     {
-                        if (parameters.defendingType == Element.poison || parameters.defendingType == Element.steel)
+                        if (parameters.defendingType is Element.poison or Element.steel)
                         {
                             if (parameters.normalEffectiveness < 1)
                             {
@@ -792,7 +796,7 @@ namespace TerraTyping.Abilities
 
                     return parameters.normalEffectiveness;
                 },
-                messageHitEnemy = (parameters) => // todo: why isn't this working :(
+                messageHitEnemy = (parameters) =>
                 {
                     if (parameters.outgoing.HasElement(Element.poison))
                     {
@@ -811,24 +815,19 @@ namespace TerraTyping.Abilities
                     int duration;
                     if (parameters.target is PlayerWrapper)
                     {
-                        duration = AbilityData.colorChangeDurationPlayer;
+                        duration = (int)(AbilityConfig.ColorChangeDurationPlayer * 180);
                     }
                     else
                     {
-                        duration = AbilityData.colorChangeDurationNPC;
+                        duration = (int)(AbilityConfig.ColorChangeDurationNPC * 180);
                     }
 
                     int colorChangeBuffID = ModContent.BuffType<ColorChange>();
                     parameters.target.ModifiedElements = parameters.incoming;
                     parameters.target.AddBuff(colorChangeBuffID, duration);
                 },
-                messageOnHit = (parameters) =>
-                {
-                    Element elementForColor = parameters.incoming.FirstOrDefault(); // todo: do something cooler
-                    return new MessageOnHitReturn(new Message("Color Change!", parameters.incoming));
-                }
+                messageOnHit = (parameters) => new MessageOnHitReturn(new Message("Color Change!", parameters.incoming))
             });
-            // todo: make this work different
             AddAbility(AbilityID.MoldBreaker, new Ability(AbilityID.MoldBreaker)
             {
                 modifyOpponentsAbility = (defaultAbility) =>
@@ -855,14 +854,19 @@ namespace TerraTyping.Abilities
                             break;
                     }
 
-                    if (appropriateType && parameters.user is ITarget target)
+                    float damageBoost = 1;
+                    if (appropriateType && (parameters.user is ITarget target) && target.ZoneSandstorm)
                     {
-                        if (target.ZoneSandstorm)
+                        if (target.EntityType is EntityType.NPC)
                         {
-                            return new PowerupTypeReturn(AbilityData.sandStormDamageBoost);
+                            damageBoost = AbilityConfig.SandForceDamageBoostNPC;
+                        }
+                        else
+                        {
+                            damageBoost = AbilityConfig.SandForceDamageBoostPlayer;
                         }
                     }
-                    return new PowerupTypeReturn(1);
+                    return new PowerupTypeReturn(damageBoost);
                 }
             });
             AddAbility(AbilityID.Scrappy, new Ability(AbilityID.Scrappy)
@@ -871,8 +875,7 @@ namespace TerraTyping.Abilities
                 {
                     if (parameters.defendingType == Element.ghost)
                     {
-                        Element attacking = parameters.outgoingType;
-                        if (attacking == Element.normal || attacking == Element.fighting)
+                        if (parameters.outgoingType is Element.normal or Element.fighting)
                         {
                             if (parameters.normalEffectiveness < 1)
                             {
@@ -888,17 +891,9 @@ namespace TerraTyping.Abilities
                 modifyDamageIncoming = (parameters) =>
                 {
                     float damage = parameters.damage;
-                    for (int i = 0; i < parameters.incomingElements.Length; i++)
+                    if (parameters.incomingElements.HasElement(Element.fire))
                     {
-                        Element element = parameters.incomingElements[i];
-                        if (element == Element.fire)
-                        {
-                            damage *= AbilityData.flammableDamageMultiplierFire;
-                        }
-                        else if (element == Element.water)
-                        {
-                            damage *= AbilityData.flammableDamageMultiplierWater;
-                        }
+                        damage *= Table.Multiplier;
                     }
 
                     return new ModifyDamageReturn(damage, false, parameters.knockback);

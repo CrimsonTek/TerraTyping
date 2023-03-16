@@ -337,10 +337,29 @@ namespace TerraTyping.DataTypes
 
         public static ElementArray Get(params Element[] elements)
         {
-            // todo: remove 'Element.none's? Check for length?
+            List<Element> sanitizedList = new List<Element>();
+
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (elements[i] is Element.none)
+                {
+                    TerraTyping.Instance.Logger.Warn($"Element array should not contain {Element.none}.\nElements: [{string.Join(", ", elements)}]");
+                    continue;
+                }
+
+                if (sanitizedList.Count >= 6)
+                {
+                    TerraTyping.Instance.Logger.Warn($"Element array cannot contain more than 6 elements.\nElements: [{string.Join(", ", elements)}]");
+                    break;
+                }
+
+                sanitizedList.Add(elements[i]);
+            }
+
+            Element[] sanitized = sanitizedList.ToArray();
 
             ElementArray elementArray;
-            if (instantiatedElementArrays.TryGetValue(elements, out WeakReference<ElementArray> weakReference))
+            if (instantiatedElementArrays.TryGetValue(sanitized, out WeakReference<ElementArray> weakReference))
             {
                 if (weakReference.TryGetTarget(out elementArray))
                 {
@@ -348,15 +367,15 @@ namespace TerraTyping.DataTypes
                 }
                 else
                 {
-                    elementArray = new ElementArray(elements);
+                    elementArray = new ElementArray(sanitized);
                     weakReference.SetTarget(elementArray);
                     return elementArray;
                 }
             }
             else
             {
-                elementArray = new ElementArray(elements);
-                instantiatedElementArrays[elements] = new WeakReference<ElementArray>(elementArray);
+                elementArray = new ElementArray(sanitized);
+                instantiatedElementArrays[sanitized] = new WeakReference<ElementArray>(elementArray);
                 return elementArray;
             }
         }

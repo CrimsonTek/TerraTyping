@@ -87,7 +87,7 @@ namespace TerraTyping.Common
                     continue;
                 }
 
-                var combatText = Main.combatText[i];
+                CombatText combatText = Main.combatText[i];
                 if (combatText is null || !combatText.active)
                 {
                     combatTextsToTrack[i] = false;
@@ -97,12 +97,10 @@ namespace TerraTyping.Common
 
                 ElementArray elementArray = combatTextsTypes[i];
 
-                // todo: edit this to automatically use CombatText.lifeTime instead of tracking that myself
-                int elementIndex = Math.Clamp(elementArray.Length * (combatTextsTimeTracked[i]) / (CombatTextLifeTimeDefault + 1), 0, elementArray.Length - 1);
+                int elementIndex = (int)Math.Clamp(elementArray.Length * (1 - ((float)combatText.lifeTime / CombatTextLifeTimeDefault)), 0, elementArray.Length - 1);
 
                 Element element = elementArray[elementIndex];
                 combatText.color = TerraTypingColors.GetColor(element);
-                combatTextsTimeTracked[i]++;
             }
         }
 
@@ -129,8 +127,6 @@ namespace TerraTyping.Common
 
         public void TrackCombatText(int combatTextIndex, ElementArray elements)
         {
-            Main.NewText($"{Main.combatText[combatTextIndex].lifeTime}");
-
             if (combatTextIndex >= 0
                 && combatTextIndex < Main.maxCombatText
                 && elements is not null

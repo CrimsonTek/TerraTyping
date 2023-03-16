@@ -177,6 +177,6 @@ namespace TerraTyping.DataTypes
 
         public Team GetTeam() => NPC.friendly ? Team.PlayerFriendly : Team.EnemyNPC;
 
-        public float DamageMultiplication() => NPC.GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff;
+        public float DamageMultiplication() => NPC.GetGlobalNPC<NPCTyping>().damageMultiplyByBuff;
     }
 }

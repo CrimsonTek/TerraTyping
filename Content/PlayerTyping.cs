@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -47,11 +48,16 @@ namespace TerraTyping
 
         public ModItem AbilityAccessory { get; set; } = null;
 
-        public float allDamageModifiedByAbilities;
+        /// <summary>
+        /// Add (your value - 1) to this.
+        /// </summary>
+        public float _allDamageModifiedByAbilities;
         /// <summary>
         /// Each type's damage multiplier as modified by abilities.
         /// </summary>
-        public float[] damageModifiedByAbilities;
+        public float[] _damageModifiedByAbilities;
+        public List<Boost> boostsToAllDamageByAbilities = new List<Boost>();
+        public List<Boost>[] boostsToEachTypeByAbilities;
 
         #region CombatTextCooldown
         private const int CombatTextCooldownConst = 30;
@@ -93,7 +99,17 @@ namespace TerraTyping
 
         public PlayerTyping()
         {
-            damageModifiedByAbilities = new float[ElementHelper.ElementCount(includeNone: false)];
+            boostsToAllDamageByAbilities = new List<Boost>();
+
+            int elementCount = ElementHelper.ElementCount(includeNone: false);
+            boostsToEachTypeByAbilities = new List<Boost>[elementCount];
+            for (int i = 0; i < elementCount; i++)
+            {
+                boostsToEachTypeByAbilities[i] = new List<Boost>();
+            }
+
+
+            _damageModifiedByAbilities = new float[elementCount];
         }
 
         public Ability GetAbility()
@@ -106,10 +122,10 @@ namespace TerraTyping
             DecrementCombatCD();
             AbilityAccessory = null;
 
-            allDamageModifiedByAbilities = 1;
-            for (int i = 0; i < damageModifiedByAbilities.Length; i++)
+            _allDamageModifiedByAbilities = 1;
+            for (int i = 0; i < _damageModifiedByAbilities.Length; i++)
             {
-                damageModifiedByAbilities[i] = 1;
+                _damageModifiedByAbilities[i] = 1;
             }
 
             UseModifiedAbility = false;
@@ -193,21 +209,6 @@ namespace TerraTyping
             }
 
             return false;
-        }
-
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
-        {
-            float multiplicativeDamage = allDamageModifiedByAbilities;
-            ElementArray elementArray = WeaponTypeLoader.GetElements(item);
-            if (!elementArray.Empty)
-            {
-                for (int i = 0; i < elementArray.Length; i++)
-                {
-                    multiplicativeDamage += (damageModifiedByAbilities[(int)elementArray[i]] - 1);
-                }
-            }
-
-            damage = damage.CombineWith(new StatModifier(1, multiplicativeDamage, 0, 0));
         }
 
         public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)

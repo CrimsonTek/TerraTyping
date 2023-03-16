@@ -5,33 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.Common.Configs;
 using TerraTyping.Data;
 
 namespace TerraTyping.Abilities.Buffs
 {
-    public class StormDrain : ModBuff, IPowerupType
+    public class StormDrain : ModBuff
     {
-        public BuffPowerupType PowerupType 
-        { 
-            get => (paramters) => 
-            { 
-                return new BuffPowerupTypeReturn(AbilityData.stormDrainDamageBoostPlayer, "Storm Drain"); 
-            };
-        }
-
         public override void SetStaticDefaults()
         {
-            base.SetStaticDefaults();
+            DisplayName.SetDefault("Storm Drain");
+            Description.SetDefault($"Damage boosted by {AbilityData.stormDrainDamageBoostNPC:P2}");
         }
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            npc.GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff *= AbilityData.stormDrainDamageBoostNPC;
+            npc.GetGlobalNPC<NPCTyping>().damageMultiplyByBuff += AbilityData.stormDrainDamageBoostNPC - 1;
         }
 
         public override void Update(Player player, ref int buffIndex)
         {
-            // todo: implement
+            if (player.TryGetModPlayer(out PlayerTyping playerTyping))
+            {
+                playerTyping._allDamageModifiedByAbilities += ServerConfig.Instance.AbilityConfigInstance.StormDrainDamageBoostPlayer - 1;
+            }
         }
     }
 }

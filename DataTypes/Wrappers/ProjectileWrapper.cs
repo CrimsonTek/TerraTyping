@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.VisualBasic;
 using IL.Terraria.GameContent.Achievements;
 using TerraTyping.TypeLoaders;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.DataTypes
 {
@@ -54,36 +55,23 @@ namespace TerraTyping.DataTypes
         {
             get
             {
-                switch (OwnerType)
+                if (OwnerType is Owner.Player)
                 {
-                    case Owner.Player:
-                        if (PlayerOwnerIndex > Main.maxPlayers)
-                        {
-                            return AbilityID.None;
-                        }
-                        Player player = Main.player[PlayerOwnerIndex];
-                        if (player == null || !player.active)
-                        {
-                            return AbilityID.None;
-                        }
-                        PlayerWrapper playerWrapper = PlayerWrapper.GetWrapper(player);
-                        return playerWrapper.GetAbility;
-                    case Owner.TownsPerson:
-                    case Owner.NPC:
-                        //if (OwnerIndex > Main.maxNPCs)
-                        //{
-                        //    return AbilityID.None;
-                        //}
-                        //NPC npc = Main.npc[OwnerIndex];
-                        //if (npc == null || !npc.active)
-                        //{
-                        //    return AbilityID.None;
-                        //}
-                        //NPCWrapper npcWrapper = new NPCWrapper(npc);
-                        //return npcWrapper.GetAbility;
-                    case Owner.Unknown:
-                    default:
+                    if (PlayerOwnerIndex > Main.maxPlayers)
+                    {
                         return AbilityID.None;
+                    }
+                    Player player = Main.player[PlayerOwnerIndex];
+                    if (player == null || !player.active)
+                    {
+                        return AbilityID.None;
+                    }
+                    PlayerWrapper playerWrapper = PlayerWrapper.GetWrapper(player);
+                    return playerWrapper.GetAbility;
+                }
+                else
+                {
+                    return AbilityID.None;
                 }
             }
         }

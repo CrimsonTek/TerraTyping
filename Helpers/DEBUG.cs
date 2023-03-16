@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace TerraTyping.Helpers;
@@ -40,6 +41,11 @@ public class DEBUG : ModSystem
         {
             TerraTyping.Instance.Logger.Debug(message);
         }
+    }
+
+    public static void NEWTEXT(object obj)
+    {
+        Main.NewText(obj);
     }
 
     public static void PRINT(object obj)

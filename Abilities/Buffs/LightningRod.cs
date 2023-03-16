@@ -5,28 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.Common.Configs;
 using TerraTyping.Data;
 
 namespace TerraTyping.Abilities.Buffs
 {
-    public class LightningRod : ModBuff, IPowerupType
+    public class LightningRod : ModBuff
     {
-        public BuffPowerupType PowerupType 
+        public override void SetStaticDefaults()
         {
-            get => (parameters) => 
-            {
-                return new BuffPowerupTypeReturn(AbilityData.lightningRodDamageBoostPlayer, "Lightning Rod");
-            }; 
+            DisplayName.SetDefault("Lightning Rod");
+            Description.SetDefault($"Damage boosted by {ServerConfig.Instance.AbilityConfigInstance.LightningRodDamageBoostPlayer:P2}");
         }
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-            npc.GetGlobalNPC<NPCTyping>().DamageMultiplyByBuff *= AbilityData.lightningRodDamageBoostNPC;
+            npc.GetGlobalNPC<NPCTyping>().damageMultiplyByBuff += AbilityData.lightningRodDamageBoostNPC - 1;
         }
 
         public override void Update(Player player, ref int buffIndex)
         {
-            // todo: implement
+            if (player.TryGetModPlayer(out PlayerTyping playerTyping))
+            {
+                playerTyping._allDamageModifiedByAbilities += ServerConfig.Instance.AbilityConfigInstance.LightningRodDamageBoostPlayer - 1;
+            }
         }
     }
 }

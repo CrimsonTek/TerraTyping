@@ -5,30 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.Common.Configs;
 using TerraTyping.Data;
 using TerraTyping.DataTypes;
 
 namespace TerraTyping.Abilities.Buffs
 {
-    public class FlashFire : ModBuff, IPowerupType
+    public class FlashFire : ModBuff
     {
-        public BuffPowerupType PowerupType
+        public override void SetStaticDefaults()
         {
-            get => (parameters) =>
-            {
-                if (parameters.element == Element.fire)
-                {
-                    if (parameters.user is NPCWrapper npcWrapper)
-                    {
-                        return new BuffPowerupTypeReturn(AbilityData.flashFireDamageBoostNPC, "Flash Fire");
-                    }
-                    else if (parameters.user is PlayerWrapper playerWrapper)
-                    {
-                        return new BuffPowerupTypeReturn(AbilityData.flashFireDamageBoostPlayer, "Flash Fire");
-                    }
-                }
-                return new BuffPowerupTypeReturn(1, string.Empty);
-            };
+            DisplayName.SetDefault("Flash Fire");
+            Description.SetDefault($"Fire damage boosted by {ServerConfig.Instance.AbilityConfigInstance.FlashFireDamageBoostPlayer:P2}");
         }
 
         public override void Update(NPC npc, ref int buffIndex)
@@ -37,7 +25,7 @@ namespace TerraTyping.Abilities.Buffs
 
             if (NPCWrapper.GetWrapper(npc).OffensiveElements.HasElement(Element.fire))
             {
-                npcTyping.DamageMultiplyByBuff *= AbilityData.flashFireDamageBoostNPC;
+                npcTyping.damageMultiplyByBuff += ServerConfig.Instance.AbilityConfigInstance.FlashFireDamageBoostNPC - 1;
             }
         }
 
@@ -45,7 +33,7 @@ namespace TerraTyping.Abilities.Buffs
         {
             if (player.TryGetModPlayer(out PlayerTyping playerTyping))
             {
-                playerTyping.damageModifiedByAbilities[(int)Element.fire] *= AbilityData.flashFireDamageBoostPlayer;
+                playerTyping.boostsToEachTypeByAbilities[(int)Element.fire].Add(new Boost(ServerConfig.Instance.AbilityConfigInstance.FlashFireDamageBoostPlayer, "Flash Fire"));
             }
         }
     }

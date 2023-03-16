@@ -54,8 +54,8 @@ namespace TerraTyping.Data
         public const int mummyDurationPlayer = 9 * 60;
         public const int mummyDurationNPC = 6 * 60;
 
-        public const int colorChangeDurationPlayer = 180;
-        public const int colorChangeDurationNPC = 180;
+        public const int colorChangeDurationPlayer = 10 * 60;
+        public const int colorChangeDurationNPC = 6 * 60;
 
         public const float sandStormDamageBoost = 1.3f;
 

@@ -55,7 +55,7 @@ namespace TerraTyping
 
         public Ability GetAbility => AbilityLookup.GetAbility(AbilityID);
 
-        public float DamageMultiplyByBuff { get; set; } = 1;
+        public float damageMultiplyByBuff = 1;
 
         public override bool InstancePerEntity => true;
 
@@ -71,10 +71,12 @@ namespace TerraTyping
 
             DecrementCombatCD();
 
-            DamageMultiplyByBuff = 1;
+            damageMultiplyByBuff = 1;
 
             UseModifiedAbility = false;
             UseModifiedElements = false;
+
+            waterCompactionBuff = false;
         }
 
         void TryInitialize(NPC npc)
@@ -119,14 +121,23 @@ namespace TerraTyping
 
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
-            ModifyHitBy(new WeaponWrapper(item, player),
-                NPCWrapper.GetWrapper(npc), ref damage, ref knockback, ref crit, npc);
+            if (waterCompactionBuff)
+            {
+                damage -= (ServerConfig.Instance.AbilityConfigInstance.WaterCompactionDefenseBoostNPC / 2);
+            }
+
+            ModifyHitBy(new WeaponWrapper(item, player), NPCWrapper.GetWrapper(npc), ref damage, ref knockback, ref crit, npc);
+
         }
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            ModifyHitBy(ProjectileWrapper.GetWrapper(projectile),
-                NPCWrapper.GetWrapper(npc), ref damage, ref knockback, ref crit, npc);
+            if (waterCompactionBuff)
+            {
+                damage -= (ServerConfig.Instance.AbilityConfigInstance.WaterCompactionDefenseBoostNPC / 2);
+            }
+
+            ModifyHitBy(ProjectileWrapper.GetWrapper(projectile), NPCWrapper.GetWrapper(npc), ref damage, ref knockback, ref crit, npc);
         }
 
         private static void ModifyHitBy<A, D>(A attacker, D defender, ref int damage, ref float knockback, ref bool crit, NPC npc)

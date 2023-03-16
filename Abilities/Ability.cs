@@ -25,6 +25,9 @@ namespace TerraTyping.Abilities
         public MessageOnHit messageOnHit;
         public MessageHitEnemy messageHitEnemy;
         public AttractProjectile attractProjectile;
+        /// <summary>
+        /// Modifies an enemy's ability during the damage calculation.
+        /// </summary>
         public ModifyOpponentsAbility modifyOpponentsAbility;
 
         public Ability(AbilityID abilityID)
