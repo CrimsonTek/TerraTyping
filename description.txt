@@ -1,28 +1,37 @@
 TerraTyping, created by CrimsonTek.
 
 What does it do?
+  TerraTyping adds Pokemon-esque types to Terraria! Every vanilla weapon and enemy is given a type, and types that are effective will deal more damage. I included the 18 types found in Pokemon, as well as Blood and Bone to round out the Crimson and Dungeon biomes respectively. 
 
-TerraTyping adds Pokemon-esque types to Terraria! Every vanilla weapon and enemy is given a type, and types that are effective will deal more damage. I included the 18 types found in Pokemon, as well as Blood and Bone to round out the Crimson and Dungeon biomes respectively. 
-
-This mod adds no items or enemies yet, only functionality. This means you can try it in a world you've already started, and it won't mess up your game!
+This mod mainly functionality. This means you can try it in a world you've already started, and it will work perfectly!
 
 
-Special Thanks to all the people that helped me with this mod.
+Mod Homepage: https://discord.gg/RvPGKwz
+ > My public Discord server for reports, suggestions, questions, or anything else.
+
+Github: https://github.com/CrimsonTek/TerraTyping
+ > My GitHub repository for the mod.
+ 
+ 
+Special thanks to all the people that helped me with this mod.
 
 Translations
  |RU| Russian: Rostya
  |FR| French: LyDek
  |DE| German: Feutor
 
-Github: https://github.com/CrimsonTek/TerraTyping
- > My GitHub repository for the mod.
-
-Mod Homepage: https://discord.gg/RvPGKwz
- > My public Discord server for reports, suggestions, or anything else.
-
 ######## ######## ######## ########
 
 Version History:
+
+v0.2.0.2
+ - Changed the table. View new table on my Discord (https://discord.gg/RvPGKwz).
+ - Config overhaul.
+ - Ammos now say their type.
+ - Harpoon's type now shows up.
+ - Changed how multiple damage boosting buffs stack.
+ - Changed how water compaction works for NPCs.
+ - Moved most of the version history to Discord.
 
 v0.2.0.1
  - Urgent fix to weapon damage
@@ -30,169 +39,3 @@ v0.2.0.1
 v0.2.0.0
  - Port to tModLoader 1.4!
  - Updated all enemy, item, etc types as well.
-
-v0.1.3.1
- - Fixed the "melee type" response color when using "/type npc [npc name]".
-
-v0.1.3.0
- - Added a new command: "/type"
-   Try "/type [type]" to see the strengths and weaknesses of a given type.
-   Try "/type npc [npc name]" to see the type of an NPC and it's strengths and weaknesses.
-
- - Added 22 new abilities for enemies.
-  [c/97b2ff:Levitate: Protects the user from ground attacks.]      
-  [c/fafa11:Volt Absorb: Allows the user to heal from electric]
-  [c/fafa11: attacks.]
-  [c/fafa11:Lightning Rod: Attracts electric projectiles, and]
-  [c/fafa11:  makesit immune to electric attacks.]  
-  [c/fafa11:Motor Drive: Speeds the user up when hit by electric]
-  [c/fafa11: attacks, and makes it immune.]
-  [c/42a6f8:Water Absorb: Allows the user to heal from water]
-  [c/42a6f8: attacks.] 
-  [c/42a6f8:Storm Drain: Attracts water projectiles, and makes]
-  [c/42a6f8: the user immune to them.]
-  [c/f65f1c:Flash Fire: Buffs the user when hit by a fire attack,]
-  [c/f65f1c: and makes it immune to them.]
-  [c/42eb35:Sap Sipper: Makes the user immune to grass]
-  [c/42eb35: attacks.]    
-  [c/b4e1ff:Thick Fat: Reduces the damage taken from ice and]
-  [c/b4e1ff: fire attacks.]
-  [c/b4e1ff:Fluffy: Reduces the damage taken from melee attacks,]
-  [c/b4e1ff: but increases the damage taken from fire attacks.]
-  [c/9f9f9f:Heatproof: Reduces the damage taken from fire]
-  [c/9f9f9f: attacks.]
-  [c/42a6f8:Water Bubble: Reduces the damage taken from fire]
-  [c/42a6f8: attacks, and powers up the user's water attacks.]
-  [c/f5af0a:Justified: Powers up the user when hit by dark] 
-  [c/f5af0a: types.] 
-  [c/ba8c4e:Water Compaction: Sharply raises the defense of the]
-  [c/ba8c4e: user when hit by a water attack.]
-  [c/f65f1c:Steam Engine: Speeds the user up when hit by a]
-  [c/f65f1c: water attack.] 
-  [c/ba8c4e:Dry Skin: Damages the user in the heat. Heals the]
-  [c/ba8c4e: user in the rain.]
-  [c/c29ed6:Mummy: Converts the attacker's ability to mummy]
-  [c/c29ed6: temporarily.]
-  [c/b874fc:Corrosion: Allows the user's poison attacks to hit]
-  [c/b874fc: steel and poison types.]
-  [c/f0e6d2:Color Change: When hit, the user changes its type to]
-  [c/f0e6d2: the attacking type.]
-  [c/ba8c4e:Mold Breaker: The user ignores the opponents]
-  [c/ba8c4e: abilities.]
-  [c/ba8c4e:Sand Force: Powers up rock, ground, and steel]
-  [c/ba8c4e: attacks during sandstorms.]
-  [c/f0e6d2:Scrappy: Allows the user to attack ghostly enemies]
-  [c/f0e6d2: with normal and fighting attacks.]
-  [c/f65f1c:Flammable: Increases the damage the user takes from]
-  [c/f65f1c: fire, but reduces the damage taken from water.]
-
- - Bug Fixes
-
-v0.1.2.4
- - Fixed weapons doing more damage than they should in normal mode
- - Armor no longer shows a "damage penalty", despite not being weapons
-
-v0.1.2.3
- - Fixed weapons having too much damage
-
-v0.1.2.2
- - Minor updates to some code
- - Proper config file
-
-v0.1.2.1
- - Made all Held Items rarer
- - Made bloody heart only drop during blood moons
- - Changed a few types
-
-v0.1.2.0
- - Added Held Items for every type.
-  [c/f0e6d2:+ Silk Scarf (Normal Type)]
-  [c/f0e6d2:   Crafted with 25 silk]
-  [c/f65f1c:+ Charcoal (Fire Type)]
-  [c/f65f1c:   Dropped by enemies in the underworld]
-  [c/42a6f8:+ Mystic Water (Water Type)]
-  [c/42a6f8:   Found while fishing]
-  [c/fafa11:+ Magnet (Electric Type)]
-  [c/fafa11:   Dropped by enemies in the underground]
-  [c/42eb35:+ Miracle Seed (Grass Type)]
-  [c/42eb35:   Sold by the Dryad for 40 gold]
-  [c/b4e1ff:+ Never-Melt Ice (Ice Type)]
-  [c/b4e1ff:   Crafted with 50 ice at an ice machine]
-  [c/f5af0a:+ Fighter's Belt (Fighting Type)]
-  [c/f5af0a:   Dropped during fighting]
-  [c/b874fc:+ Poison Barb (Poison Type)]
-  [c/b874fc:   Dropped by the Queen Bee]
-  [c/ba8c4e:+ Soft Sand (Ground Type)]
-  [c/ba8c4e:   Crafted with 25 sand and 15 sturdy fossil]
-  [c/97b2ff:+ Sharp Beak (Flying Type)]
-  [c/97b2ff:   Dropped by Vultures]
-  [c/d80afa:+ Twisted Spoon (Psychic Type)]
-  [c/d80afa:   Dropped by enemies in the dungeon]
-  [c/92d84c:+ Silver Powder (Bug Type)]
-  [c/92d84c:   Dropped by critters]
-  [c/d3b959:+ Hard Stone (Rock Type)]
-  [c/d3b959:   Dropped when mining stone]
-  [c/c29ed6:+ Spell Tag (Ghost Type)]
-  [c/c29ed6:   Dropped by enemies during new moons]
-  [c/5312b2:+ Dragon Fang (Dragon Type)]
-  [c/5312b2:   Dropped by Wyverns and Pigrons]
-  [c/524559:+ Black Glasses (Dark Type)]
-  [c/524559:   Crafted with sunglasses and 3 black dye]
-  [c/9f9f9f:+ Metal Coat (Steel Type)]
-  [c/9f9f9f:   Crafted with 20 iron and]
-  [c/9f9f9f:   3 diamonds at an anvil]
-  [c/f46cda:+ Arcane Ball (Fairy Type)]
-  [c/f46cda:   Crafted with 35 pixie dust and]
-  [c/f46cda:   4 unicorn horns at a crystal ball]
-  [c/d63636:+ Bloody Heart (Blood Type)]
-  [c/d63636:   Dropped by blood enemies and enemies]
-  [c/d63636:   during blood moons]
-  [c/f2f2f2:+ Dusty Skull (Bone Type)]
-  [c/f2f2f2:   Dropped by underground skeletons]
-
-v0.1.1.4
- - Now properly adds compatibility with Weapon Out
-
-v0.1.1.3
- - The icons over NPC's now show up more consistently.
-
-v0.1.1.2
- - Made Angry Tumblers mono grass, and made fixed obsidian armor not having the right type.
-
-v0.1.1.1
- - Made water super effective against fire.
-
-v0.1.1.0
- - Added support for Weapon Out.
- - A multiplier number now appears when striking an enemy.
- - Reworked some numbers, type effectiveness is now less powerful outside of expert mode.
-
-v0.1.0.10
- - Added localization for French and German.
-
-v0.1.0.9
- - Added localization for Russian.
-
-v0.1.0.8
- - Fixed guide telling you your life regen.
-
-v0.1.0.7
- - Major code rework. Fixed enemies from other mods disappearing, and removed effective debuffs doing way too much damage when stacked.
-
-v0.1.0.6
- - Made lava, vines, and fall damage all affected by type effectiveness.
-
-v0.1.0.5
- - Made Fairy immune to Dragon, and made the King Slime Water/Dark.
-
-v0.1.0.4
- - Fixed an issue where looking at a few armor types would crash your game.
-
-v0.1.0.3:
- - Fixed issues with rain affecting weapons everywhere in the world.
-
-v0.1.0.2:
- - Minor update.
-
-v0.1.0.1:
- - Official release.

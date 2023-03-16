@@ -23,6 +23,8 @@ namespace TerraTyping.DataTypes
         internal static int uniqueElementArrays;
         internal static int totalElementArraysUsed;
 
+        public const int MaxArrayLength = 6;
+
         public Element this[int index] => Elements[index];
 
         public int Length { get; }
@@ -337,26 +339,7 @@ namespace TerraTyping.DataTypes
 
         public static ElementArray Get(params Element[] elements)
         {
-            List<Element> sanitizedList = new List<Element>();
-
-            for (int i = 0; i < elements.Length; i++)
-            {
-                if (elements[i] is Element.none)
-                {
-                    TerraTyping.Instance.Logger.Warn($"Element array should not contain {Element.none}.\nElements: [{string.Join(", ", elements)}]");
-                    continue;
-                }
-
-                if (sanitizedList.Count >= 6)
-                {
-                    TerraTyping.Instance.Logger.Warn($"Element array cannot contain more than 6 elements.\nElements: [{string.Join(", ", elements)}]");
-                    break;
-                }
-
-                sanitizedList.Add(elements[i]);
-            }
-
-            Element[] sanitized = sanitizedList.ToArray();
+            Element[] sanitized = SanitizeElementArray(elements);
 
             ElementArray elementArray;
             if (instantiatedElementArrays.TryGetValue(sanitized, out WeakReference<ElementArray> weakReference))
@@ -378,6 +361,48 @@ namespace TerraTyping.DataTypes
                 instantiatedElementArrays[sanitized] = new WeakReference<ElementArray>(elementArray);
                 return elementArray;
             }
+        }
+
+        private static Element[] SanitizeElementArray(Element[] elements)
+        {
+            bool isSanitized = false;
+            if (elements.Length <= MaxArrayLength)
+            {
+                isSanitized = true;
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    if (elements[i] is Element.none)
+                    {
+                        isSanitized = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isSanitized)
+            {
+                return elements;
+            }
+
+            List<Element> sanitizedList = new List<Element>(elements.Length);
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (elements[i] is Element.none)
+                {
+                    TerraTyping.Instance.Logger.Warn($"Element array should not contain {Element.none}.\nElements: [{string.Join(", ", elements)}]");
+                    continue;
+                }
+
+                if (sanitizedList.Count >= MaxArrayLength) // >= instead of > because it's about to add one more
+                {
+                    TerraTyping.Instance.Logger.Warn($"Element array cannot contain more than {MaxArrayLength} elements.\nElements: [{string.Join(", ", elements)}]");
+                    break;
+                }
+
+                sanitizedList.Add(elements[i]);
+            }
+
+            return sanitizedList.ToArray();
         }
 
         struct ElementArrayComparer : IEqualityComparer<Element[]>
@@ -409,7 +434,7 @@ namespace TerraTyping.DataTypes
                 // 32 bits, groups of 6: (supports 5 elements)
                 // 00 000000 000000 000000 000000 000000
 
-                const int ElementBitLength = 5; // with 32 or more element types, this should be changed to 6
+                const int ElementBitLength = 32 / MaxArrayLength; // with 32 or more element types, this should be changed to 6
 
                 int hash = 0;
                 for (int i = 0; i < obj.Length; i++)
