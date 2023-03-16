@@ -23,7 +23,7 @@ namespace TerraTyping
         /// <summary>
         /// Elements set by armor and accessories
         /// </summary>
-        private ElementArray baseElements;
+        private ElementArray baseElements = ElementArray.Default;
 
         /// <summary>
         /// Ability set by buffs
@@ -32,7 +32,7 @@ namespace TerraTyping
         /// <summary>
         /// Elements set by buffs
         /// </summary>
-        public ElementArray ModifiedElements { get; set; }
+        public ElementArray ModifiedElements { get; set; } = ElementArray.Default;
 
         /// <summary>
         /// Whether or not <see cref="ModifiedAbility"/> should be used. Set this every frame to use.
