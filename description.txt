@@ -24,6 +24,9 @@ Translations
 
 Version History:
 
+v0.2.0.3
+ - Fix to all bags giving a poison barb.
+
 v0.2.0.2
  - Changed the table. View new table on my Discord (https://discord.gg/RvPGKwz).
  - Config overhaul.

@@ -9,7 +9,10 @@ namespace TerraTyping.Accessories.HeldItems
     {
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.Common(Mod.Find<ModItem>("PoisonBarb").Type));
+            if (item.type == ItemID.QueenBeeBossBag)
+            {
+                itemLoot.Add(ItemDropRule.Common(Mod.Find<ModItem>("PoisonBarb").Type));
+            }
         }
     }
 }
