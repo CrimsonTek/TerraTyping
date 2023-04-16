@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.DataTypes;
 using TerraTyping.DataTypes.Structs;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -17,8 +20,7 @@ public class ProjectileTypeLoader : TypeLoader
     ElementArray[] pewmaticHornElements;
     ElementArray[] deerclopsDebrisElements;
 
-    protected override string CSVFileName => CSVFileNames.Projectiles;
-    
+    protected override string CSVFileName => CSVFileNames.Projectiles;    
     public static ProjectileTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Projectile projectile)
@@ -30,9 +32,9 @@ public class ProjectileTypeLoader : TypeLoader
         }
         else
         {
-            if (projectileTypeInfo.specialType is not null)
+            if (projectileTypeInfo.modifyType is not null)
             {
-                return projectileTypeInfo.specialType.Invoke(projectile);
+                return projectileTypeInfo.modifyType.Invoke(projectile);
             }
             else
             {
@@ -40,11 +42,10 @@ public class ProjectileTypeLoader : TypeLoader
             }
         }
     }
-
     /// <summary>
-    /// Use the actual projectile whenever possible.
+    /// Use the actual projID whenever possible.
     /// </summary>
-    /// <param name="projectileType">Use the actual projectile whenever possible.</param>
+    /// <param name="projectileType">Use the actual projID whenever possible.</param>
     public static ElementArray GetElements(int projectileType)
     {
         ProjectileTypeInfo projectileTypeInfo = Instance.typeInfos[projectileType];
@@ -57,7 +58,6 @@ public class ProjectileTypeLoader : TypeLoader
             return projectileTypeInfo.elements;
         }
     }
-
     /// <summary>
     /// Modifies the effectiveness of an interaction. Used for Harpoons to do bonus damage against water types.
     /// </summary>
@@ -69,45 +69,51 @@ public class ProjectileTypeLoader : TypeLoader
             projectileTypeInfo.modifyEffectiveness?.Invoke(ref baseEffectiveness, offensiveElement, defensiveElement);
         }
     }
-
-    protected override void InitTypeInfoCollection()
+    public override void InitTypeInfoCollection()
     {
         typeInfos = new ProjectileTypeInfo[ProjectileLoader.ProjectileCount];
     }
-
-    protected override void ParseLine(string line, string[] cells, int lineCount)
+    protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
-        if (cells.Length <= ColumnToIndex.D)
-        {
-            return;
-        }
-
-        try
-        {
-            int projectile = int.Parse(cells[0]);
-
-
-            string[] typeCells = cells[ColumnToIndex.B..ColumnToIndex.D];
-            string modifyTypeMethodName = cells[ColumnToIndex.D];
-            if (typeCells.All((str) => string.IsNullOrWhiteSpace(str)))
-            {
-                return;
-            }
-
-            ElementArray elementArray = ParseAtLeastOneElement(typeCells);
-
-            typeInfos[projectile] = ProjectileTypeInfo.Get(elementArray,
-                GetModifyTypeFunction(projectile),
-                ModifyEffectivenessDelegate(projectile));
-        }
-        catch (ParsedNoneException) { }
+        bool parsed = new HeaderParser()
+            .NewIndexHeader(HeaderKeys.InternalName, true)
+            .NewRangeHeader(HeaderKeys.GenericElement, true)
+            .NewIndexHeader(HeaderKeys.ModifyType, false)
+            .NewIndexHeader(HeaderKeys.ModifyEffectiveness, false)
+            .ParseHeader(Context, out lineParser, this);
+        return parsed;
     }
-
-    private static ModifyEffectivenessDelegate ModifyEffectivenessDelegate(int projectileType)
+    protected override bool ParseLine(LineParser lineParser)
     {
-        switch (projectileType)
+        if (!TryParseLineGeneric(lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out int projID))
         {
-            case ProjectileID.Harpoon:
+            return false;
+        }
+
+        (ModifyTypeDelegate<Projectile> modifyTypeDelegate,
+            ModifyEffectivenessDelegate modifyEffectivenessDelegate) = GetModifyDelegates(lineParser);
+
+        typeInfos[projID] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
+        return true;
+    }
+    protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
+    {
+        if (!TryParseLineGeneric(modToGiveTypes, lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out ModProjectile modProjectile))
+        {
+            return false;
+        }
+
+        (ModifyTypeDelegate<Projectile> modifyTypeDelegate,
+            ModifyEffectivenessDelegate modifyEffectivenessDelegate) = GetModifyDelegates(lineParser);
+
+        typeInfos[modProjectile.Projectile.type] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
+        return true;
+    }
+    private static ModifyEffectivenessDelegate GetModifyEffectivenessDelegate(string effectivenessDelegateName)
+    {
+        switch (effectivenessDelegateName)
+        {
+            case "SpecialEffectiveness_Harpoon":
                 return (ref float baseEffectiveness, Element offensive, Element defensive) =>
                 {
                     if (defensive == Element.water)
@@ -115,29 +121,60 @@ public class ProjectileTypeLoader : TypeLoader
                         baseEffectiveness = Table.Multiplier;
                     }
                 };
-            default: return null;
+            default:
+                return null;
         }
     }
-
-    private static Func<Projectile, ElementArray> GetModifyTypeFunction(int projectileType)
+    private static ModifyTypeDelegate<Projectile> GetModifyTypeFunction(string modifyTypeDelegateName)
     {
-        switch (projectileType)
+        switch (modifyTypeDelegateName)
         {
-            case ProjectileID.PewMaticHornShot:
+            case "ModifyType_PewMaticHornShot":
                 Instance.LoadPewmaticHorn();
                 return PewmaticHornProj;
 
-            case ProjectileID.DeerclopsRangedProjectile:
+            case "ModifyType_DeerclopsDebris":
                 Instance.LoadDeerclopsDebrisElements();
                 return DeerclopsDebrisProj;
 
-            case ProjectileID.FinalFractal:
+            case "ModifyType_FinalFractal":
                 return ZenithProj;
 
             default: return null;
         }
     }
+    private (ModifyTypeDelegate<Projectile> modifyTypeDelegate, ModifyEffectivenessDelegate modifyEffectivenessDelegate) GetModifyDelegates(LineParser lineParser)
+    {
+        ModifyEffectivenessDelegate modifyEffectivenessFunc = null;
+        if (lineParser.TryGetIndex(HeaderKeys.ModifyEffectiveness, out int modifyEffectivenessIndex))
+        {
+            string modifyEffectivenessDelegateName = Context.Cells.SafeGet(modifyEffectivenessIndex);
+            if (!string.IsNullOrWhiteSpace(modifyEffectivenessDelegateName))
+            {
+                modifyEffectivenessFunc = GetModifyEffectivenessDelegate(modifyEffectivenessDelegateName);
+                if (modifyEffectivenessFunc is null)
+                {
+                    //Logger.Log(Verbosity.Warn, GetType().Name, $"Unrecognized modify effectiveness delegate name: {modifyEffectivenessDelegateName}", Context);
+                }
+            }
+        }
 
+        ModifyTypeDelegate<Projectile> modifyTypeFunc = null;
+        if (lineParser.TryGetIndex(HeaderKeys.ModifyType, out int modifyTypeIndex))
+        {
+            string modifyTypeDelegateName = Context.Cells.SafeGet(modifyTypeIndex);
+            if (!string.IsNullOrWhiteSpace(modifyTypeDelegateName))
+            {
+                modifyTypeFunc = GetModifyTypeFunction(modifyTypeDelegateName);
+                if (modifyTypeFunc is null)
+                {
+                    //Logger.Log(Verbosity.Warn, GetType().Name, $"Unrecognized modify type delegate name: {modifyTypeDelegateName}", Context);
+                }
+            }
+        }
+
+        return (modifyTypeFunc, modifyEffectivenessFunc);
+    }
     private void LoadPewmaticHorn()
     {
         pewmaticHornElements = new ElementArray[]
@@ -168,7 +205,6 @@ public class ProjectileTypeLoader : TypeLoader
             ElementArray.Get(Element.rock), // 23, amber
         };
     }
-
     private void LoadDeerclopsDebrisElements()
     {
         deerclopsDebrisElements = new ElementArray[]
@@ -187,7 +223,6 @@ public class ProjectileTypeLoader : TypeLoader
             ElementArray.Get(Element.ice), // 11, ice
         };
     }
-
     private static ElementArray PewmaticHornProj(Projectile projectile)
     {
         if (Instance is not null && Instance.pewmaticHornElements is not null && projectile is not null)
@@ -201,7 +236,6 @@ public class ProjectileTypeLoader : TypeLoader
 
         return ElementArray.Default;
     }
-
     private static ElementArray DeerclopsDebrisProj(Projectile projectile)
     {
         if (Instance is not null && Instance.deerclopsDebrisElements is not null && projectile is not null)
@@ -215,7 +249,6 @@ public class ProjectileTypeLoader : TypeLoader
 
         return ElementArray.Default;
     }
-
     private static ElementArray ZenithProj(Projectile projectile)
     {
         if (projectile is not null)
@@ -227,12 +260,10 @@ public class ProjectileTypeLoader : TypeLoader
             return ElementArray.Default;
         }
     }
-
     public override void Load()
     {
         Instance = this;
     }
-
     public override void Unload()
     {
         Instance = null;
@@ -242,15 +273,15 @@ public class ProjectileTypeLoader : TypeLoader
     {
         public readonly ElementArray elements;
         public readonly ModifyEffectivenessDelegate modifyEffectiveness;
-        public readonly Func<Projectile, ElementArray> specialType;
+        public readonly ModifyTypeDelegate<Projectile> modifyType;
 
         public static ProjectileTypeInfo Default => new ProjectileTypeInfo(ElementArray.Default, null, null); // change
 
-        private ProjectileTypeInfo(ElementArray elements, ModifyEffectivenessDelegate modifyEffectiveness, Func<Projectile, ElementArray> specialType)
+        private ProjectileTypeInfo(ElementArray elements, ModifyEffectivenessDelegate modifyEffectiveness, ModifyTypeDelegate<Projectile> modifyType)
         {
             this.elements = elements;
             this.modifyEffectiveness = modifyEffectiveness;
-            this.specialType = specialType;
+            this.modifyType = modifyType;
         }
 
         public static ProjectileTypeInfo Get(ElementArray elements)
@@ -263,14 +294,14 @@ public class ProjectileTypeLoader : TypeLoader
             return new ProjectileTypeInfo(elements, modifyEffectiveness, null);
         }
 
-        public static ProjectileTypeInfo Get(ElementArray fallbackElements, Func<Projectile, ElementArray> specialType)
+        public static ProjectileTypeInfo Get(ElementArray fallbackElements, ModifyTypeDelegate<Projectile> modifyType)
         {
-            return new ProjectileTypeInfo(fallbackElements, null, specialType);
+            return new ProjectileTypeInfo(fallbackElements, null, modifyType);
         }
 
-        public static ProjectileTypeInfo Get(ElementArray fallbackElements, Func<Projectile, ElementArray> specialType, ModifyEffectivenessDelegate modifyEffectiveness)
+        public static ProjectileTypeInfo Get(ElementArray fallbackElements, ModifyTypeDelegate<Projectile> modifyType, ModifyEffectivenessDelegate modifyEffectiveness)
         {
-            return new ProjectileTypeInfo(fallbackElements, modifyEffectiveness, specialType);
+            return new ProjectileTypeInfo(fallbackElements, modifyEffectiveness, modifyType);
         }
     }
 }

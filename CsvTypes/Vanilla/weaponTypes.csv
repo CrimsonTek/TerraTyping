@@ -1,10 +1,8 @@
-id,types1,types2,tooltipOverride
+id,type,type,tooltipOverride
 422,Water,Fairy,
 423,Water,Dark,
 3477,Water,Blood,
-929,Normal,,
 930,Fire,,
-1338,Normal,,
 64,Dark,,
 112,Fire,,
 113,Psychic,,
@@ -365,6 +363,7 @@ id,types1,types2,tooltipOverride
 4956,Dark,,"{""Tooltips"": [{""Tooltip"":""Type varies on which sword is used.""}]}"
 5011,Steel,,
 5012,Fire,,
+905,Normal,,
 39,Normal,,
 655,Dark,,
 658,Grass,,

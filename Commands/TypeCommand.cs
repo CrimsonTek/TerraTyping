@@ -173,10 +173,6 @@ namespace TerraTyping.Commands
                 npc.SetDefaults(chosenIndexes[0]);
                 AbilityContainer abilities = NPCTypeLoader.GetAbilities(chosenIndexes[0]);
 
-                AbilityID primaryAbility = abilities.PrimaryAbility;
-                AbilityID secondaryAbility = abilities.SecondaryAbility;
-                AbilityID hiddenAbility = abilities.HiddenAbility;
-
                 ElementArray defensiveTypes = NPCTypeLoader.GetDefensiveElements(npc);
                 ElementArray contactTypes = NPCTypeLoader.GetOffensiveElements(npc);
                 var resistancesToTypes = new Dictionary<float, List<Element>>();
@@ -189,22 +185,26 @@ namespace TerraTyping.Commands
                 }
 
                 caller.Reply($"{npc.TypeName} typing:");
-                for (int i = 0; i < defensiveTypes.Length; i++)
+                foreach (Element element in defensiveTypes)
                 {
-                    Element element = defensiveTypes[i];
                     caller.Reply($" > {LangHelper.ElementName(element)}", TerraTypingColors.GetColor(element));
                 }
 
                 caller.Reply($"{npc.TypeName} melee attack:");
-                for (int i = 0; i < contactTypes.Length; i++)
+                foreach (Element element in contactTypes)
                 {
-                    Element element = contactTypes[i];
                     caller.Reply($" > {LangHelper.ElementName(element)}", TerraTypingColors.GetColor(element));
                 }
 
-                if (primaryAbility != AbilityID.None) caller.Reply($"  Primary Ability: {LangHelper.AbilityName(primaryAbility)}");
-                if (secondaryAbility != AbilityID.None) caller.Reply($"  Secondary Ability: {LangHelper.AbilityName(secondaryAbility)}");
-                if (hiddenAbility != AbilityID.None) caller.Reply($"  Hidden Ability: {LangHelper.AbilityName(hiddenAbility)}");
+                foreach (AbilityID basicAbility in abilities.BasicAbilities)
+                {
+                    caller.Reply($"  Basic Ability: {LangHelper.AbilityName(basicAbility)}");
+                }
+
+                foreach (AbilityID hiddenAbility in abilities.HiddenAbilities)
+                {
+                    caller.Reply($"  Basic Ability: {LangHelper.AbilityName(hiddenAbility)}");
+                }
 
                 IOrderedEnumerable<KeyValuePair<float, List<Element>>> orderedEnumerable = resistancesToTypes.OrderBy((kvp) => kvp.Value);
                 foreach (KeyValuePair<float, List<Element>> kvp in orderedEnumerable)

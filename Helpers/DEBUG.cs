@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
@@ -71,6 +72,24 @@ public class DEBUG : ModSystem
         }
 
         TerraTyping.Instance.Logger.Debug(obj);
+    }
+
+    public static void PRINTANDLABEL(object obj, [CallerArgumentExpression("obj")] string argumentExpression = "")
+    {
+        PRINT($"{argumentExpression}: {obj}");
+    }
+
+    public static void HERE([CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+    {
+        TerraTyping.Instance.Logger.Debug($"Made it to '{filePath}.{memberName} ({lineNumber})'");
+    }
+
+    public static void HEREIF(bool condition, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+    {
+        if (condition)
+        {
+            TerraTyping.Instance.Logger.Debug($"Made it to '{filePath}.{memberName} ({lineNumber})'");
+        }
     }
 
     public override void PreUpdateTime()

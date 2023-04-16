@@ -2,160 +2,222 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using Terraria.ModLoader;
+using TerraTyping.Abilities;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
+using static TerraTyping.Abilities.AbilityLookup;
 
 namespace TerraTyping.TypeLoaders;
 
-public abstract class TypeLoader : ILoadable
+public abstract partial class TypeLoader : ILoadable
 {
-    public Mod Mod { get; private set; }
-
+    public Mod TerraTyping { get; private set; }
+    protected ParseContext Context { get; private set; } = new ParseContext();
     public static ILog Logger { get; internal set; }
-
-    public static bool IsLoadingTypes { get; internal set; }
 
     void ILoadable.Load(Mod mod)
     {
-        Mod = mod;
+        TerraTyping = mod;
         Load();
     }
-
     void ILoadable.Unload()
     {
         Unload();
     }
 
+    /// <summary>
+    /// Do not include ".csv"
+    /// </summary>
     protected abstract string CSVFileName { get; }
 
-    protected abstract void InitTypeInfoCollection();
-
-    public void SetupTypes()
+    public static void SetupAllDefaultVanillaTypes()
     {
-        InitTypeInfoCollection();
-        LoadFile();
+        AmmoTypeLoader.Instance.LoadVanillaTypes();
+        ArmorTypeLoader.Instance.LoadVanillaTypes();
+        NPCTypeLoader.Instance.LoadVanillaTypes();
+        ProjectileTypeLoader.Instance.LoadVanillaTypes();
+        SpecialItemTypeLoader.Instance.LoadVanillaTypes();
+        WeaponTypeLoader.Instance.LoadVanillaTypes();
     }
-
-    private void LoadFile()
+    public static void SetupAllDefaultModTypes()
     {
-        if (Mod is null)
+        foreach (Mod mod in ModLoader.Mods)
         {
-            Logger.Error($"{nameof(Mod)} is null. Loading cancelled.");
-            return;
+            AmmoTypeLoader.Instance.LoadModTypes(mod);
+            ArmorTypeLoader.Instance.LoadModTypes(mod);
+            NPCTypeLoader.Instance.LoadModTypes(mod);
+            ProjectileTypeLoader.Instance.LoadModTypes(mod);
+            SpecialItemTypeLoader.Instance.LoadModTypes(mod);
+            WeaponTypeLoader.Instance.LoadModTypes(mod);
         }
-
-        LoadVanillaTypes();
-        LoadModTypes();
+    }
+    public static void SetupAllUserOverrides()
+    {
+        AmmoTypeLoader.Instance.LoadOverrideTypes();
+        ArmorTypeLoader.Instance.LoadOverrideTypes();
+        NPCTypeLoader.Instance.LoadOverrideTypes();
+        ProjectileTypeLoader.Instance.LoadOverrideTypes();
+        SpecialItemTypeLoader.Instance.LoadOverrideTypes();
+        WeaponTypeLoader.Instance.LoadOverrideTypes();
     }
 
     private void LoadVanillaTypes()
     {
-        string fileLocation = $"CsvTypes/Vanilla/{CSVFileName}.csv";
-
-        if (!Mod.FileExists(fileLocation))
+        LoadUltimate(TerraTyping, $"CsvTypes\\Vanilla\\{CSVFileName}.csv", null, true);
+    }
+    private void LoadModTypes(Mod mod)
+    {
+        LoadUltimate(TerraTyping, $"CsvTypes\\{mod.Name}\\{CSVFileName}.csv", mod, false);
+    }
+    private void LoadOverrideTypes()
+    {
+        string curDir = Directory.GetCurrentDirectory();
+        string terraTypingFolderPath = $"{curDir}\\ModContent\\TerraTyping";
+        if (!Directory.Exists(terraTypingFolderPath))
         {
-            Logger.Error($"TypeLoader: Unable to find file: \'{fileLocation}\'");
             return;
         }
 
-        using Stream stream = Mod.GetFileStream(fileLocation, true); // newFileStream must be true otherwise it crashes
-        StreamReader streamReader = new StreamReader(stream);
-
-        int lineCount = 0;
-        string line;
-
-        //int nameColumn = -1;
-        //List<int> defenseColumns = new List<int>();
-        //List<int> offenseColumns = new List<int>();
-        //List<int> abilityBasicColumns = new List<int>();
-        //int abilityHiddenColumn = -1;
-        //string modifyTypeByEnvironmentMethodNameColumn = null;
-
-        line = ReadLineAndCount(streamReader, ref lineCount);
-        //if (line is not null)
-        //{
-        //    // first line, init columns
-        //    string[] cells = line.Split(',');
-        //    for (int i = 0; i < cells.Length; i++)
-        //    {
-        //        string cell = cells[i];
-        //        switch (cell)
-        //        {
-        //            case "name":
-        //                nameColumn = i;
-        //                break;
-        //            case "defType":
-        //                defenseColumns.Add(i);
-        //                break;
-        //        }
-        //    }
-        //}
-
-        while ((line = ReadLineAndCount(streamReader, ref lineCount)) is not null)
+        string[] files = Directory.GetFiles(terraTypingFolderPath, $"*{CSVFileName}*.csv");
+        for (int i = 0; i < files.Length; i++)
         {
-            string[] cells = CSVParser(line, out bool allLinesAreNullOrWhiteSpace);
-            if (!allLinesAreNullOrWhiteSpace)
-            {
-                try
-                {
-                    ParseLine(line, cells, lineCount);
-                }
-                catch (Exception e)
-                {
-                    Logger.Error($"Threw exception while parsing {CSVFileName}: Row: '{line}':line {lineCount}", e);
-                }
-            }
-        }
-    }
+            string file = files[i];
+            string subString = file[($"{terraTypingFolderPath}\\{CSVFileName}").Length..^4];
 
-    private void LoadModTypes()
-    {
-        foreach (Mod mod in ModLoader.Mods)
-        {
-            string fileLocation = $"CsvTypes/{mod.Name}/{CSVFileName}.csv";
-
-            if (!Mod.FileExists(fileLocation))
+            if (!File.Exists(file))
             {
+                Logger.Log(Verbosity.Error, GetType().Name, $"File '{file}' not found.");
                 continue;
             }
 
-            using Stream stream = Mod.GetFileStream(fileLocation, true); // newFileStream must be true otherwise it crashes
-            StreamReader streamReader = new StreamReader(stream);
-
-            int lineCount = 0;
-            string line;
-            while ((line = ReadLineAndCount(streamReader, ref lineCount)) is not null)
+            if (subString.Equals("Override"))
             {
-                string[] cells = CSVParser(line, out bool allLinesAreNullOrWhiteSpace);
-                if (!allLinesAreNullOrWhiteSpace)
+                LoadUltimate(null, file, null, true);
+            }
+            else if (ModLoader.TryGetMod(subString, out Mod mod))
+            {
+                LoadUltimate(null, file, mod, true);
+            }
+            else
+            {
+                Logger.Log(Verbosity.Warn, GetType().Name, $"File not read. Expected '{CSVFileName}(mod name or 'Override').csv'. No mod named '{subString}' could be found. If the mod is not loaded, you may disregard this message.", ("File Name", file));
+            }
+        }
+    }
+    internal void LoadOtherTypesFromCall(Mod callingMod, string fileName, Mod modToGiveTypes)
+    {
+        LoadUltimate(callingMod, fileName, modToGiveTypes, true);
+    }
+
+    private void LoadUltimate(Mod getFileFrom, string fileName, Mod modTargetForTypes, bool logMissingFile)
+    {
+        Context.FileName = fileName;
+        Context.LineCount = -1;
+        Context.ModSource = getFileFrom;
+
+        StreamReader streamReader;
+        if (getFileFrom is not null)
+        {
+            if (!getFileFrom.FileExists(fileName))
+            {
+                if (logMissingFile)
                 {
-                    try
-                    {
-                        ParseLineMod(line, cells, lineCount, mod);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error($"Threw exception while parsing \"{CSVFileName}\": Row: '{line}':line {lineCount}", e);
-                    }
+                    Logger.Log(Verbosity.Error, GetType().Name, $"Unable to find file: '{fileName}' from mod {getFileFrom}");
+                }
+
+                return;
+            }
+
+            Stream stream = getFileFrom.GetFileStream(fileName, true); // newFileStream must be true otherwise it crashes
+            streamReader = new StreamReader(stream);
+        }
+        else
+        {
+            if (!File.Exists(fileName))
+            {
+                if (logMissingFile)
+                {
+                    throw new ParseException("Unable to find file.", Context);
                 }
             }
 
-            Logger.Info($"Loaded \"{CSVFileName}\" for mod {mod.Name} ({mod.DisplayName}).");
+            streamReader = new StreamReader(File.OpenRead(fileName));
         }
+
+        int parseCount = 0;
+        LineParser lineParser = default;
+        int lineCount = -1;
+        string line;
+        while ((line = ReadLineAndCount(streamReader, ref lineCount)) is not null)
+        {
+            Context.LineCount = lineCount;
+            Context.Line = line;
+            string[] cells = CSVParser(line, out bool allLinesAreNullOrWhiteSpace);
+            if (allLinesAreNullOrWhiteSpace)
+            {
+                continue;
+            }
+            Context.Cells = cells;
+
+            if (lineCount == 0)
+            {
+                if (!ParseHeader(cells, fileName, out lineParser))
+                {
+                    Logger.Log(Verbosity.Error, GetType().Name, $"Failed to parse header for file '{fileName}'. This file will be skipped.");
+                    break;
+                }
+
+                continue;
+            }
+
+            try
+            {
+                if (modTargetForTypes is null)
+                {
+                    if (ParseLine(lineParser))
+                    {
+                        parseCount++;
+                    }
+                }
+                else
+                {
+                    if (ParseLineMod(modTargetForTypes, lineParser))
+                    {
+                        parseCount++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log(Verbosity.Error, GetType().Name, $"Threw exception while parsing {CSVFileName}: Row (#{lineCount}): '{line}'.", e);
+            }
+        }
+        Logger.Log(Verbosity.Info, GetType().Name, $"Parsed {parseCount} lines from '{fileName}'.");
+        streamReader.Dispose();
     }
 
     public virtual void Load() { }
-
     public virtual void Unload() { }
-
-    protected abstract void ParseLine(string line, string[] cells, int lineCount);
-
-    protected virtual void ParseLineMod(string line, string[] cells, int lineCount, Mod mod) { }
-
+    public abstract void InitTypeInfoCollection();
+    protected abstract bool ParseLine(LineParser lineParser);
+    protected abstract bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser);
+    protected abstract bool ParseHeader(string[] cells, string fileName, out LineParser lineParser);
+    protected (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) GetSpecialTooltips(string[] cells, LineParser lineParser)
+    {
+        if (lineParser.TryGetIndex(HeaderKeys.SpecialTooltip, out int specialTooltipsCellIndex))
+        {
+            return ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells[specialTooltipsCellIndex]);
+        }
+        else
+        {
+            return (null, false);
+        }
+    }
     protected static ElementArray ParseAtLeastOneElement(string[] strings)
     {
         List<Element> tempList = new List<Element>(strings.Length);
@@ -178,41 +240,207 @@ public abstract class TypeLoader : ILoadable
 
         return ElementArray.Get(tempList.ToArray());
     }
-
-    protected static AbilityContainer ParseAbilities(string ability1, string ability2, string hiddenAbility)
+    protected static bool TryParseAtLeastOneElement(string[] strings, out ElementArray elements, out string error)
     {
-        const string ErrorMessage = $"Unable to parse '{{0}}' to type '{nameof(AbilityID)}'";
-
-        string[] abilityStrings = new string[] { ability1, ability2, hiddenAbility };
-        AbilityID[] abilityIDs = new AbilityID[3];
-        for (int i = 0; i < abilityStrings.Length; i++)
+        List<Element> tempList = new List<Element>(strings.Length);
+        for (int i = 0; i < strings.Length; i++)
         {
-            string str = abilityStrings[i].Replace(" ", string.Empty);
-            if (!string.IsNullOrWhiteSpace(str))
+            if (!string.IsNullOrWhiteSpace(strings[i]))
             {
-                if (!Enum.TryParse(str, true, out AbilityID abilityID))
+                if (!Enum.TryParse(strings[i], true, out Element element))
                 {
-                    throw new Exception(string.Format(ErrorMessage, str));
+                    elements = ElementArray.Default;
+                    error = $"Unable to parse '{strings[i]}' to type '{nameof(Element)}'";
+                    return false;
                 }
-
-                abilityIDs[i] = abilityID;
+                tempList.Add(element);
             }
         }
 
-        return new AbilityContainer(abilityIDs[0], abilityIDs[1], abilityIDs[2]);
-    }
-
-    protected static string Decode(string encodedText)
-    {
-        byte[] bytes = Convert.FromHexString(encodedText);
-        char[] chars = new char[bytes.Length];
-        for (int i = 0; i < bytes.Length; i++)
+        if (tempList.Count == 0)
         {
-            chars[i] = (char)bytes[i];
+            elements = ElementArray.Default;
+            error = "Parsed no elements.";
+            return false;
         }
-        return new string(chars);
-    }
 
+        elements = ElementArray.Get(tempList.ToArray());
+        error = string.Empty;
+        return true;
+    }
+    protected bool TryParseAtLeastOneElement(string[] strings, out ElementArray elements)
+    {
+        if (!TryParseAtLeastOneElement(strings, out elements, out string error))
+        {
+            Logger.Error(
+                $"An error occured while parsing line \"{Context.Line}\" in file \"{Context.FileName}\":\n" +
+                $"\t{error}");
+            return false;
+        }
+
+        return true;
+    }
+    protected static AbilityContainer ParseAbilities(string[] basicAbilityStrings, string[] hiddenAbilityStrings)
+    {
+        List<AbilityID> basicAbilities = new List<AbilityID>();
+        List<AbilityID> hiddenAbilities = new List<AbilityID>();
+        foreach (string abilityStr in basicAbilityStrings)
+        {
+            ParseAbility(basicAbilities, abilityStr, true);
+        }
+        foreach (string abilityStr in hiddenAbilityStrings)
+        {
+            ParseAbility(hiddenAbilities, abilityStr, true);
+        }
+        return new AbilityContainer(basicAbilities.ToArray(), hiddenAbilities.ToArray());
+    }
+    protected static bool TryParseAbilities(string[] basicAbilityStrings, string[] hiddenAbilityStrings, out AbilityContainer abilityContainer)
+    {
+        List<AbilityID> basicAbilities = new List<AbilityID>();
+        List<AbilityID> hiddenAbilities = new List<AbilityID>();
+        foreach (string abilityStr in basicAbilityStrings)
+        {
+            if (!ParseAbility(basicAbilities, abilityStr, false))
+            {
+                abilityContainer = default;
+                return false;
+            }
+        }
+        foreach (string abilityStr in hiddenAbilityStrings)
+        {
+            if (!ParseAbility(hiddenAbilities, abilityStr, false))
+            {
+                abilityContainer = default;
+                return false;
+            }
+        }
+        abilityContainer = new AbilityContainer(basicAbilities.ToArray(), hiddenAbilities.ToArray());
+        return true;
+    }
+    private static bool ParseAbility(List<AbilityID> abilityList, string abilityStr, bool throwIfCantParseToAbilityID)
+    {
+        const string ErrorMessage = $"Unable to parse '{{0}}' to type '{nameof(AbilityID)}'";
+        string str = abilityStr.Replace(" ", string.Empty);
+        if (string.IsNullOrWhiteSpace(str))
+        {
+            return false;
+        }
+
+        if (!Enum.TryParse(str, true, out AbilityID result))
+        {
+            if (throwIfCantParseToAbilityID)
+            {
+                throw new ArgumentException(string.Format(ErrorMessage, str));
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        abilityList.Add(result);
+        return true;
+    }
+    /// <param name="elementRange">Inclusive start, exclusive end.</param>
+    protected bool TryParseLineGeneric<T>(Mod modToGiveTypes, Range elementRange, int internalNameCellIndex, out ElementArray elements, out T modType)
+        where T : IModType
+    {
+        string internalName = Context.Cells.SafeGet(internalNameCellIndex);
+
+        if (!modToGiveTypes.TryFind(internalName, out modType))
+        {
+            Logger.Error(
+                $"An error occured while parsing line \"{Context.Line}\" in file \"{Context.FileName}\":\n" +
+                $"\tInstance of {typeof(T)} named \"{internalName}\" could not be found.");
+            elements = default;
+            return false;
+        }
+
+        if (!TryParseAtLeastOneElement(Context.Cells.SafeGet(elementRange), out elements, out string error))
+        {
+            Logger.Error(
+                $"An error occured while parsing line \"{Context.Line}\" in file \"{Context.FileName}\":\n" +
+                $"\t{error}");
+            return false;
+        }
+
+        return true;
+    }
+    /// <param name="elementRange">Inclusive start, exclusive end.</param>
+    protected bool TryParseLineGeneric(Range elementRange, int internalNameCellIndex, out ElementArray elements, out int i)
+    {
+        string internalName = Context.Cells.SafeGet(internalNameCellIndex);
+
+        if (!int.TryParse(internalName, out i))
+        {
+            Logger.Error(
+                $"An error occured while parsing line \"{Context.Line}\" in file \"{Context.FileName}\":\n" +
+                $"\tID '{internalName}' could not be parsed to int.");
+            elements = default;
+            return false;
+        }
+
+        if (!TryParseAtLeastOneElement(Context.Cells.SafeGet(elementRange), out elements, out string error))
+        {
+            Logger.Error(
+                $"An error occured while parsing line \"{Context.Line}\" in file \"{Context.FileName}\":\n" +
+                $"\t{error}");
+            return false;
+        }
+
+        return true;
+    }
+    protected static bool TryGetHeaderIndex(string[] cells, int index, string headerTextToMatch)
+    {
+        if (cells[index].Equals(headerTextToMatch, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
+    }
+    protected static bool TryGetHeaderRange(string[] cells, ref int index, string headerTextToMatch, out int rangeStart, out int rangeEnd)
+    {
+        if (cells[index].Equals(headerTextToMatch, StringComparison.OrdinalIgnoreCase))
+        {
+            rangeStart = index;
+
+            while ((index + 1 < cells.Length) && (cells[index].Equals(headerTextToMatch, StringComparison.OrdinalIgnoreCase)))
+            {
+                index++;
+            }
+
+            rangeEnd = index + 1;
+
+            return true;
+        }
+        else
+        {
+            rangeStart = rangeEnd = 0;
+        }
+
+        return false;
+    }
+    protected static bool TryGetHeaderRange(string[] cells, ref int index, string headerText, out Range range)
+    {
+        if (cells[index].Equals(headerText, StringComparison.OrdinalIgnoreCase))
+        {
+            int rangeStart = index;
+
+            while ((index + 1 < cells.Length) && (cells[index].Equals(headerText, StringComparison.OrdinalIgnoreCase)))
+            {
+                index++;
+            }
+
+            range = rangeStart..(index + 1);
+            return true;
+        }
+        else
+        {
+            range = default;
+            return false;
+        }
+    }
     private static string[] CSVParser(string line, out bool allLinesAreNullOrWhiteSpace)
     {
         if (line.Length == 0)
@@ -238,17 +466,17 @@ public abstract class TypeLoader : ILoadable
         List<string> cells = new List<string>();
         StringBuilder stringBuilder = new StringBuilder();
 
-        bool verbatimMode = false;
-        char cNext = default;
+        bool currentlyInQuotes = false;
+        char charNext = default;
         for (int i = 0; i + 1 < line.Length; i++)
         {
-            char c = line[i];
-            cNext = line[i + 1];
-            if (c is not ',' || verbatimMode)
+            char charCurrent = line[i];
+            charNext = line[i + 1];
+            if (charCurrent is not ',' || currentlyInQuotes)
             {
-                if (c is '"')
+                if (charCurrent is '"')
                 {
-                    if (cNext is '"')
+                    if (charNext is '"')
                     {
                         stringBuilder.Append('"');
                         i++;
@@ -256,12 +484,12 @@ public abstract class TypeLoader : ILoadable
                     }
                     else
                     {
-                        verbatimMode = !verbatimMode;
+                        currentlyInQuotes = !currentlyInQuotes;
                     }
                 }
                 else
                 {
-                    stringBuilder.Append(c);
+                    stringBuilder.Append(charCurrent);
                     allLinesAreNullOrWhiteSpace = false;
                 }
             }
@@ -273,83 +501,24 @@ public abstract class TypeLoader : ILoadable
         }
 
         // simplified version of the loop because it's the end
-        if (cNext is ',')
+        if (charNext is ',')
         {
             cells.Add(stringBuilder.ToString());
             stringBuilder.Clear();
         }
-        else if (cNext is not '"')
+        else if (charNext is not '"')
         {
             allLinesAreNullOrWhiteSpace = false;
-            stringBuilder.Append(cNext);
+            stringBuilder.Append(charNext);
         }
 
         cells.Add(stringBuilder.ToString());
 
         return cells.ToArray();
     }
-
     private static string ReadLineAndCount(StreamReader streamReader, ref int lineCount)
     {
         lineCount++;
         return streamReader.ReadLine();
-    }
-
-    [Serializable]
-    public class ParsedNoneException : Exception
-    {
-        public ParsedNoneException() { }
-        public ParsedNoneException(string message) : base(message) { }
-        public ParsedNoneException(string[] strings) : base(MessageMaker(strings)) { }
-        public ParsedNoneException(string message, Exception inner) : base(message, inner) { }
-        public ParsedNoneException(string[] strings, Exception inner) : base(MessageMaker(strings), inner) { }
-        protected ParsedNoneException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-
-        private static string MessageMaker(string[] strings)
-        {
-            return $"Parsed no elements from provided strings: [{string.Join(",", strings)}].";
-        }
-    }
-
-    protected static class ColumnToIndex
-    {
-        public const int A = 0;
-        public const int B = 1;
-        public const int C = 2;
-        public const int D = 3;
-        public const int E = 4;
-        public const int F = 5;
-        public const int G = 6;
-        public const int H = 7;
-        public const int I = 8;
-        public const int J = 9;
-        public const int K = 10;
-        public const int L = 11;
-        public const int M = 12;
-        public const int N = 13;
-        public const int O = 14;
-        public const int P = 15;
-        public const int Q = 16;
-        public const int R = 17;
-        public const int S = 18;
-        public const int T = 19;
-        public const int U = 20;
-        public const int V = 21;
-        public const int W = 22;
-        public const int X = 23;
-        public const int Y = 24;
-        public const int Z = 25;
-    }
-
-    protected static class CSVFileNames
-    {
-        public const string Ammo = "ammoTypes";
-        public const string Armor = "armorTypes";
-        public const string NPCs = "npcTypes";
-        public const string Projectiles = "projectileTypes";
-        public const string SpecialItems = "specialItemTypes";
-        public const string Weapons = "weaponTypes";
     }
 }

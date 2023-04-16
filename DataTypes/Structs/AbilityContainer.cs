@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace TerraTyping.DataTypes
 {
-    public struct AbilityContainer
+    public readonly struct AbilityContainer
     {
-        public AbilityID PrimaryAbility { get; }
-        public AbilityID SecondaryAbility { get; }
-        public AbilityID HiddenAbility { get; }
+        public AbilityID[] BasicAbilities { get; }
+        public AbilityID[] HiddenAbilities { get; }
 
-        public static AbilityContainer None => new AbilityContainer(AbilityID.None);
+        public static AbilityContainer None => new AbilityContainer();
 
-        /// <summary>
-        /// Will create an Ability Container for an NPC with a primary, secondary, and hidden ability.
-        /// </summary>
-        public AbilityContainer(AbilityID primaryAbility, AbilityID secondaryAbility = AbilityID.None, AbilityID hiddenAbility = AbilityID.None)
+        public AbilityContainer()
         {
-            PrimaryAbility = primaryAbility;
-            SecondaryAbility = secondaryAbility;
-            HiddenAbility = hiddenAbility;
+            BasicAbilities = Array.Empty<AbilityID>();
+            HiddenAbilities = Array.Empty<AbilityID>();
+        }
+
+        public AbilityContainer(AbilityID[] basicAbilities, AbilityID[] hiddenAbilities)
+        {
+            BasicAbilities = basicAbilities ?? Array.Empty<AbilityID>();
+            HiddenAbilities = hiddenAbilities ?? Array.Empty<AbilityID>();
         }
     }
 }

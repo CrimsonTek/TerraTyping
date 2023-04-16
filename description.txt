@@ -24,6 +24,15 @@ Translations
 
 Version History:
 
+v0.2.0.6
+ - Support for users to edit types with CSV files.
+ - Support for mod creators to set their own types with CSV files.
+ - ^ More info on the discord.
+ - Fixed the twins not being steel in their second phase.
+
+v0.2.0.5
+ - Fixed crashing in other languages.
+
 v0.2.0.4
  - Fixed a bug.
 

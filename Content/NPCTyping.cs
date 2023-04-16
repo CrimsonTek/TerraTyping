@@ -67,7 +67,9 @@ namespace TerraTyping
 
         public override void ResetEffects(NPC npc)
         {
-            TryInitialize(npc);
+            TryInitializeAbility(npc);
+
+            ResetDefensiveElements(npc);
 
             DecrementCombatCD();
 
@@ -79,39 +81,38 @@ namespace TerraTyping
             waterCompactionBuff = false;
         }
 
-        void TryInitialize(NPC npc)
+        void TryInitializeAbility(NPC npc)
         {
             if (initialized || npc is null)
             {
                 return;
             }
 
-            int type = npc.type;
-            AbilityContainer abilityContainer = NPCTypeLoader.GetAbilities(type);
-            float chance = ModContent.GetInstance<ServerConfig>()?.HiddenAbilityChancePercent ?? 0;
-
-            AbilityID ability = abilityContainer.PrimaryAbility;
-            if (abilityContainer.SecondaryAbility != AbilityID.None)
-            {
-                if (Main.rand.NextDouble() < 0.5)
-                {
-                    ability = abilityContainer.SecondaryAbility;
-                }
-            }
-
-            if (abilityContainer.HiddenAbility != AbilityID.None)
-            {
-                if (Main.rand.NextDouble() < (chance * 0.01))
-                {
-                    ability = abilityContainer.HiddenAbility;
-                }
-            }
-
-            baseAbility = ability;
-
-            baseElements = NPCTypeLoader.GetDefensiveElements(npc);
+            baseAbility = SetAbility(NPCTypeLoader.GetAbilities(npc.type));
 
             initialized = true;
+        }
+
+        void ResetDefensiveElements(NPC npc)
+        {
+            baseElements = NPCTypeLoader.GetDefensiveElements(npc);
+        }
+
+        private static AbilityID SetAbility(AbilityContainer abilityContainer)
+        {
+            float haChance = ModContent.GetInstance<ServerConfig>()?.HiddenAbilityChancePercent ?? 0;
+
+            if (abilityContainer.HiddenAbilities.Length > 0 && Main.rand.NextDouble() < (haChance * 0.01))
+            {
+                return abilityContainer.HiddenAbilities.Random();
+            }
+
+            if (abilityContainer.BasicAbilities.Length > 0)
+            {
+                return abilityContainer.BasicAbilities.Random();
+            }
+
+            return AbilityID.None;
         }
 
         public override void UpdateLifeRegen(NPC npc, ref int damage)

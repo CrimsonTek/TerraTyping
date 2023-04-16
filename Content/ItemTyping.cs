@@ -13,10 +13,15 @@ using TerraTyping.Common;
 namespace TerraTyping
 {
     /// <summary>
-    /// Code from https://github.com/JavidPack/ModdersToolkit/blob/02f76e799c74686dcaf60ef355faf3396cc4f97d/Tools/Hitboxes/HitboxesTool.cs#L68
+    /// Hitbox code from https://github.com/JavidPack/ModdersToolkit/blob/02f76e799c74686dcaf60ef355faf3396cc4f97d/Tools/Hitboxes/HitboxesTool.cs#L68
     /// </summary>
     public class ItemTyping : GlobalItem
     {
+        /// <summary>
+        /// This determines the speed at which colors will cycle when multiple colors are used for a special tooltip.
+        /// </summary>
+        const double CycleSpeed = 1;
+
         [CloneByReference]
         public Rectangle?[] meleeHitbox = new Rectangle?[Main.maxPlayers];
 
@@ -85,7 +90,6 @@ namespace TerraTyping
                     {
                         SpecialTooltip st = specialTooltips[i];
                         Color[] colors = st.Colors;
-                        const double CycleSpeed = 1;
                         tooltips.Add(new TooltipLine(Mod, $"SpecialItemTooltip{i + 1}", st.TooltipString)
                         {
                             OverrideColor = CyclingColorsIfNeeded(CycleSpeed, colors)
@@ -149,7 +153,31 @@ namespace TerraTyping
 
         private void AmmoTooltip(Item item, List<TooltipLine> tooltips, ElementArray ammoElements)
         {
-            AddTooltipsForElementArray(tooltips, ammoElements);
+            SpecialTooltip[] specialTooltips = AmmoTypeLoader.GetSpecialTooltips(item, out bool overrideTypeTooltip);
+            if (specialTooltips is not null)
+            {
+                if (!overrideTypeTooltip)
+                {
+                    AddTooltipsForElementArray(tooltips, ammoElements);
+                }
+
+                if (specialTooltips.Length != 0)
+                {
+                    for (int i = 0; i < specialTooltips.Length; i++)
+                    {
+                        SpecialTooltip st = specialTooltips[i];
+                        Color[] colors = st.Colors;
+                        tooltips.Add(new TooltipLine(Mod, $"SpecialItemTooltip{i + 1}", st.TooltipString)
+                        {
+                            OverrideColor = CyclingColorsIfNeeded(CycleSpeed, colors)
+                        });
+                    }
+                }
+            }
+            else
+            {
+                AddTooltipsForElementArray(tooltips, ammoElements);
+            }
         }
 
         /// <summary>

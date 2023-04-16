@@ -254,7 +254,7 @@ namespace TerraTyping.Common
 
                 for (int i = 0; i < elements.Length; i++)
                 {
-                    icons[i] = ModContent.Request<Texture2D>($"TerraTyping/TypeIcons/Circle17/{LangHelper.ElementName(elements[i])}");
+                    icons[i] = ModContent.Request<Texture2D>($"TerraTyping/TypeIcons/Circle17/{LangHelper.InternalElementName(elements[i], true)}");
                 }
 
                 iconsLoaded = true;

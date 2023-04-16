@@ -1,4 +1,4 @@
-id,type1,type2,type3,type4,ability
+id,type,type,type,type,ability
 88,Ground,,,,
 410,Ground,,,,
 411,Ground,,,,
@@ -115,6 +115,7 @@ id,type1,type2,type3,type4,ability
 1287,Psychic,,,,
 4256,Psychic,,,,
 2279,Psychic,,,,
+1282,Psychic,,,,
 ,,,,,
 2370,Bug,Poison,,,
 2371,Bug,Poison,,,

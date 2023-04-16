@@ -1,4 +1,4 @@
-id,defType,defType,defType,defType,offType,offType,abilityBasic,abilityBasic,abilityHidden,modifyTypeByEnvironmentFunctionName
+id,defType,defType,defType,defType,offType,offType,abilityBasic,abilityBasic,abilityHidden,modifyType
 1,water,,,,water,,flammable,,,
 16,water,ground,,,ground,,flammable,,,
 50,water,,,,water,,flammable,,,
@@ -151,8 +151,8 @@ id,defType,defType,defType,defType,offType,offType,abilityBasic,abilityBasic,abi
 122,water,fairy,flying,,flying,,flammable,,,
 123,normal,,,,normal,,,,,
 124,normal,,,,normal,,,,,
-125,normal,flying,,,normal,,,,,modifyretinazertype
-126,normal,flying,,,normal,,,,,modifyspazmatismtype
+125,normal,flying,,,normal,,,,,ModifyType_Retinazer
+126,normal,flying,,,normal,,,,,ModifyType_Spazmatism
 127,steel,ghost,,,steel,,,,,
 128,steel,,,,steel,,mold breaker,,,
 129,steel,,,,steel,,mold breaker,,,

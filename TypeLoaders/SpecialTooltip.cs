@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
@@ -55,20 +56,57 @@ public class SpecialTooltip
         return specialTooltips.ToArray();
     }
 
+    public static bool TryParse(string input, out bool overrideSpecialTooltip, [NotNullWhen(true)] out SpecialTooltip[] specialTooltips, [NotNullWhen(false)] out Exception error)
+    {
+        List<SpecialTooltip> specialTooltipList = new List<SpecialTooltip>();
+        try
+        {
+            JObject jObject = (JsonConvert.DeserializeObject(input) as JObject) ?? new JObject();
+
+            bool dontOverride = jObject.Value<bool>("DontOverride");
+
+            JArray jArray = jObject.Value<JArray>("Tooltips") ?? new JArray();
+            for (int i = 0; i < jArray.Count; i++)
+            {
+                specialTooltipList.Add(ParseJToken(jArray[i]));
+            }
+
+            if (dontOverride)
+            {
+                overrideSpecialTooltip = false;
+            }
+            else
+            {
+                overrideSpecialTooltip = specialTooltipList.Count > 0;
+            }
+        }
+        catch (Exception e)
+        {
+            overrideSpecialTooltip = false;
+            specialTooltips = null;
+            error = new Exception($"Threw exception while parsing \"{input}\"", e);
+            return false;
+        }
+
+        if (specialTooltipList.Count == 0)
+        {
+            specialTooltips = Array.Empty<SpecialTooltip>();
+            error = null;
+            return true;
+        }
+
+        specialTooltips = specialTooltipList.ToArray();
+        error = null;
+        return true;
+    }
+
     private static SpecialTooltip ParseJToken(JToken jToken)
     {
         SpecialTooltip specialTooltip = new SpecialTooltip();
 
-        if (TypeLoader.IsLoadingTypes)
-        {
-            DelayedTooltip delayedTooltip = jToken.ToObject<DelayedTooltip>();
-            delayedTooltip.specialTooltip = specialTooltip;
-            delayedTooltips.Push(delayedTooltip);
-        }
-        else
-        {
-            throw new Exception("Special tooltip is being created while not loading types.");
-        }
+        DelayedTooltip delayedTooltip = jToken.ToObject<DelayedTooltip>();
+        delayedTooltip.specialTooltip = specialTooltip;
+        delayedTooltips.Push(delayedTooltip);
 
         return specialTooltip;
     }

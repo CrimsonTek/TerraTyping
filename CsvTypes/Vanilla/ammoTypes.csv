@@ -1,4 +1,4 @@
-id,types1,types2
+id,type,type
 40,Normal,
 41,Fire,
 47,Dark,
@@ -58,3 +58,5 @@ id,types1,types2
 4458,Normal,
 4459,Normal,
 4915,Steel,
+929,Normal,
+1338,Normal,

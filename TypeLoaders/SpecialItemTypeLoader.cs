@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Terraria;
+using Terraria.ModLoader;
+using TerraTyping.Abilities;
 using TerraTyping.DataTypes;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -13,7 +18,6 @@ public class SpecialItemTypeLoader : TypeLoader
     Dictionary<int, ItemTypeInfo> typeInfos;
 
     protected override string CSVFileName => CSVFileNames.SpecialItems;
-
     public static SpecialItemTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
@@ -27,7 +31,6 @@ public class SpecialItemTypeLoader : TypeLoader
             return ElementArray.Default;
         }
     }
-
     public static ElementArray GetElements(int itemType)
     {
         if (Instance.typeInfos.TryGetValue(itemType, out ItemTypeInfo itemTypeInfo))
@@ -39,7 +42,6 @@ public class SpecialItemTypeLoader : TypeLoader
             return ElementArray.Default;
         }
     }
-
     public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
         if (item is not null && Instance.typeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
@@ -53,36 +55,45 @@ public class SpecialItemTypeLoader : TypeLoader
             return Array.Empty<SpecialTooltip>();
         }
     }
-
-    protected override void InitTypeInfoCollection()
+    public override void InitTypeInfoCollection()
     {
         typeInfos = new Dictionary<int, ItemTypeInfo>();
     }
-
-    protected override void ParseLine(string line, string[] cells, int lineCount)
+    protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
-        if (cells.Length < 4)
-        {
-            return;
-        }
-
-        int itemID = int.Parse(cells[0]);
-
-        SpecialTooltip[] specialTooltips = Array.Empty<SpecialTooltip>();
-        bool overrideSpecialTooltip = false;
-        if (!string.IsNullOrWhiteSpace(cells[ColumnToIndex.D]))
-        {
-            specialTooltips = SpecialTooltip.Parse(cells[ColumnToIndex.D], out overrideSpecialTooltip);
-        }
-
-        typeInfos[itemID] = new ItemTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.D]), specialTooltips, overrideSpecialTooltip);
+        bool parsed = new HeaderParser()
+            .NewIndexHeader(HeaderKeys.InternalName, true)
+            .NewRangeHeader(HeaderKeys.GenericElement, true)
+            .NewIndexHeader(HeaderKeys.SpecialTooltip, false)
+            .ParseHeader(Context, out lineParser, this);
+        return parsed;
     }
+    protected override bool ParseLine(LineParser lineParser)
+    {
+        if (!TryParseLineGeneric(lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out int itemID))
+        {
+            return false;
+        }
 
+        (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.SpecialTooltip)));
+        typeInfos[itemID] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        return true;
+    }
+    protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
+    {
+        if (!TryParseLineGeneric(modToGiveTypes, lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out ModItem modItem))
+        {
+            return false;
+        }
+
+        (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.SpecialTooltip)));
+        typeInfos[modItem.Item.type] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        return true;
+    }
     public override void Load()
     {
         Instance = this;
     }
-
     public override void Unload()
     {
         Instance = null;

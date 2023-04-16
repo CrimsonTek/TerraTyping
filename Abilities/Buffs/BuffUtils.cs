@@ -37,7 +37,7 @@ namespace TerraTyping.Abilities.Buffs
             if (element != Element.none)
             {
                 //string str = element.ToString().First().ToString().ToUpper() + string.Join("", element.ToString().Skip(1)) + addOrReplace;
-                //Mod terraTyping = ModLoader.GetMod("TerraTyping");
+                //TerraTyping terraTyping = ModLoader.GetMod("TerraTyping");
 
                 if (add)
                 {

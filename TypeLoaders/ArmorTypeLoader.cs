@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Terraria;
 using Terraria.ModLoader;
+using TerraTyping.Abilities;
 using TerraTyping.DataTypes;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -14,7 +18,6 @@ public class ArmorTypeLoader : TypeLoader
     Dictionary<int, ArmorTypeInfo> typeInfos;
 
     protected override string CSVFileName => CSVFileNames.Armor;
-
     public static ArmorTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
@@ -26,7 +29,6 @@ public class ArmorTypeLoader : TypeLoader
 
         return armorTypeInfo.Elements;
     }
-
     public static AbilityID GetAbility(Item item)
     {
         if (item is null || !Instance.typeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
@@ -36,35 +38,64 @@ public class ArmorTypeLoader : TypeLoader
 
         return armorTypeInfo.AbilityID;
     }
-
-    protected override void InitTypeInfoCollection()
+    public override void InitTypeInfoCollection()
     {
         typeInfos = new Dictionary<int, ArmorTypeInfo>();
     }
-
-    protected override void ParseLine(string line, string[] cells, int lineCount)
+    protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
-        if (cells.Length < ColumnToIndex.F)
-        {
-            return;
-        }
+        bool parsed = new HeaderParser()
+            .NewIndexHeader(HeaderKeys.InternalName, true)
+            .NewRangeHeader(HeaderKeys.GenericElement, true)
+            .NewIndexHeader(HeaderKeys.BasicAbility, true)
+            .ParseHeader(Context, out lineParser, this);
 
-        int itemID = int.Parse(cells[0]);
-
-        if (!Enum.TryParse(cells[ColumnToIndex.F], true, out AbilityID abilityID))
-        {
-            abilityID = AbilityID.None;
-        }
-
-        typeInfos[itemID] = new ArmorTypeInfo(ParseAtLeastOneElement(cells[ColumnToIndex.B..ColumnToIndex.E]), abilityID);
-        
+        return parsed;
     }
+    protected override bool ParseLine(LineParser lineParser)
+    {
+        if (!int.TryParse(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.InternalName), ""), out int itemID))
+        {
+            return false;
+        }
 
+        AbilityID abilityID = AbilityID.None;
+        if (lineParser.TryGetIndex(HeaderKeys.BasicAbility, out int abilityIndex))
+        {
+            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), true, out AbilityID resultAbility))
+            {
+                abilityID = resultAbility;
+            }
+        }
+
+        typeInfos[itemID] = new ArmorTypeInfo(ParseAtLeastOneElement(Context.Cells[lineParser.GetRange(HeaderKeys.GenericElement)]), abilityID);
+
+        return true;
+    }
+    protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
+    {
+        AbilityID abilityID = AbilityID.None;
+
+        if (!TryParseLineGeneric(modToGiveTypes, lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out ModItem modItem))
+        {
+            return false;
+        }
+
+        if (lineParser.TryGetIndex(HeaderKeys.BasicAbility, out int abilityIndex))
+        {
+            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), out AbilityID result))
+            {
+                abilityID = result;
+            }
+        }
+
+        typeInfos[modItem.Item.type] = new ArmorTypeInfo(elements, abilityID);
+        return true;
+    }
     public override void Load()
     {
         Instance = this;
     }
-
     public override void Unload()
     {
         Instance = null;

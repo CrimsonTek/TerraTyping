@@ -158,7 +158,6 @@ namespace TerraTyping
             baseElements = ElementArray.Default;
             baseAbility = AbilityID.None;
 
-            // todo: avoid unnessesary setting of elements
             ArmorType(); // low priority
             AccessoryType(); // medium priority
         }
