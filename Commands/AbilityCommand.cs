@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace TerraTyping.Commands;
 
+// todo: ability command
 public class AbilityCommand : ModCommand
 {
     public override string Command => "ability";
@@ -29,5 +30,10 @@ public class AbilityCommand : ModCommand
         }
 
         //caller.Reply($"AbilityID: {playerTyping.AbilityID}");
+    }
+
+    public override bool IsLoadingEnabled(Mod mod)
+    {
+        return false;
     }
 }

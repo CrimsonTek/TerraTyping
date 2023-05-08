@@ -84,6 +84,11 @@ public class DEBUG : ModSystem
         TerraTyping.Instance.Logger.Debug($"Made it to '{filePath}.{memberName} ({lineNumber})'");
     }
 
+    public static void HERE(string message, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+    {
+        TerraTyping.Instance.Logger.Debug($"Made it to '{filePath}.{memberName} ({lineNumber})' with message:\t\n\"{message}\"");
+    }
+
     public static void HEREIF(bool condition, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
     {
         if (condition)

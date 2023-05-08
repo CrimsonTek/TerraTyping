@@ -47,7 +47,7 @@ public class ArmorTypeLoader : TypeLoader
         bool parsed = new HeaderParser()
             .NewIndexHeader(HeaderKeys.InternalName, true)
             .NewRangeHeader(HeaderKeys.GenericElement, true)
-            .NewIndexHeader(HeaderKeys.BasicAbility, true)
+            .NewIndexHeader(HeaderKeys.BasicAbility, false)
             .ParseHeader(Context, out lineParser, this);
 
         return parsed;

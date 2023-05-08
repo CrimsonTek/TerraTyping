@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.Commands;
 
@@ -97,10 +98,10 @@ public class PrintCSVCommand : ModCommand
                     NPCID.NegativeIDCount + 1,
                     NPCID.Count,
                     typeof(NPCID),
-                    "NPCID",
+                    "npcTypesOverride",
                     (NPC n) => n.TypeName,
                     (NPC n, short type) => n.SetDefaults(type),
-                    (npc) => true);
+                    (NPC npc) => true);
                 break;
 
             case PrintType.Projectiles:
@@ -109,7 +110,7 @@ public class PrintCSVCommand : ModCommand
                     1,
                     ProjectileID.Count,
                     typeof(ProjectileID),
-                    "ProjectileID",
+                    "projectileTypesOverride",
                     (proj) => proj.Name,
                     (proj, type) => proj.SetDefaults(type),
                     (proj) => true,
@@ -121,7 +122,7 @@ public class PrintCSVCommand : ModCommand
                     1,
                     ItemID.Count,
                     typeof(ItemID),
-                    "ItemID",
+                    "weaponTypesOverride",
                     (item) => item.Name,
                     (item, type) => item.SetDefaults(type),
                     (item) => item.OriginalDamage > 0 && item.ammo == 0,
@@ -133,7 +134,7 @@ public class PrintCSVCommand : ModCommand
                     1,
                     ItemID.Count,
                     typeof(ItemID),
-                    "ItemID",
+                    "ammoTypesOverride",
                     (item) => item.Name,
                     (item, type) => item.SetDefaults(type),
                     (item) => item.OriginalDamage > 0 && item.ammo != 0);
@@ -147,17 +148,22 @@ public class PrintCSVCommand : ModCommand
                 PrintArmorVanity(caller, false, true);
                 break;
 
+            case PrintType.Wearable:
+                PrintArmorVanity(caller, true, true);
+                break;
+
             case PrintType.AllItems:
                 PrintAllVanilla<Item>(caller,
                     1,
                     ItemID.Count,
                     typeof(ItemID),
-                    "ItemID",
+                    "allItemsOverride",
                     (item) => item.Name,
                     (item, type) => item.SetDefaults(type),
                     (item) => true,
                     (item) => $"{item.ammo},{item.OriginalDamage}",
                     "-ammo,-damage");
+                caller.Reply("Don't forget to rename this appropriately.");
                 break;
         }
     }
@@ -167,20 +173,20 @@ public class PrintCSVCommand : ModCommand
         switch (printType)
         {
             case PrintType.NPC:
-                PrintAllFromMod<ModNPC>(mod, caller, "NPCs", modNPC => modNPC.DisplayName, null, null);
+                PrintAllFromMod<ModNPC>(mod, caller, $"npcTypes{mod.Name}", modNPC => modNPC.DisplayName, null, null);
                 break;
 
             case PrintType.Projectiles:
                 ProjectilesSetupForMods(mod);
-                PrintAllFromMod<ModProjectile>(mod, caller, "Projs", modProj => modProj.DisplayName, null, ExtraProjectileColumnsForMods);
+                PrintAllFromMod<ModProjectile>(mod, caller, $"projectileTypes{mod.Name}", modProj => modProj.DisplayName, null, ExtraProjectileColumnsForMods, ExtraProjectileHeadersForMods);
                 break;
 
             case PrintType.Weapons:
-                PrintAllFromMod<ModItem>(mod, caller, "Weapons", (modItem) => modItem.DisplayName, (modItem) => modItem.Item.OriginalDamage > 0 && modItem.Item.ammo == 0, (mod, modItem) => ExtraWeaponColumns(modItem.Item));
+                PrintAllFromMod<ModItem>(mod, caller, $"weaponTypes{mod.Name}", (modItem) => modItem.DisplayName, (modItem) => modItem.Item.OriginalDamage > 0 && modItem.Item.ammo == 0, (mod, modItem) => ExtraWeaponColumns(modItem.Item), "");
                 break;
 
             case PrintType.Ammo:
-                PrintAllFromMod<ModItem>(mod, caller, "Ammo", (modItem) => modItem.DisplayName, (modItem) => modItem.Item.OriginalDamage > 0 && modItem.Item.ammo != 0);
+                PrintAllFromMod<ModItem>(mod, caller, $"ammoTypes{mod.Name}", (modItem) => modItem.DisplayName, (modItem) => modItem.Item.OriginalDamage > 0 && modItem.Item.ammo != 0);
                 break;
 
             case PrintType.Armor:
@@ -188,13 +194,16 @@ public class PrintCSVCommand : ModCommand
                 break;
 
             case PrintType.Vanity:
-                throw new NotImplementedException();
-            //PrintArmor(caller, false, true);
-            //break;
+                PrintArmorFromMod(mod, caller, false, true);
+                break;
+
+            case PrintType.Wearable:
+                PrintArmorFromMod(mod, caller, true, true);
+                break;
 
             case PrintType.AllItems:
-                PrintAllFromMod<ModItem>(mod, caller, "AllItems", (modItem) => modItem.DisplayName, (modItem) => true, (mod, modItem) => ExtraAllItemsColumns(modItem.Item));
-                //PrintAllVanilla<Item>(caller, 1, ItemID.Count, typeof(ItemID), "ItemID", (item) => item.Name, (item, type) => item.SetDefaults(type), (item) => true, ExtraAllItemsColumns);
+                PrintAllFromMod<ModItem>(mod, caller, $"allItems{mod.Name}", (modItem) => modItem.DisplayName, (modItem) => true, (mod, modItem) => ExtraAllItemsColumns(modItem.Item));
+                caller.Reply("Don't forget to rename this appropriately.");
                 break;
         }
     }
@@ -280,8 +289,8 @@ public class PrintCSVCommand : ModCommand
     {
         Projectile projectile = modProjectile.Projectile;
 
-        List<string> itemsThatShootThisProjectileListDisplayName = projectilesShotByItemsDisplayName[projectile.type];
-        List<string> itemsThatShootThisProjectileListInternalName = projectilesShotByItemsInternalName[projectile.type];
+        List<string> itemsThatShootThisProjectileListDisplayName = modProjectilesShotByItemsDisplayName.GetValueOrDefault(projectile.type);
+        List<string> itemsThatShootThisProjectileListInternalName = modProjectilesShotByItemsInternalName.GetValueOrDefault(projectile.type);
 
         string itemsThatShootThisProjectileStringDisplayName = "";
         string itemsThatShootThisProjectileStringInternalName = "";
@@ -317,10 +326,12 @@ public class PrintCSVCommand : ModCommand
                 break;
         }
 
-        var pdd = modProjectileDoesDamage.TryGetValue(projectile.type, out ProjectileDoesDamage value) ? value : ProjectileDoesDamage.NoItem;
+        ProjectileDoesDamage pdd = modProjectileDoesDamage.TryGetValue(projectile.type, out ProjectileDoesDamage value) ? value : ProjectileDoesDamage.NoItem;
 
         return $"\"{itemsThatShootThisProjectileStringDisplayName}\",\"{itemsThatShootThisProjectileStringInternalName}\",{faction},\"{string.Join(", ", projTypes)}\",{pdd}";
     }
+
+    const string ExtraProjectileHeadersForMods = "-itemsThatShootThis,-itemsThatShootThisDisplayNames,-faction,-projectileType,-doesDamage";
 
     static void ProjectilesSetup()
     {
@@ -371,22 +382,23 @@ public class PrintCSVCommand : ModCommand
     {
         Dictionary<int, string> internalNames = new Dictionary<int, string>();
         FieldInfo[] fieldInfos = typeof(ItemID).GetFields(BindingFlags.Public | BindingFlags.Static);
+        int debugNumber = 0;
         foreach (FieldInfo fieldInfo in fieldInfos)
         {
             if (fieldInfo.IsLiteral && fieldInfo.FieldType == typeof(short))
             {
                 internalNames.Add((short)fieldInfo.GetRawConstantValue(), fieldInfo.Name);
             }
+            debugNumber++;
         }
 
         modProjectilesShotByItemsDisplayName = new Dictionary<int, List<string>>();
         modProjectilesShotByItemsInternalName = new Dictionary<int, List<string>>();
         modProjectileDoesDamage = new Dictionary<int, ProjectileDoesDamage>();
 
-        Item item = new Item();
         for (int i = 0; i < ItemLoader.ItemCount; i++)
         {
-            item.SetDefaults(i);
+            Item item = new Item(i);
             int shoot = item.shoot;
             if (shoot < ProjectileID.Count)
             {
@@ -399,11 +411,9 @@ public class PrintCSVCommand : ModCommand
                 modProjectilesShotByItemsInternalName[shoot] = new List<string>();
             }
 
-            bool modItem = item.type >= ItemID.Count;
-            string displayName = modItem ? item.ModItem.DisplayName.GetDefault() : item.Name;
-            string internalName = modItem ? item.ModItem.Name : internalNames[item.type];
+            string internalName = (item.type >= ItemID.Count) ? item.ModItem.Name : internalNames[item.type];
 
-            modProjectilesShotByItemsDisplayName[shoot].Add(displayName);
+            modProjectilesShotByItemsDisplayName[shoot].Add(item.Name);
             modProjectilesShotByItemsInternalName[shoot].Add(internalName);
 
             if (!modProjectileDoesDamage.ContainsKey(shoot))
@@ -455,7 +465,7 @@ public class PrintCSVCommand : ModCommand
         }
 
         string dir = Directory.GetCurrentDirectory();
-        using FileStream fileStream = SafeFileCreate(dir, fileName, "csv", out string path);
+        using FileStream fileStream = SafeFileCreate($"{dir}\\TerraTypingBlankCSVs", fileName, "csv", out string path);
         using StreamWriter streamWriter = new StreamWriter(fileStream);
         streamWriter.WriteLine($"id,-internalName,-displayName,{extraColumnsHeader}");
         streamWriter.Flush();
@@ -471,7 +481,7 @@ public class PrintCSVCommand : ModCommand
                     string extra = extraColumns?.Invoke(tObj) ?? string.Empty;
                     streamWriter.WriteLine($"{i},{internalName},{getDisplayName(tObj)},{extra}");
                     streamWriter.Flush();
-                    //caller.Reply($"{idClassName}.{internalName} {{{i}}}: \"{getCasualName(obj)}\"");
+                    //caller.Reply($"{idClassName}.{internalName} {{{debugNumber}}}: \"{getCasualName(obj)}\"");
                 }
                 else
                 {
@@ -494,9 +504,8 @@ public class PrintCSVCommand : ModCommand
     where T : ModType
     {
         string dir = Directory.GetCurrentDirectory();
-        using FileStream fileStream = SafeFileCreate(dir, fileName, "csv", out string path);
+        using FileStream fileStream = SafeFileCreate($"{dir}\\TerraTypingBlankCSVs", $"{fileName}", "csv", out string path);
         using StreamWriter streamWriter = new StreamWriter(fileStream);
-
         streamWriter.WriteLine($"internalName,-displayName,{extraColumnsHeader}");
 
         foreach (T tObj in mod.GetContent<T>())
@@ -521,14 +530,13 @@ public class PrintCSVCommand : ModCommand
         {
             return;
         }
-
         PrintAllVanilla<Item>(caller, 1, ItemID.Count, typeof(ItemID),
-            (armor ? "Armor" : "") + (vanity ? "Vanity" : ""),
+            "armorTypesOverride",
             (item) => item.Name,
             (item, i) => item.SetDefaults(i),
             (item) => (item.legSlot is -1 || item.bodySlot is -1 || item.headSlot is -1) && (item.OriginalDefense > 0 || item.type == ItemID.WoodGreaves ? armor : vanity),
             (item) => armor && vanity ? $"{(item.OriginalDefense > 0 ? "armor" : "vanity")}" : "",
-            "-type");
+            "type");
     }
 
     private static void PrintArmorFromMod(Mod mod, CommandCaller caller, bool armor, bool vanity)
@@ -538,11 +546,12 @@ public class PrintCSVCommand : ModCommand
             return;
         }
 
-        PrintAllFromMod<ModItem>(mod, caller, (armor ? "Armor" : "") + (vanity ? "Vanity" : ""),
+        PrintAllFromMod<ModItem>(mod, caller,
+            $"armorTypes{mod.Name}",
             (modItem) => modItem.DisplayName,
             (modItem) => (modItem.Item.legSlot is -1 || modItem.Item.bodySlot is -1 || modItem.Item.headSlot is -1) && (modItem.Item.OriginalDefense > 0 ? armor : vanity),
             (mod, modItem) => armor && vanity ? $"{(modItem.Item.OriginalDefense > 0 ? "armor" : "vanity")}" : "",
-            "-type");
+            "type");
     }
 
     private static void AddIf<T>(List<T> list, T value, bool condition)
@@ -614,21 +623,12 @@ public class PrintCSVCommand : ModCommand
         }
 
         path = testPath;
-        return File.Create(path);
-    }
 
-    private static FileStream SafeFileCreate(ref string path)
-    {
-        string testPath = $"{path}";
-
-        int i = 2;
-        while (File.Exists(testPath))
+        if (!Directory.Exists(directory))
         {
-            testPath = $"{path} ({i})";
-            i++;
+            Directory.CreateDirectory(directory);
         }
 
-        path = testPath;
         return File.Create(path);
     }
 
@@ -640,6 +640,7 @@ public class PrintCSVCommand : ModCommand
         Ammo,
         Armor,
         Vanity,
+        Wearable,
         AllItems
     }
 

@@ -3,7 +3,7 @@ TerraTyping, created by CrimsonTek.
 What does it do?
   TerraTyping adds Pokemon-esque types to Terraria! Every vanilla weapon and enemy is given a type, and types that are effective will deal more damage. I included the 18 types found in Pokemon, as well as Blood and Bone to round out the Crimson and Dungeon biomes respectively. 
 
-This mod mainly functionality. This means you can try it in a world you've already started, and it will work perfectly!
+This mod adds mainly functionality. This means you can try it in a world you've already started, and it will work perfectly!
 
 
 Mod Homepage: https://discord.gg/RvPGKwz
@@ -23,6 +23,13 @@ Translations
 ######## ######## ######## ########
 
 Version History:
+
+v0.2.0.8
+ - Fixed various CSV issues.
+ - Made the white phasesaber and phaseblade rock/fairy to match other diamond themed weapons.
+
+v0.2.0.7
+ - Fixed issue with printing projectile and vanity CSVs.
 
 v0.2.0.6
  - Support for users to edit types with CSV files.
