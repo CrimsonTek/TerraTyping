@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using TerraTyping.Abilities;
+using TerraTyping.Common.TModLoaderGlobals;
+using TerraTyping.Core;
+using TerraTyping.Core.Abilities;
 using TerraTyping.TypeLoaders;
 
 namespace TerraTyping.DataTypes
@@ -53,7 +50,7 @@ namespace TerraTyping.DataTypes
         public ElementArray DefensiveElements => NPCTyping.Elements;
         public ElementArray OffensiveElements => NPCTypeLoader.GetOffensiveElements(NPC);
 
-        public AbilityID GetAbility => NPCTyping.AbilityID;
+        public Ability GetAbility => NPCTyping.AbilityID;
 
         public void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement) { }
 
@@ -69,10 +66,10 @@ namespace TerraTyping.DataTypes
         public bool Active => NPC.active;
         public bool Immortal => NPC.immortal;
         public int LifeRegen { get => NPC.lifeRegen; set => NPC.lifeRegen = value; }
-        public int LifeRegenTime { get => 0; set => _ = value; }
+        public float LifeRegenTime { get => 0; set => _ = value; }
         public Rectangle Hitbox => GetRect();
 
-        public AbilityID ModifiedAbility
+        public Ability ModifiedAbility
         {
             get => NPCTyping.ModifiedAbility;
             set => NPCTyping.ModifiedAbility = value;

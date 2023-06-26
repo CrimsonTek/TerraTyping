@@ -1,24 +1,11 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.UI;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 using TerraTyping.DataTypes;
-using TerraTyping.Abilities.Buffs.TypeAdd;
-using TerraTyping.Abilities.Buffs.TypeReplace;
-using System.Reflection;
-using TerraTyping.Abilities.Buffs;
 using TerraTyping.Helpers;
 using TerraTyping.TypeLoaders;
-using log4net;
-using System.IO;
-using Terraria.ModLoader.IO;
-using Ionic.Zlib;
-using System.Collections;
+using TerraTyping.Core;
+using TerraTyping.Core.Abilities.Buffs;
 
 namespace TerraTyping
 {

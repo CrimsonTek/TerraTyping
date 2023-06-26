@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TerraTyping.Core;
 
 namespace TerraTyping.DataTypes
 {
     public readonly struct AbilityContainer
     {
-        public AbilityID[] BasicAbilities { get; }
-        public AbilityID[] HiddenAbilities { get; }
+        public Ability[] BasicAbilities { get; }
+        public Ability[] HiddenAbilities { get; }
 
         public static AbilityContainer None => new AbilityContainer();
 
         public AbilityContainer()
         {
-            BasicAbilities = Array.Empty<AbilityID>();
-            HiddenAbilities = Array.Empty<AbilityID>();
+            BasicAbilities = Array.Empty<Ability>();
+            HiddenAbilities = Array.Empty<Ability>();
         }
 
-        public AbilityContainer(AbilityID[] basicAbilities, AbilityID[] hiddenAbilities)
+        public AbilityContainer(Ability[] basicAbilities, Ability[] hiddenAbilities)
         {
-            BasicAbilities = basicAbilities ?? Array.Empty<AbilityID>();
-            HiddenAbilities = hiddenAbilities ?? Array.Empty<AbilityID>();
+            BasicAbilities = basicAbilities ?? Array.Empty<Ability>();
+            HiddenAbilities = hiddenAbilities ?? Array.Empty<Ability>();
         }
     }
 }

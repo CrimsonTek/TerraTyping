@@ -1,0 +1,522 @@
+Mods: {
+	TerraTyping: {
+		Type: {
+			normal: normal
+			fire: fire
+			water: water
+			electric: electric
+			grass: grass
+			ice: ice
+			fighting: fighting
+			poison: poison
+			ground: ground
+			flying: flying
+			psychic: psychic
+			bug: bug
+			rock: rock
+			ghost: ghost
+			dragon: dragon
+			dark: dark
+			steel: steel
+			fairy: fairy
+			blood: blood
+			bone: bone
+			none: none
+		}
+
+		Ability: {
+			None: none
+			Levitate: levitate
+			FlashFire: flashFire
+			VoltAbsorb: volt absorb
+			WaterAbsorb: water absorb
+			LightningRod: lightning rod
+			StormDrain: storm drain
+			MotorDrive: motor drive
+			SapSipper: sap sipper
+			ThickFat: thick fat
+			Fluffy: fluffy
+			Heatproof: heatproof
+			WaterBubble: water bubble
+			Justified: justified
+			WaterCompaction: water compaction
+			SteamEngine: steam engine
+			DrySkin: dry skin
+			Mummy: mummy
+			Corrosion: corrosion
+			ColorChange: color change
+			MoldBreaker: mold breaker
+			SandForce: sand force
+			Scrappy: scrappy
+			Flammable: flammable
+			Grounded: grounded
+			PrismArmor: prism armor
+			DD2Stab: DD2 STAB
+		}
+
+		Common.HeldItem: Boosts {0} type moves by {1}%
+
+		Tooltip: {
+			Bonus: "{0} bonus: {1}%"
+			Penalty: "{0} penalty: {1}%"
+			STAB: STAB: {0}
+			ArmorAbility: Provides ability: {0}
+		}
+
+		Config: {
+			Header: {
+				LightningRod: Lightning Rod
+				StormDrain: Storm Drain
+				FlashFire: Flash Fire
+				MotorDrive: Motor Drive
+				Justified: Justified
+				WaterCompaction: Water Compaction
+				SteamEngine: Steam Engine
+				Mummy: Mummy
+				ColorChange: Color Change
+				SandForce: Sand Force
+			}
+		}
+
+		Items: {
+			SilkScarf: {
+				DisplayName: Silk Scarf
+				Tooltip: $Common.HeldItem
+			}
+
+			WaterCompaction: {
+				Tooltip: ""
+				DisplayName: Water Compaction
+			}
+
+			WaterAbsorbAccessory: {
+				Tooltip: ""
+				DisplayName: Water Absorb Accessory
+			}
+
+			ScrappyAccessory: {
+				Tooltip: ""
+				DisplayName: Scrappy Accessory
+			}
+
+			SandForceAccessory: {
+				Tooltip: ""
+				DisplayName: Sand Force Accessory
+			}
+
+			MotorDrive: {
+				Tooltip: ""
+				DisplayName: Motor Drive
+			}
+
+			MoldBreakerAccessory: {
+				Tooltip: ""
+				DisplayName: Mold Breaker Accessory
+			}
+
+			LightningRodAccessory: {
+				Tooltip: ""
+				DisplayName: Lightning Rod Accessory
+			}
+
+			DrySkinAccessory: {
+				Tooltip: ""
+				DisplayName: Dry Skin Accessory
+			}
+
+			TwistedSpoon: {
+				Tooltip: ""
+				DisplayName: Twisted Spoon
+			}
+
+			SpellTag: {
+				Tooltip: ""
+				DisplayName: Spell Tag
+			}
+
+			SoftSand: {
+				Tooltip: ""
+				DisplayName: Soft Sand
+			}
+
+			SilverPowder: {
+				Tooltip: ""
+				DisplayName: Silver Powder
+			}
+
+			SharpBeak: {
+				Tooltip: ""
+				DisplayName: Sharp Beak
+			}
+
+			PoisonBarb: {
+				Tooltip: ""
+				DisplayName: Poison Barb
+			}
+
+			NeverMeltIce: {
+				Tooltip: ""
+				DisplayName: Never Melt Ice
+			}
+
+			MysticWater: {
+				Tooltip: ""
+				DisplayName: Mystic Water
+			}
+
+			MiracleSeed: {
+				Tooltip: ""
+				DisplayName: Miracle Seed
+			}
+
+			MetalCoat: {
+				Tooltip: ""
+				DisplayName: Metal Coat
+			}
+
+			Magnet: {
+				Tooltip: ""
+				DisplayName: Magnet
+			}
+
+			HardStone: {
+				Tooltip: ""
+				DisplayName: Hard Stone
+			}
+
+			FightersBelt: {
+				Tooltip: ""
+				DisplayName: Fighters Belt
+			}
+
+			DustySkull: {
+				Tooltip: ""
+				DisplayName: Dusty Skull
+			}
+
+			DragonFang: {
+				Tooltip: ""
+				DisplayName: Dragon Fang
+			}
+
+			Charcoal: {
+				Tooltip: ""
+				DisplayName: Charcoal
+			}
+
+			BloodyHeart: {
+				Tooltip: ""
+				DisplayName: Bloody Heart
+			}
+
+			BlackGlasses: {
+				Tooltip: ""
+				DisplayName: Black Glasses
+			}
+
+			ArcaneBall: {
+				Tooltip: ""
+				DisplayName: Arcane Ball
+			}
+		}
+
+		Configs: {
+			ServerConfig: {
+				WeatherMultiplier: {
+					Tooltip:
+						'''
+						The increased damage when using a weapon that's super effective in a specific type of weather.
+						This affects water type weapons in the rain, ground type weapons in sandstorms, and more.
+						'''
+					Label: Weather Multiplier
+				}
+
+				STAB: {
+					Tooltip: The increased damage when wearing the same armor type as your weapon type.
+					Label: STAB
+				}
+
+				DivisorIsInverseOfMultiplier: {
+					Tooltip: If the divisor value should be locked to the inverse of the multiplier value.
+					Label: Divisor is Inverse of Multiplier
+				}
+
+				Divisor: {
+					Tooltip: The decreased damage of not very effective moves.
+					Label: Divisor
+				}
+
+				Multiplier: {
+					Tooltip: The increased damage of super effective moves.
+					Label: Multiplier
+				}
+
+				DisplayName: Server Config
+
+				WeatherMultOnlyExpert: {
+					Label: Weather Multiplier in Expert Only
+					Tooltip: Whether or not the weather multiplier should only apply in expert.
+				}
+
+				WeatherMultForEnemies: {
+					Label: Weather Multiplier for Enemies
+					Tooltip: Whether or not the weather multiplier should apply to enemies.
+				}
+
+				HiddenAbilityChancePercent: {
+					Label: Hidden Ability Chance in Percentage
+					Tooltip: The chance of an NPC having a rarer hidden ability.
+				}
+
+				STABDiminishingReturnScalar: {
+					Label: Stab Diminishing Return Scalar
+					Tooltip:
+						'''
+						The amount multiple STABs will benefit you. Having multiple of the same types as a weapon you're using will result in multiple STABs.
+						0 will disable multiple STABs.
+						1 will disable any diminishing return.
+						'''
+				}
+
+				AbilityConfigInstance: {
+					Label: Ability Config
+					Tooltip:
+						'''
+						The values used for abilities.
+						Note: some values may not currently be used.
+						'''
+				}
+			}
+
+			ClientConfig: {
+				WelcomeMessage: {
+					Tooltip: Whether or not a welcome message will be displayed when entering a world.
+					Label: Welcome Message
+				}
+
+				DisplayName: Client Config
+			}
+
+			AbilityConfig: {
+				Tooltip: ""
+
+				LightningRodDamageBoostPlayer: {
+					Label: Lightning Rod Damage Boost (Player)
+					Tooltip: The damage boost the player will receive from the ability Lightning Rod.
+				}
+
+				LightningRodDamageBoostNPC: {
+					Label: Lightning Rod Damage Boost (NPC)
+					Tooltip: The damage boost an NPC will receive from the ability Lightning Rod.
+				}
+
+				LightningRodDurationPlayer: {
+					Label: Lightning Rod Duration (Player)
+					Tooltip: The duration the player will receive the damage boost from the ability Lightning Rod.
+				}
+
+				LightningRodDurationNPC: {
+					Label: Lightning Rod Duration (NPC)
+					Tooltip: The duration an NPC will receive the damage boost from the ability Lightning Rod.
+				}
+
+				StormDrainDamageBoostPlayer: {
+					Label: Storm Drain Damage Boost (Player)
+					Tooltip: The damage boost the player will receive from the ability Storm Drain.
+				}
+
+				StormDrainDamageBoostNPC: {
+					Label: Storm Drain Damage Boost (NPC)
+					Tooltip: The damage boost an NPC will receive from the ability Storm Drain.
+				}
+
+				StormDrainDurationPlayer: {
+					Label: Storm Drain Duration (Player)
+					Tooltip: The duration the player will receive the damage boost from the ability Storm Drain.
+				}
+
+				StormDrainDurationNPC: {
+					Label: Storm Drain Duration (NPC)
+					Tooltip: The duration an NPC will receive the damage boost from the ability Storm Drain.
+				}
+
+				FlashFireDamageBoostPlayer: {
+					Label: Flash Fire Damage Boost (Player)
+					Tooltip: The damage boost the player will receive from the ability Flash Fire.
+				}
+
+				FlashFireDamageBoostNPC: {
+					Label: Flash Fire Damage Boost (NPC)
+					Tooltip: The damage boost an NPC will receive from the ability Flash Fire.
+				}
+
+				FlashFireDurationPlayer: {
+					Label: Flash Fire Duration (Player)
+					Tooltip: The duration the player will receive the damage boost from the ability Flash Fire.
+				}
+
+				FlashFireDurationNPC: {
+					Label: Flash Fire Duration (NPC)
+					Tooltip: The duration an NPC will receive the damage boost from the ability Flash Fire.
+				}
+
+				MotorDriveSpeedBoostPlayer: {
+					Label: Motor Drive Speed Boost (Player)
+					Tooltip: The speed boost the player will receive from the ability Motor Drive.
+				}
+
+				MotorDriveSpeedBoostNPC: {
+					Label: Motor Drive Speed Boost (NPC)
+					Tooltip: The speed boost an NPC will receive from the ability Motor Drive.
+				}
+
+				MotorDriveDurationPlayer: {
+					Label: Motor Drive Duration (Player)
+					Tooltip: The duration the player will receive the speed boost from the ability Motor Drive.
+				}
+
+				MotorDriveDurationNPC: {
+					Label: Motor Drive Duration (NPC)
+					Tooltip: The duration an NPC will receive the speed boost from the ability Motor Drive.
+				}
+
+				JustifiedDamageBoostPlayer: {
+					Label: Justified Damage Boost (Player)
+					Tooltip: The damage boost the player will receive from the ability Justified.
+				}
+
+				JustifiedDamageBoostNPC: {
+					Label: Justified Damage Boost (NPC)
+					Tooltip: The damage boost an NPC will receive from the ability Justified.
+				}
+
+				JustifiedDurationPlayer: {
+					Label: Justified Duration (Player)
+					Tooltip: The duration the player will receive the damage boost from the ability Justified.
+				}
+
+				JustifiedDurationNPC: {
+					Label: Justified Duration (NPC)
+					Tooltip: The duration an NPC will receive the damage boost from the ability Justified.
+				}
+
+				WaterCompactionDefenseBoostPlayer: {
+					Label: Water Compaction Defense Boost (Player)
+					Tooltip: The defense boost the player will receive from the ability Water Compaction.
+				}
+
+				WaterCompactionDefenseBoostNPC: {
+					Label: Water Compaction Defense Boost (NPC)
+					Tooltip: The defense boost an NPC will receive from the ability Water Compaction.
+				}
+
+				WaterCompactionDurationPlayer: {
+					Label: Water Compaction Duration (Player)
+					Tooltip: The duration the player will receive the defense boost from the ability Water Compaction.
+				}
+
+				WaterCompactionDurationNPC: {
+					Label: Water Compaction Duration (NPC)
+					Tooltip: The duration an NPC will receive the defense boost from the ability Water Compaction.
+				}
+
+				SteamEngineSpeedBoostPlayer: {
+					Label: Steam Engine Speed Boost (Player)
+					Tooltip: The speed boost the player will receive from the ability Steam Engine.
+				}
+
+				SteamEngineSpeedBoostNPC: {
+					Label: Steam Engine Speed Boost (NPC)
+					Tooltip: The speed boost an NPC will receive from the ability Steam Engine.
+				}
+
+				SteamEngineDurationPlayer: {
+					Label: Steam Engine Duration (Player)
+					Tooltip: The duration the player will receive the speed boost from the ability Steam Engine.
+				}
+
+				SteamEngineDurationNPC: {
+					Label: Steam Engine Duration (NPC)
+					Tooltip: The duration an NPC will receive the speed boost from the ability Steam Engine.
+				}
+
+				MummyDurationPlayer: {
+					Label: Mummy Duration (Player)
+					Tooltip: The duration the player will receive the Mummy Debuff from the ability Mummy.
+				}
+
+				MummyDurationNPC: {
+					Label: Mummy Duration (NPC)
+					Tooltip: The duration an NPC will receive the Mummy Debuff from the ability Mummy.
+				}
+
+				ColorChangeDurationPlayer: {
+					Label: Color Change Duration (Player)
+					Tooltip: The duration the player will receive the Color Change Buff from the ability Color Change.
+				}
+
+				ColorChangeDurationNPC: {
+					Label: Color Change Duration (NPC)
+					Tooltip: The duration an NPC will receive the Color Change Buff from the ability Color Change.
+				}
+
+				SandForceDamageBoostPlayer: {
+					Label: Sand Force Damage Boost (Player)
+					Tooltip: The damage boost the player will receive from the ability Sand Force.
+				}
+
+				SandForceDamageBoostNPC: {
+					Label: Sand Force Damage Boost (NPC)
+					Tooltip: The damage boost an NPC will receive from the ability Sand Force.
+				}
+			}
+		}
+
+		Buffs: {
+			WaterCompaction: {
+				Description: Mods.TerraTyping.Buffs.WaterCompaction.Description
+				DisplayName: Water Compaction
+			}
+
+			StormDrain: {
+				Description: Mods.TerraTyping.Buffs.StormDrain.Description
+				DisplayName: Storm Drain
+			}
+
+			SteamEngine: {
+				Description: Mods.TerraTyping.Buffs.SteamEngine.Description
+				DisplayName: Steam Engine
+			}
+
+			Mummy: {
+				Description: Mods.TerraTyping.Buffs.Mummy.Description
+				DisplayName: Mummy
+			}
+
+			MotorDrive: {
+				Description: Mods.TerraTyping.Buffs.MotorDrive.Description
+				DisplayName: Motor Drive
+			}
+
+			LightningRod: {
+				Description: Mods.TerraTyping.Buffs.LightningRod.Description
+				DisplayName: Lightning Rod
+			}
+
+			Justified: {
+				Description: Mods.TerraTyping.Buffs.Justified.Description
+				DisplayName: Justified
+			}
+
+			FlashFire: {
+				Description: Mods.TerraTyping.Buffs.FlashFire.Description
+				DisplayName: Flash Fire
+			}
+
+			ColorChange: {
+				Description: Mods.TerraTyping.Buffs.ColorChange.Description
+				DisplayName: Color Change
+			}
+		}
+	}
+}

@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Terraria;
 using Terraria.ModLoader;
-using TerraTyping.Abilities;
-using TerraTyping.DataTypes;
+using TerraTyping.Core;
 using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;

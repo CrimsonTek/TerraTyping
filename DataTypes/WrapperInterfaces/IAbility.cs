@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TerraTyping.Abilities;
+﻿using TerraTyping.Core;
 
 namespace TerraTyping.DataTypes
 {
@@ -13,6 +8,6 @@ namespace TerraTyping.DataTypes
     /// </summary>
     public interface IAbility
     {
-        AbilityID GetAbility { get; }
+        Ability GetAbility { get; }
     }
 }

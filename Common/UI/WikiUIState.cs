@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -42,7 +36,7 @@ public class WikiUIState : UIState
         };
         backButton.OnMouseOver += BackButton_OnMouseOver;
         backButton.OnMouseOut += BackButton_OnMouseOut;
-        backButton.OnMouseDown += BackButton_OnMouseDown;
+        backButton.OnLeftMouseDown += BackButton_OnMouseDown;
         backButton.SetSnapPoint("BackButton", 0);
         topElement.Append(backButton);
 

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
-using TerraTyping.DataTypes.Structs;
 using Microsoft.Xna.Framework;
-using Microsoft.VisualBasic;
-using IL.Terraria.GameContent.Achievements;
 using TerraTyping.TypeLoaders;
-using TerraTyping.Helpers;
+using TerraTyping.Core;
 
 namespace TerraTyping.DataTypes
 {
@@ -51,7 +43,7 @@ namespace TerraTyping.DataTypes
 
         public ElementArray OffensiveElements => ProjectileTypeLoader.GetElements(Projectile);
 
-        public AbilityID GetAbility
+        public Ability GetAbility
         {
             get
             {
@@ -59,19 +51,19 @@ namespace TerraTyping.DataTypes
                 {
                     if (PlayerOwnerIndex > Main.maxPlayers)
                     {
-                        return AbilityID.None;
+                        return Ability.None;
                     }
                     Player player = Main.player[PlayerOwnerIndex];
                     if (player == null || !player.active)
                     {
-                        return AbilityID.None;
+                        return Ability.None;
                     }
                     PlayerWrapper playerWrapper = PlayerWrapper.GetWrapper(player);
                     return playerWrapper.GetAbility;
                 }
                 else
                 {
-                    return AbilityID.None;
+                    return Ability.None;
                 }
             }
         }

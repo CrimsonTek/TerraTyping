@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using TerraTyping.Abilities;
+using TerraTyping.Common.TModLoaderGlobals;
+using TerraTyping.Core;
+using TerraTyping.Core.Abilities;
 using TerraTyping.DataTypes.NewInterfaces;
 
 namespace TerraTyping.DataTypes
@@ -19,7 +16,7 @@ namespace TerraTyping.DataTypes
         public PlayerTyping PlayerTyping => Player.GetModPlayer<PlayerTyping>();
 
         public ElementArray DefensiveElements => PlayerTyping.Elements;
-        public AbilityID GetAbility => PlayerTyping.AbilityID;
+        public Ability GetAbility => PlayerTyping.AbilityID;
 
         #region Biomes
         public bool ZoneBeach { get => Player.ZoneBeach; }
@@ -55,9 +52,9 @@ namespace TerraTyping.DataTypes
         public bool Active => Player.active;
         public bool Immortal => false;
         public int LifeRegen { get => Player.lifeRegen; set => Player.lifeRegen = value; }
-        public int LifeRegenTime { get => Player.lifeRegenTime; set => Player.lifeRegenTime = value; }
+        public float LifeRegenTime { get => Player.lifeRegenTime; set => Player.lifeRegenTime = value; }
 
-        public AbilityID ModifiedAbility
+        public Ability ModifiedAbility
         {
             get => PlayerTyping.ModifiedAbility;
             set => PlayerTyping.ModifiedAbility = value;

@@ -5,9 +5,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Terraria.ModLoader;
-using TerraTyping.Common;
-using TerraTyping.DataTypes;
+using TerraTyping.Core;
+using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;
 

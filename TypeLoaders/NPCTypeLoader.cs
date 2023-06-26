@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MonoMod.Cil;
-using System.Xml.Linq;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.DataTypes;
-using System.Reflection;
-using TerraTyping.Abilities;
 using TerraTyping.Helpers;
-using Terraria.GameContent.Personalities;
+using TerraTyping.Core;
 
 namespace TerraTyping.TypeLoaders;
 

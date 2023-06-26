@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TerraTyping.DataTypes;
+using TerraTyping.Core;
 
 namespace TerraTyping
 {
@@ -38,37 +34,37 @@ namespace TerraTyping
             };
         }
 
-        public static string AbilityName(AbilityID abilityID)
+        public static string AbilityName(Ability abilityID)
         {
             return abilityID switch
             {
-                AbilityID.None => "None",
-                AbilityID.Levitate => "Levitate",
-                AbilityID.FlashFire => "Flash Fire",
-                AbilityID.VoltAbsorb => "Volt Absorb",
-                AbilityID.WaterAbsorb => "Water Absorb",
-                AbilityID.LightningRod => "Lightning Rod",
-                AbilityID.StormDrain => "Storm Drain",
-                AbilityID.MotorDrive => "Motor Drive",
-                AbilityID.SapSipper => "Sap Sipper",
-                AbilityID.ThickFat => "Thick Fat",
-                AbilityID.Fluffy => "Fluffy",
-                AbilityID.Heatproof => "Heatproof",
-                AbilityID.WaterBubble => "Water Bubble",
-                AbilityID.Justified => "Justified",
-                AbilityID.WaterCompaction => "Water Compaction",
-                AbilityID.SteamEngine => "Steam Engine",
-                AbilityID.DrySkin => "Dry Skin",
-                AbilityID.Mummy => "Mummy",
-                AbilityID.Corrosion => "Corrosion",
-                AbilityID.ColorChange => "Color Change",
-                AbilityID.MoldBreaker => "Mold Breaker",
-                AbilityID.SandForce => "Sand Force",
-                AbilityID.Scrappy => "Scrappy",
-                AbilityID.Flammable => "Flammable",
-                AbilityID.Grounded => "Grounded",
-                AbilityID.PrismArmor => "PrismArmor",
-                AbilityID.DD2Stab => "Old One's STAB",
+                Ability.None => "None",
+                Ability.Levitate => "Levitate",
+                Ability.FlashFire => "Flash Fire",
+                Ability.VoltAbsorb => "Volt Absorb",
+                Ability.WaterAbsorb => "Water Absorb",
+                Ability.LightningRod => "Lightning Rod",
+                Ability.StormDrain => "Storm Drain",
+                Ability.MotorDrive => "Motor Drive",
+                Ability.SapSipper => "Sap Sipper",
+                Ability.ThickFat => "Thick Fat",
+                Ability.Fluffy => "Fluffy",
+                Ability.Heatproof => "Heatproof",
+                Ability.WaterBubble => "Water Bubble",
+                Ability.Justified => "Justified",
+                Ability.WaterCompaction => "Water Compaction",
+                Ability.SteamEngine => "Steam Engine",
+                Ability.DrySkin => "Dry Skin",
+                Ability.Mummy => "Mummy",
+                Ability.Corrosion => "Corrosion",
+                Ability.ColorChange => "Color Change",
+                Ability.MoldBreaker => "Mold Breaker",
+                Ability.SandForce => "Sand Force",
+                Ability.Scrappy => "Scrappy",
+                Ability.Flammable => "Flammable",
+                Ability.Grounded => "Grounded",
+                Ability.PrismArmor => "PrismArmor",
+                Ability.DD2Stab => "Old One's STAB",
                 _ => "Unknown Ability",
             };
         }

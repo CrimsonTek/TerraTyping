@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using TerraTyping.Core;
 
 namespace TerraTyping.Common.Configs;
 
@@ -130,7 +125,7 @@ public class ServerConfig : ModConfig
 
     public class AbilityConfig
     {
-        [Header("Lightning Rod")]
+        [Header("$Config.Header.LightningRod")]
 
         [ReloadRequired]
         [Label("Lightning Rod Damage Boost (Player)")]
@@ -164,7 +159,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float LightningRodDurationNPC { get; set; } = 6f;
 
-        [Header("Storm Drain")]
+        [Header("$Config.Header.StormDrain")]
 
         [ReloadRequired]
         [Label("Storm Drain Damage Boost (Player)")]
@@ -198,7 +193,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float StormDrainDurationNPC { get; set; } = 6f;
 
-        [Header("Flash Fire")]
+        [Header("$Config.Header.FlashFire")]
 
         [ReloadRequired]
         [Label("Flash Fire Damage Boost (Player)")]
@@ -232,7 +227,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float FlashFireDurationNPC { get; set; } = 6f;
 
-        [Header("Motor Drive")]
+        [Header("$Config.Header.MotorDrive")]
 
         [ReloadRequired]
         [Label("Motor Drive Speed Boost (Player)")]
@@ -266,7 +261,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float MotorDriveDurationNPC { get; set; } = 6f;
 
-        [Header("Justified")]
+        [Header("$Config.Header.Justified")]
 
         [ReloadRequired]
         [Label("Justified Damage Boost (Player)")]
@@ -300,7 +295,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float JustifiedDurationNPC { get; set; } = 6f;
 
-        [Header("Water Compaction")]
+        [Header("$Config.Header.WaterCompaction")]
 
         [ReloadRequired]
         [Label("Water Compaction Defense Boost (Player)")]
@@ -336,7 +331,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float WaterCompactionDurationNPC { get; set; } = 6f;
 
-        [Header("Steam Engine")]
+        [Header("$Config.Header.SteamEngine")]
 
         [ReloadRequired]
         [Label("Steam Engine Speed Boost (Player)")]
@@ -370,7 +365,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float SteamEngineDurationNPC { get; set; } = 6f;
 
-        [Header("Mummy")]
+        [Header("$Config.Header.Mummy")]
 
         [ReloadRequired]
         [Label("Mummy Duration (Player)")]
@@ -388,7 +383,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(15f)]
         public float MummyDurationNPC { get; set; } = 15f;
 
-        [Header("Color Change")]
+        [Header("$Config.Header.ColorChange")]
 
         [ReloadRequired]
         [Label("Color Change Duration (Player)")]
@@ -406,7 +401,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(10)]
         public float ColorChangeDurationNPC { get; set; } = 10;
 
-        [Header("Sand Force")]
+        [Header("$Config.Header.SandForce")]
 
         [ReloadRequired]
         [Label("Sand Force Damage Boost (Player)")]

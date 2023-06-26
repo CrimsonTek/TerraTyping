@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 using TerraTyping.DataTypes;
@@ -15,6 +11,7 @@ using ReLogic.Content;
 using TerraTyping.Helpers;
 using TerraTyping.Common.UI;
 using Terraria.Audio;
+using TerraTyping.Core;
 
 namespace TerraTyping.Common
 {
@@ -53,7 +50,7 @@ namespace TerraTyping.Common
             int healthBarLayerIndex = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Entity Health Bars"));
             if (healthBarLayerIndex != -1)
             {
-                layers.Insert(healthBarLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Types UI", DrawTypes, InterfaceScaleType.Game));
+                layers.Insert(healthBarLayerIndex, new LegacyGameInterfaceLayer("TerraTyping: Types", DrawTypes, InterfaceScaleType.Game));
             }
 
             int inventoryLayerIndex = layers.FindIndex((layer) => layer.Name.Equals("Vanilla: Inventory"));

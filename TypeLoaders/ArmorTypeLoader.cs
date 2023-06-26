@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Terraria;
 using Terraria.ModLoader;
-using TerraTyping.Abilities;
-using TerraTyping.DataTypes;
+using TerraTyping.Core;
 using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;
@@ -29,11 +23,11 @@ public class ArmorTypeLoader : TypeLoader
 
         return armorTypeInfo.Elements;
     }
-    public static AbilityID GetAbility(Item item)
+    public static Ability GetAbility(Item item)
     {
         if (item is null || !Instance.typeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
         {
-            return AbilityID.None;
+            return Ability.None;
         }
 
         return armorTypeInfo.AbilityID;
@@ -59,10 +53,10 @@ public class ArmorTypeLoader : TypeLoader
             return false;
         }
 
-        AbilityID abilityID = AbilityID.None;
+        Ability abilityID = Ability.None;
         if (lineParser.TryGetIndex(HeaderKeys.BasicAbility, out int abilityIndex))
         {
-            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), true, out AbilityID resultAbility))
+            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), true, out Ability resultAbility))
             {
                 abilityID = resultAbility;
             }
@@ -74,7 +68,7 @@ public class ArmorTypeLoader : TypeLoader
     }
     protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
     {
-        AbilityID abilityID = AbilityID.None;
+        Ability abilityID = Ability.None;
 
         if (!TryParseLineGeneric(modToGiveTypes, lineParser.GetRange(HeaderKeys.GenericElement), lineParser.GetIndex(HeaderKeys.InternalName), out ElementArray elements, out ModItem modItem))
         {
@@ -83,7 +77,7 @@ public class ArmorTypeLoader : TypeLoader
 
         if (lineParser.TryGetIndex(HeaderKeys.BasicAbility, out int abilityIndex))
         {
-            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), out AbilityID result))
+            if (Enum.TryParse(Context.Cells.SafeGet(abilityIndex), out Ability result))
             {
                 abilityID = result;
             }
@@ -105,7 +99,7 @@ public class ArmorTypeLoader : TypeLoader
     {
         public ElementArray Elements { get; set; }
 
-        public AbilityID AbilityID { get; set; }
+        public Ability AbilityID { get; set; }
 
         public static ArmorTypeInfo PlayerDefault => new ArmorTypeInfo(ElementArray.Get(Element.normal));
 
@@ -114,12 +108,12 @@ public class ArmorTypeLoader : TypeLoader
         [Obsolete("Use a different ctor")]
         public ArmorTypeInfo(Element primary, Element secondary)
         {
-            AbilityID = AbilityID.None;
+            AbilityID = Ability.None;
 
             Elements = ElementArray.Get();
         }
 
-        public ArmorTypeInfo(ElementArray elements, AbilityID abilityID = AbilityID.None)
+        public ArmorTypeInfo(ElementArray elements, Ability abilityID = Ability.None)
         {
             Elements = elements;
             AbilityID = abilityID;

@@ -1,0 +1,33 @@
+﻿namespace TerraTyping.Core
+{
+    public enum Ability : byte
+    {
+        None,
+        Levitate,
+        FlashFire,
+        VoltAbsorb,
+        WaterAbsorb,
+        LightningRod,
+        StormDrain,
+        MotorDrive,
+        SapSipper,
+        ThickFat,
+        Fluffy,
+        Heatproof,
+        WaterBubble,
+        Justified,
+        WaterCompaction,
+        SteamEngine,
+        DrySkin,
+        Mummy,
+        Corrosion,
+        ColorChange,
+        MoldBreaker,
+        SandForce,
+        Scrappy,
+        Flammable,
+        Grounded,
+        PrismArmor,
+        DD2Stab
+    }
+}

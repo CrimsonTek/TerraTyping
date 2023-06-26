@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using log4net;
 using Terraria.ModLoader;
-using TerraTyping.Abilities;
+using TerraTyping.Core;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
-using static TerraTyping.Abilities.AbilityLookup;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -282,8 +278,8 @@ public abstract partial class TypeLoader : ILoadable
     }
     protected static AbilityContainer ParseAbilities(string[] basicAbilityStrings, string[] hiddenAbilityStrings)
     {
-        List<AbilityID> basicAbilities = new List<AbilityID>();
-        List<AbilityID> hiddenAbilities = new List<AbilityID>();
+        List<Ability> basicAbilities = new List<Ability>();
+        List<Ability> hiddenAbilities = new List<Ability>();
         foreach (string abilityStr in basicAbilityStrings)
         {
             ParseAbility(basicAbilities, abilityStr, true);
@@ -296,8 +292,8 @@ public abstract partial class TypeLoader : ILoadable
     }
     protected static bool TryParseAbilities(string[] basicAbilityStrings, string[] hiddenAbilityStrings, out AbilityContainer abilityContainer)
     {
-        List<AbilityID> basicAbilities = new List<AbilityID>();
-        List<AbilityID> hiddenAbilities = new List<AbilityID>();
+        List<Ability> basicAbilities = new List<Ability>();
+        List<Ability> hiddenAbilities = new List<Ability>();
         foreach (string abilityStr in basicAbilityStrings)
         {
             if (!ParseAbility(basicAbilities, abilityStr, false))
@@ -317,16 +313,16 @@ public abstract partial class TypeLoader : ILoadable
         abilityContainer = new AbilityContainer(basicAbilities.ToArray(), hiddenAbilities.ToArray());
         return true;
     }
-    private static bool ParseAbility(List<AbilityID> abilityList, string abilityStr, bool throwIfCantParseToAbilityID)
+    private static bool ParseAbility(List<Ability> abilityList, string abilityStr, bool throwIfCantParseToAbilityID)
     {
-        const string ErrorMessage = $"Unable to parse '{{0}}' to type '{nameof(AbilityID)}'";
+        const string ErrorMessage = $"Unable to parse '{{0}}' to type '{nameof(Ability)}'";
         string str = abilityStr.Replace(" ", string.Empty);
         if (string.IsNullOrWhiteSpace(str))
         {
             return false;
         }
 
-        if (!Enum.TryParse(str, true, out AbilityID result))
+        if (!Enum.TryParse(str, true, out Ability result))
         {
             if (throwIfCantParseToAbilityID)
             {

@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MonoMod.Cil;
-using System.Xml.Linq;
-using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.ModLoader;
-using TerraTyping.DataTypes;
-using System.Reflection;
-using TerraTyping.Abilities;
+using TerraTyping.Core;
 using TerraTyping.Helpers;
 
 namespace TerraTyping.TypeLoaders;

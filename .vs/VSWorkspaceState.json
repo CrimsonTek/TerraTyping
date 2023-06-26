@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Commands",
+    "\\DataTypes",
+    "\\DataTypes\\Wrappers",
+    "\\Localization"
   ],
+  "SelectedNode": "\\Commands\\PrintCSVCommand.cs",
   "PreviewInSolutionExplorer": false
 }

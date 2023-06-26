@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using TerraTyping.Core;
 
 namespace TerraTyping.DataTypes
 {
@@ -30,11 +27,11 @@ namespace TerraTyping.DataTypes
         int Life { get; }
         int LifeMax { get; }
         int LifeRegen { get; set; }
-        int LifeRegenTime { get; set; }
+        float LifeRegenTime { get; set; }
         /// <summary>
         /// Currently used for the ability Mummy
         /// </summary>
-        AbilityID ModifiedAbility { get; set; }
+        Ability ModifiedAbility { get; set; }
         /// <summary>
         /// Currently used for the ability Color Change
         /// </summary>
