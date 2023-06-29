@@ -12,6 +12,7 @@ using TerraTyping.Helpers;
 using TerraTyping.Common.UI;
 using Terraria.Audio;
 using TerraTyping.Core;
+using TerraTyping.Common.Configs;
 
 namespace TerraTyping.Common
 {
@@ -136,6 +137,138 @@ namespace TerraTyping.Common
         }
 
         private bool DrawTypes()
+        {
+            Player player = Main.LocalPlayer;
+            if (player.mouseInterface)
+            {
+                return true;
+            }
+
+            Rectangle mouseRectangle = new Rectangle((int)(Main.mouseX + Main.screenPosition.X), (int)(Main.mouseY + Main.screenPosition.Y), 1, 1);
+            if (player.gravDir == -1f)
+            {
+                mouseRectangle.Y = (int)Main.screenPosition.Y + Main.screenHeight - Main.mouseY;
+            }
+
+            if (!iconsLoaded)
+            {
+                LoadIcons();
+            }
+
+            bool showTypesOfCritters = ClientConfig.Instance.ShowTypesOfCritters;
+            bool showTypesOfTownNPCs = ClientConfig.Instance.ShowTypesOfTownNPCs;
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (ShouldShowTypesOfThisNPC(npc, showTypesOfCritters, showTypesOfTownNPCs) && NPCIsVisible(npc, i, mouseRectangle))
+                {
+                    DrawTypesOfNPC(npc);
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool NPCIsVisible(NPC npc, int npcIndex, Rectangle mouseRectangle)
+        {
+            // code adapted from Main.OverOverNPCs(Rectangle mouseRectangle) 1.4.4
+
+            if (!npc.ShowNameOnHover || !(npc.active & (npc.shimmerTransparency == 0f || npc.CanApplyHunterPotionEffects())))
+            {
+                return false;
+            }
+
+            Rectangle npcRect = new Rectangle((int)npc.Bottom.X - npc.frame.Width / 2, (int)npc.Bottom.Y - npc.frame.Height, npc.frame.Width, npc.frame.Height);
+            if (npc.type >= NPCID.WyvernHead && npc.type <= NPCID.WyvernTail)
+            {
+                npcRect = new Rectangle((int)(npc.position.X + npc.width * 0.5 - 32.0), (int)(npc.position.Y + npc.height * 0.5 - 32.0), 64, 64);
+            }
+            NPCLoader.ModifyHoverBoundingBox(npc, ref npcRect);
+
+            bool flag = mouseRectangle.Intersects(npcRect);
+            bool flag2 = flag || (Main.SmartInteractShowingGenuine || Main.SmartInteractNPC == npcIndex);
+            if (flag2 && ((npc.type != NPCID.Mimic && npc.type != NPCID.PresentMimic && npc.type != NPCID.IceMimic && npc.aiStyle != 87) || npc.ai[0] != 0f) && npc.type != NPCID.TargetDummy && npc.type != NPCID.BoundTownSlimeOld)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool ShouldShowTypesOfThisNPC(NPC npc, bool showTypesOfCritters, bool showTypesOfTownNPCs)
+        {
+            if (!showTypesOfCritters)
+            {
+                if (npc.lifeMax <= 5)
+                {
+                    return false;
+                }
+            }
+
+            if (!showTypesOfTownNPCs)
+            {
+                if (npc.townNPC || npc.type == NPCID.BoundGoblin || npc.type == NPCID.BoundWizard || npc.type == NPCID.BoundMechanic || npc.type == NPCID.WebbedStylist || npc.type == NPCID.SleepingAngler || npc.type == NPCID.BartenderUnconscious || npc.type == NPCID.SkeletonMerchant || npc.type == NPCID.GolferRescue || npc.type == NPCID.LostGirl)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void DrawTypesOfNPC(NPC npc)
+        {
+            const float buffer = 6;
+
+            NPCWrapper npcWrapper = NPCWrapper.GetWrapper(npc);
+
+            Vector2 topLeft = Main.MouseScreen + new Vector2(23, 48);
+            Vector2 defensiveIconsVector = topLeft;
+            Vector2 contactIconVector = topLeft;
+
+            for (int i = 0; i < npcWrapper.DefensiveElements.Length; i++)
+            {
+                if (npcWrapper.DefensiveElements is null)
+                {
+                    TerraTyping.Instance.Logger.Warn($"npcWrapper.DefensiveElements is null");
+                    continue;
+                }
+
+                if (icons is null)
+                {
+                    TerraTyping.Instance.Logger.Warn($"Icons is null");
+                }
+
+                Texture2D icon = icons[(int)npcWrapper.DefensiveElements[i]].Value;
+
+                if (icon is null)
+                {
+                    TerraTyping.Instance.Logger.Warn($"Icon is null");
+                    continue;
+                }
+
+                Main.spriteBatch.Draw(icon, defensiveIconsVector, null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                defensiveIconsVector.X += (icon.Width + buffer) * Main.UIScale;
+                float calculatedContactIconY = topLeft.Y + (icon.Height + buffer) * Main.UIScale;
+                if (calculatedContactIconY > contactIconVector.Y)
+                {
+                    contactIconVector.Y = calculatedContactIconY;
+                }
+            }
+
+            if (npc.damage > 0)
+            {
+                for (int i = 0; i < npcWrapper.OffensiveElements.Length; i++)
+                {
+                    Texture2D icon = icons[(int)npcWrapper.OffensiveElements[i]].Value;
+                    Main.spriteBatch.Draw(icon, contactIconVector, null, Color.White, 0, new Vector2(0, 0), Main.UIScale, SpriteEffects.None, 0);
+                    contactIconVector.X += (icon.Width + buffer) * Main.UIScale;
+                }
+            }
+        }
+
+        private bool DrawTypesOld()
         {
             //PlayerInput.SetZoom_Unscaled();
             //PlayerInput.SetZoom_MouseInWorld();

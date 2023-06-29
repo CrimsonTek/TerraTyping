@@ -82,7 +82,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
                 return;
             }
 
-            baseAbility = SetAbility(NPCTypeLoader.GetAbilities(npc.type));
+            baseAbility = SetAbility(NPCTypeLoader.GetAbilities(npc.netID));
 
             initialized = true;
         }
@@ -94,7 +94,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
 
         private static Ability SetAbility(AbilityContainer abilityContainer)
         {
-            float haChance = ModContent.GetInstance<ServerConfig>()?.HiddenAbilityChancePercent ?? 0;
+            float haChance = ServerConfig.Instance.HiddenAbilityChancePercent;
 
             if (abilityContainer.HiddenAbilities.Length > 0 && Main.rand.NextDouble() < haChance * 0.01)
             {
@@ -122,6 +122,14 @@ namespace TerraTyping.Common.TModLoaderGlobals
             return Calc.CanBeHitBy(itemWrapper, npcWrapper) ? null : false;
         }
 
+        public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+        {
+            ProjectileWrapper projectileWrapper = ProjectileWrapper.GetWrapper(projectile);
+            NPCWrapper npcWrapper = NPCWrapper.GetWrapper(npc);
+            Calc.OnHit(projectileWrapper, npcWrapper);
+            return Calc.CanBeHitBy(projectileWrapper, npcWrapper) ? null : false;
+        }
+
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
         {
             if (waterCompactionBuff)
@@ -129,20 +137,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
                 modifiers.Defense.Flat += ServerConfig.Instance.AbilityConfigInstance.WaterCompactionDefenseBoostNPC;
             }
 
-            Calc.NPCModifyHitBy(new WeaponWrapper(item, player), NPCWrapper.GetWrapper(npc), ref modifiers);
-        }
-
-        public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
-        {
-            Calc.OnHit(new WeaponWrapper(item, player), NPCWrapper.GetWrapper(npc), hit);
-        }
-
-        public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
-        {
-            ProjectileWrapper projectileWrapper = ProjectileWrapper.GetWrapper(projectile);
-            NPCWrapper npcWrapper = NPCWrapper.GetWrapper(npc);
-            Calc.OnHit(projectileWrapper, npcWrapper);
-            return Calc.CanBeHitBy(projectileWrapper, npcWrapper) ? null : false;
+            Calc.ModifyHitBy(new WeaponWrapper(item, player), NPCWrapper.GetWrapper(npc), ref modifiers.FinalDamage, ref modifiers.Knockback);
         }
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
@@ -153,6 +148,11 @@ namespace TerraTyping.Common.TModLoaderGlobals
             }
 
             Calc.NPCModifyHitBy(ProjectileWrapper.GetWrapper(projectile), NPCWrapper.GetWrapper(npc), ref modifiers);
+        }
+
+        public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
+        {
+            Calc.OnHit(new WeaponWrapper(item, player), NPCWrapper.GetWrapper(npc), hit);
         }
 
         public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)

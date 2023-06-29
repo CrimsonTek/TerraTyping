@@ -15,14 +15,15 @@ Github: https://github.com/CrimsonTek/TerraTyping
  
 Special thanks to all the people that helped me with this mod.
 
-Translations
- |RU| Russian: Rostya
- |FR| French: LyDek
- |DE| German: Feutor
-
 ######## ######## ######## ########
 
 Version History:
+
+v0.2.1.0
+ - Support for Terraria version 1.4.4.9.
+ - Made some changes to types.
+ - Knockback now scales with effectiveness (can be changed in the config).
+ - Several environmental sources of damage now have types.
 
 v0.2.0.8
  - Fixed various CSV issues.

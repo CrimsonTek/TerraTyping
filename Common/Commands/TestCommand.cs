@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,11 +12,38 @@ namespace TerraTyping.Common.Commands;
 
 public class TestCommand : ModCommand
 {
+    public override bool IsLoadingEnabled(Mod mod)
+    {
+        return false;
+    }
+
     public override string Command => "test";
 
     public override CommandType Type => CommandType.Chat;
 
     public override void Action(CommandCaller caller, string input, string[] args)
+    {
+        string path = $"{Directory.GetCurrentDirectory()}\\testing.txt";
+        using FileStream fileStream = File.Create(path);
+        using StreamWriter streamWriter = new StreamWriter(fileStream);
+        streamWriter.AutoFlush = true;
+
+        Item item = new Item();
+        for (int i = 0; i < ItemLoader.ItemCount; i++)
+        {
+            item.SetDefaults(i);
+            streamWriter.WriteLine($"{i},{item.Name},{item.ammo},{item.useAmmo}");
+        }
+    }
+
+    private static NPC FindNPCNearCursor()
+    {
+        Vector2 mouseWorld = Main.MouseWorld;
+        NPC npc = Main.npc.Where(npc => npc.active).OrderBy(npc => Vector2.DistanceSquared(mouseWorld, npc.Center)).FirstOrDefault();
+        return npc;
+    }
+
+    private static void SpawnAllItemsOfElement(CommandCaller caller, string[] args)
     {
         if (args.Length != 1)
         {

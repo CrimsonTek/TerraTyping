@@ -125,19 +125,7 @@ namespace TerraTyping.DataTypes
             }
         }
 
-        public float DamageMultiplication()
-        {
-            //if (OwnerType == Owner.Player)
-            //{
-            //    Player player = Main.player[OwnerIndex];
-            //    if (player != null && player.active)
-            //    {
-            //        return player.GetModPlayer<PlayerTyping>().DamageMultiplyByBuff;
-            //    }
-            //}
-
-            return 1;
-        }
+        public float DamageMultiplication() => 1;
 
         public void Kill()
         {

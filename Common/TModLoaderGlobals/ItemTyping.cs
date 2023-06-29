@@ -7,6 +7,7 @@ using TerraTyping.TypeLoaders;
 using TerraTyping.Helpers;
 using TerraTyping.Core;
 using Terraria.Localization;
+using Terraria.ID;
 
 namespace TerraTyping.Common.TModLoaderGlobals
 {
@@ -38,11 +39,13 @@ namespace TerraTyping.Common.TModLoaderGlobals
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             WeaponWrapper offensiveType = new WeaponWrapper(item, player);
-            if (offensiveType.GetsStab)
-            {
-                float mult = Calc.Stab(offensiveType, PlayerWrapper.GetWrapper(player));
-                damage = damage.CombineWith(new StatModifier(1f, mult));
-            }
+            float STAB = GetSTAB(offensiveType);
+            damage = damage.CombineWith(new StatModifier(1f, STAB));
+        }
+
+        private static float GetSTAB(WeaponWrapper weaponWrapper)
+        {
+            return Calc.Stab(weaponWrapper, PlayerWrapper.GetWrapper(weaponWrapper.GetPlayer));
         }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -101,10 +104,10 @@ namespace TerraTyping.Common.TModLoaderGlobals
             }
 
             WeaponWrapper offensiveType = new WeaponWrapper(item, Main.LocalPlayer);
-            float mult = Calc.Stab(offensiveType, PlayerWrapper.GetWrapper(Main.LocalPlayer));
-            if (mult != 1)
+            float stab = GetSTAB(offensiveType);
+            if (stab != 1)
             {
-                string tooltip = Language.GetText("Mods.TerraTyping.Tooltip.STAB").Format(mult.ToString("P0"));
+                string tooltip = Language.GetText("Mods.TerraTyping.Tooltip.STAB").Format(stab.ToString("P0"));
                 tooltips.Add(new TooltipLine(Mod, "STABTooltip", tooltip));
             }
         }

@@ -5,7 +5,7 @@ public class OtherDamageID
     /// <summary>
     /// Fall damage.
     /// </summary>
-    public const int Fell = 0;
+    public const int FallDamage = 0;
     /// <summary>
     /// Drowning damage
     /// </summary>
@@ -15,15 +15,18 @@ public class OtherDamageID
     /// </summary>
     public const int Lava = 2;
     public const int Default = 3;
-    public const int Slain = 4;
+    /// <summary>
+    /// Hitting a demon alter
+    /// </summary>
+    public const int DemonAlterHurt = 4;
     /// <summary>
     /// Fall damage while petrified/stoned by Medusa.
     /// </summary>
-    public const int Petrified = 5;
+    public const int FallDamageWhilePetrified = 5;
     /// <summary>
     /// Companion cube stabbing player in darkness.
     /// </summary>
-    public const int Stabbed = 6;
+    public const int CompanionCubeStabbed = 6;
     /// <summary>
     /// Falling block damage.
     /// </summary>

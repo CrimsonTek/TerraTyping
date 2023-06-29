@@ -12,6 +12,7 @@ namespace TerraTyping.DataTypes
         public readonly Item item;
         public int Player { get; }
 
+        public Player GetPlayer => Main.player[Player];
         public bool GetsStab => WeaponTypeLoader.GetsStab(item);
         public ElementArray OffensiveElements => WeaponTypeLoader.GetElements(item);
         public Ability GetAbility
@@ -62,10 +63,6 @@ namespace TerraTyping.DataTypes
 
         public Team GetTeam() => Team.PlayerFriendly;
 
-        public float DamageMultiplication()
-        {
-            //return Main.player[player].GetModPlayer<PlayerTyping>().DamageMultiplyByBuff;
-            return 1;
-        }
+        public float DamageMultiplication() => 1;
     }
 }

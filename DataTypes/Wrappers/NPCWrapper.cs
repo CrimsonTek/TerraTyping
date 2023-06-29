@@ -43,7 +43,6 @@ namespace TerraTyping.DataTypes
         #endregion
 
         readonly int npcIndex;
-        readonly int npcType;
         public NPC NPC => Main.npc[npcIndex];
         private NPCTyping NPCTyping => NPC.GetGlobalNPC<NPCTyping>();
 
@@ -95,7 +94,6 @@ namespace TerraTyping.DataTypes
         private NPCWrapper(NPC npc)
         {
             npcIndex = npc.whoAmI;
-            npcType = npc.type;
         }
 
         public static NPCWrapper GetWrapper(NPC npc)

@@ -78,7 +78,7 @@ public class ItemDamageBoost : GlobalItem
     {
         weatherBoosts = new Boost[elements.Length];
 
-        if (!Main.expertMode && ModContent.GetInstance<ServerConfig>().WeatherMultOnlyExpert)
+        if (!Main.expertMode && ServerConfig.Instance.WeatherMultOnlyExpert)
         {
             return;
         }
@@ -88,7 +88,7 @@ public class ItemDamageBoost : GlobalItem
             return;
         }
 
-        float weatherMultiplier = ModContent.GetInstance<ServerConfig>().WeatherMultiplier;
+        float weatherMultiplier = ServerConfig.Instance.WeatherMultiplier;
         for (int i = 0; i < elements.Length; i++)
         {
             switch (elements[i])

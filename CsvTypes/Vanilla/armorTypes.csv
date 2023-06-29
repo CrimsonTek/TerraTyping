@@ -231,9 +231,9 @@ id,type,type,type,type,ability
 3803,Grass,,,,DD2Stab
 3804,Grass,,,,DD2Stab
 3805,Grass,,,,DD2Stab
-3877,Grass,,,,DD2Stab
-3878,Grass,,,,DD2Stab
-3879,Grass,,,,DD2Stab
+3877,Grass,Fairy,,,DD2Stab
+3878,Grass,Fairy,,,DD2Stab
+3879,Grass,Fairy,,,DD2Stab
 37,Normal,,,,
 205,Water,,,,
 268,Water,,,,
@@ -244,3 +244,6 @@ id,type,type,type,type,ability
 4008,Normal,,,,
 5068,Ice,,,,Fluffy
 5001,Dragon,Dark,,,
+5279,Normal,Fire,,,
+5280,Normal,Fire,,,
+5281,Normal,Fire,,,

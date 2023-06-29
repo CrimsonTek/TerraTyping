@@ -10,9 +10,7 @@ public class WeatherEnemies : GlobalNPC
 {
     public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
     {
-        ServerConfig config = ModContent.GetInstance<ServerConfig>();
-
-        if (!Main.expertMode && config.WeatherMultOnlyExpert || config.WeatherMultForEnemies)
+        if (!Main.expertMode && ServerConfig.Instance.WeatherMultOnlyExpert || ServerConfig.Instance.WeatherMultForEnemies)
         {
             return;
         }
@@ -23,7 +21,7 @@ public class WeatherEnemies : GlobalNPC
             return;
         }
 
-        float weatherMultiplier = ModContent.GetInstance<ServerConfig>().WeatherMultiplier;
+        float weatherMultiplier = ServerConfig.Instance.WeatherMultiplier;
         if (weatherMultiplier == 1)
         {
             return;

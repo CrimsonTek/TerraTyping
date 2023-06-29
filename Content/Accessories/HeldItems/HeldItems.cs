@@ -16,7 +16,7 @@ namespace TerraTyping.Content.Accessories.HeldItems
         public virtual float Boost { get; set; }
         public virtual Point Size { get; set; }
 
-        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Element.ToString(), $"{Boost - 1:P}");
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Element.ToString(), $"{(Boost - 1) * 100:0.##}");
 
         public override void UpdateEquip(Player player)
         {

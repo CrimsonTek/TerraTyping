@@ -40,6 +40,7 @@ namespace TerraTyping
         {
             TypeLoader.Logger = Logger;
             Table.Load();
+            Calc.Load();
 
             SpecialTooltip.StaticLoad();
 
@@ -58,6 +59,8 @@ namespace TerraTyping
         {
             BuffUtils.addTypeBuffs = null;
             BuffUtils.replaceTypeBuffs = null;
+
+            Calc.Unload();
 
             ProjectileWrapper.Unload();
             ElementHelper.Unload();

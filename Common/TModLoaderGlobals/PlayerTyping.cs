@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TerraTyping.Common.Configs;
@@ -8,6 +9,7 @@ using TerraTyping.Core;
 using TerraTyping.Core.Abilities;
 using TerraTyping.Core.Abilities.Buffs;
 using TerraTyping.DataTypes;
+using TerraTyping.DataTypes.Wrappers;
 using TerraTyping.Helpers;
 using TerraTyping.TypeLoaders;
 
@@ -116,7 +118,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
 
         public override void OnEnterWorld()
         {
-            if (ModContent.GetInstance<ClientConfig>()?.WelcomeMessage != false)
+            if (ClientConfig.Instance.WelcomeMessage)
             {
                 Main.NewText($"Welcome to TerraTyping version {TerraTyping.Instance.Version}. Use '/TerraTyping' for more info.");
             }
@@ -141,7 +143,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
             baseAbility = Ability.None;
 
             ArmorType(); // low priority
-            AccessoryType(); // medium priority
+            AccessoryType(); // high priority
         }
 
         private void ArmorType()
@@ -200,6 +202,38 @@ namespace TerraTyping.Common.TModLoaderGlobals
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
         {
             Calc.PlayerModifyHitBy(ProjectileWrapper.GetWrapper(proj), PlayerWrapper.GetWrapper(Player), ref modifiers);
+        }
+
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+        {
+            int sourceOtherIndex = modifiers.DamageSource.SourceOtherIndex;
+            Element element = sourceOtherIndex switch
+            {
+                OtherDamageID.FallDamage => Element.ground,
+                OtherDamageID.Drowned => Element.water,
+                OtherDamageID.Lava => Element.fire,
+                OtherDamageID.Default => Element.none,
+                OtherDamageID.DemonAlterHurt => Element.dark,
+                OtherDamageID.FallDamageWhilePetrified => Element.ground,
+                OtherDamageID.CompanionCubeStabbed => Element.dark,
+                OtherDamageID.Suffocated => Element.ground,
+                OtherDamageID.Burned => Element.fire,
+                OtherDamageID.Poisoned => Element.poison,
+                OtherDamageID.Electrocuted => Element.electric,
+                OtherDamageID.TriedToEscape => Element.none,
+                OtherDamageID.WasLicked => Element.blood,
+                OtherDamageID.Teleport_1 or OtherDamageID.Teleport_2_Female or OtherDamageID.Teleport_2_Male => Element.none,
+                OtherDamageID.Inferno => Element.fire,
+                OtherDamageID.DiedInTheDark => Element.dark,
+                OtherDamageID.Starved => Element.normal,
+                _ => Element.none,
+            };
+            if (element == Element.none)
+            {
+                return;
+            }
+
+            Calc.OtherModifyHitBy(new OtherWrapper(sourceOtherIndex, element), PlayerWrapper.GetWrapper(Player), ref modifiers);
         }
 
         public override bool CanBeHitByNPC(NPC npc, ref int cooldownSlot)

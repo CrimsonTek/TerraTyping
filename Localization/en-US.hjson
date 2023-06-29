@@ -54,7 +54,7 @@ Mods: {
 			DD2Stab: DD2 STAB
 		}
 
-		Common.HeldItem: Boosts {0} type moves by {1}%
+		Common.DamageBoostHeldItem: Boosts {0} type moves by {1}%
 
 		Tooltip: {
 			Bonus: "{0} bonus: {1}%"
@@ -79,144 +79,144 @@ Mods: {
 		}
 
 		Items: {
-			SilkScarf: {
-				DisplayName: Silk Scarf
-				Tooltip: $Common.HeldItem
-			}
-
 			WaterCompaction: {
-				Tooltip: ""
 				DisplayName: Water Compaction
+				Tooltip: ""
 			}
 
 			WaterAbsorbAccessory: {
-				Tooltip: ""
 				DisplayName: Water Absorb Accessory
+				Tooltip: ""
 			}
 
 			ScrappyAccessory: {
-				Tooltip: ""
 				DisplayName: Scrappy Accessory
+				Tooltip: ""
 			}
 
 			SandForceAccessory: {
-				Tooltip: ""
 				DisplayName: Sand Force Accessory
+				Tooltip: ""
 			}
 
 			MotorDrive: {
-				Tooltip: ""
 				DisplayName: Motor Drive
+				Tooltip: ""
 			}
 
 			MoldBreakerAccessory: {
-				Tooltip: ""
 				DisplayName: Mold Breaker Accessory
+				Tooltip: ""
 			}
 
 			LightningRodAccessory: {
-				Tooltip: ""
 				DisplayName: Lightning Rod Accessory
+				Tooltip: ""
 			}
 
 			DrySkinAccessory: {
-				Tooltip: ""
 				DisplayName: Dry Skin Accessory
+				Tooltip: ""
+			}
+
+			SilkScarf: {
+				DisplayName: Silk Scarf
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			TwistedSpoon: {
-				Tooltip: ""
 				DisplayName: Twisted Spoon
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			SpellTag: {
-				Tooltip: ""
 				DisplayName: Spell Tag
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			SoftSand: {
-				Tooltip: ""
 				DisplayName: Soft Sand
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			SilverPowder: {
-				Tooltip: ""
 				DisplayName: Silver Powder
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			SharpBeak: {
-				Tooltip: ""
 				DisplayName: Sharp Beak
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			PoisonBarb: {
-				Tooltip: ""
 				DisplayName: Poison Barb
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			NeverMeltIce: {
-				Tooltip: ""
 				DisplayName: Never Melt Ice
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			MysticWater: {
-				Tooltip: ""
 				DisplayName: Mystic Water
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			MiracleSeed: {
-				Tooltip: ""
 				DisplayName: Miracle Seed
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			MetalCoat: {
-				Tooltip: ""
 				DisplayName: Metal Coat
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			Magnet: {
-				Tooltip: ""
 				DisplayName: Magnet
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			HardStone: {
-				Tooltip: ""
 				DisplayName: Hard Stone
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			FightersBelt: {
-				Tooltip: ""
 				DisplayName: Fighters Belt
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			DustySkull: {
-				Tooltip: ""
 				DisplayName: Dusty Skull
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			DragonFang: {
-				Tooltip: ""
 				DisplayName: Dragon Fang
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			Charcoal: {
-				Tooltip: ""
 				DisplayName: Charcoal
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			BloodyHeart: {
-				Tooltip: ""
 				DisplayName: Bloody Heart
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			BlackGlasses: {
-				Tooltip: ""
 				DisplayName: Black Glasses
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 
 			ArcaneBall: {
-				Tooltip: ""
 				DisplayName: Arcane Ball
+				Tooltip: "{$Common.DamageBoostHeldItem}"
 			}
 		}
 
@@ -278,13 +278,33 @@ Mods: {
 						'''
 				}
 
+				KnockbackScaling: {
+					Tooltip:
+						'''
+						The amount of scaling to apply to knockback on effective or ineffective hits.
+						0 will leave knockback unchanged regardless of damage (this is vanilla behaviour).
+						1 will scale knockback directly with damage dealt. Double damage will be double knockback, and half damage will be half knockback.
+						'''
+					Label: Knockback Scaling
+				}
+
 				AbilityConfigInstance: {
 					Label: Ability Config
 					Tooltip:
 						'''
 						The values used for abilities.
-						Note: some values may not currently be used.
+						"Note: some values may not currently be used."
 						'''
+				}
+
+				AmmoSTAB: {
+					Tooltip: ""
+					Label: Ammo S T A B
+				}
+
+				RangedSTAB: {
+					Tooltip: ""
+					Label: Ranged S T A B
 				}
 			}
 
@@ -292,6 +312,16 @@ Mods: {
 				WelcomeMessage: {
 					Tooltip: Whether or not a welcome message will be displayed when entering a world.
 					Label: Welcome Message
+				}
+
+				ShowTypesOfCritters: {
+					Tooltip: Whether or not to show the types of critters.
+					Label: Show Types of Critter
+				}
+
+				ShowTypesOfTownNPCs: {
+					Tooltip: Whether or not to show the types of town npcs.
+					Label: Show Types of Town NPCs
 				}
 
 				DisplayName: Client Config
@@ -386,7 +416,7 @@ Mods: {
 				}
 
 				JustifiedDamageBoostNPC: {
-					Label: Justified Damage Boost (NPC)
+					Label: Justified Damage Boost (NPC)"
 					Tooltip: The damage boost an NPC will receive from the ability Justified.
 				}
 
@@ -474,47 +504,47 @@ Mods: {
 
 		Buffs: {
 			WaterCompaction: {
-				Description: Mods.TerraTyping.Buffs.WaterCompaction.Description
+				Description: Increased defense
 				DisplayName: Water Compaction
 			}
 
 			StormDrain: {
-				Description: Mods.TerraTyping.Buffs.StormDrain.Description
+				Description: Increased damage
 				DisplayName: Storm Drain
 			}
 
 			SteamEngine: {
-				Description: Mods.TerraTyping.Buffs.SteamEngine.Description
+				Description: Increased speed
 				DisplayName: Steam Engine
 			}
 
 			Mummy: {
-				Description: Mods.TerraTyping.Buffs.Mummy.Description
+				Description: Ability changed
 				DisplayName: Mummy
 			}
 
 			MotorDrive: {
-				Description: Mods.TerraTyping.Buffs.MotorDrive.Description
+				Description: Increased speed
 				DisplayName: Motor Drive
 			}
 
 			LightningRod: {
-				Description: Mods.TerraTyping.Buffs.LightningRod.Description
+				Description: Increased damage
 				DisplayName: Lightning Rod
 			}
 
 			Justified: {
-				Description: Mods.TerraTyping.Buffs.Justified.Description
+				Description: Increased damage
 				DisplayName: Justified
 			}
 
 			FlashFire: {
-				Description: Mods.TerraTyping.Buffs.FlashFire.Description
+				Description: Increased damage
 				DisplayName: Flash Fire
 			}
 
 			ColorChange: {
-				Description: Mods.TerraTyping.Buffs.ColorChange.Description
+				Description: Type changed
 				DisplayName: Color Change
 			}
 		}

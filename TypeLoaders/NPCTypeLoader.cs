@@ -4,12 +4,13 @@ using Terraria.ModLoader;
 using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
 using TerraTyping.Core;
+using Terraria.ID;
 
 namespace TerraTyping.TypeLoaders;
 
 public class NPCTypeLoader : TypeLoader
 {
-    NPCTypeInfo[] typeInfos;
+    OffsetNPCTypeInfoArray typeInfos;
 
     protected override string CSVFileName => CSVFileNames.NPCs;
     public static NPCTypeLoader Instance { get; private set; }
@@ -22,9 +23,9 @@ public class NPCTypeLoader : TypeLoader
             throw new ArgumentNullException(nameof(npc));
         }
 
-        if (0 <= npc.type && npc.type < Instance.typeInfos.Length)
+        if (Instance.typeInfos.InRange(npc.netID))
         {
-            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.type];
+            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.netID];
             if (npcTypeInfo is not null)
             {
                 return npcTypeInfo.GetDefensiveElements(npc);
@@ -41,9 +42,9 @@ public class NPCTypeLoader : TypeLoader
             throw new ArgumentNullException(nameof(npc));
         }
 
-        if (0 <= npc.type && npc.type < Instance.typeInfos.Length)
+        if (Instance.typeInfos.InRange(npc.netID))
         {
-            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.type];
+            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.netID];
             if (npcTypeInfo is not null)
             {
                 return npcTypeInfo.GetOffensiveElements(npc);
@@ -57,7 +58,7 @@ public class NPCTypeLoader : TypeLoader
     /// </summary>
     public static AbilityContainer GetAbilities(int npcType)
     {
-        if (npcType >= 0 && npcType < Instance.typeInfos.Length)
+        if (Instance.typeInfos.InRange(npcType))
         {
             NPCTypeInfo npcTypeInfo = Instance.typeInfos[npcType];
             if (npcTypeInfo is not null)
@@ -69,7 +70,7 @@ public class NPCTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new NPCTypeInfo[NPCLoader.NPCCount];
+        typeInfos = new OffsetNPCTypeInfoArray();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -134,7 +135,7 @@ public class NPCTypeLoader : TypeLoader
             hiddenAbilityStrings = Context.Cells.SafeGet(hiddenAbiltyRange);
         }
 
-        typeInfos[modNPC.NPC.type] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
+        typeInfos[modNPC.NPC.netID] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
         return true;
     }
     private ModifyTypeByEnvironment GetModifyTypeDelegate(LineParser lineParser)
@@ -258,4 +259,37 @@ public class NPCTypeLoader : TypeLoader
     }
 
     private delegate NPCTypeInfo ModifyTypeByEnvironment(NPCTypeInfo original, NPC npc);
+
+    private class OffsetNPCTypeInfoArray
+    {
+        readonly int upperBound;
+        readonly NPCTypeInfo[] npcTypeInfos;
+        const int offset = 65;
+
+        /// <summary>
+        /// Inclusive upper bounnd.
+        /// </summary>
+        public int UpperBound => upperBound;
+        /// <summary>
+        /// Inclusive lower bound.
+        /// </summary>
+        public int LowerBound => -offset;
+
+        public OffsetNPCTypeInfoArray()
+        {
+            upperBound = NPCLoader.NPCCount - 1;
+            npcTypeInfos = new NPCTypeInfo[NPCLoader.NPCCount + offset];
+        }
+
+        public NPCTypeInfo this[int npcType]
+        {
+            get => npcTypeInfos[npcType + offset];
+            set => npcTypeInfos[npcType + offset] = value;
+        }
+
+        public bool InRange(int i)
+        {
+            return i >= LowerBound && i <= upperBound;
+        }
+    }
 }

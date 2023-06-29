@@ -20,7 +20,6 @@ id,type,type
 772,Normal,
 773,Normal,
 774,Normal,
-931,Fire,
 949,Ice,
 988,Ice,
 1179,Grass,
@@ -36,7 +35,6 @@ id,type,type
 1350,Electric,
 1351,Normal,
 1352,Steel,
-1614,Fire,
 1783,Normal,
 1785,Ghost,
 1836,Grass,
@@ -60,3 +58,10 @@ id,type,type
 4915,Steel,
 929,Normal,
 1338,Normal,
+5348,Fairy,
+931,Fire,
+1614,Fire,
+5377,Fire,Ground
+5378,Fire,Dark
+5379,Fire,Fairy
+5380,Fire,Fairy

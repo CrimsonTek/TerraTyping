@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 namespace TerraTyping.Common.Configs;
@@ -10,8 +11,12 @@ public class ClientConfig : ModConfig
 
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
-    [Label("Welcome Message")]
-    [Tooltip("Whether or not a welcome message will be displayed when entering a world.")]
     [DefaultValue(true)]
     public bool WelcomeMessage { get; set; } = true;
+
+    [DefaultValue(true)]
+    public bool ShowTypesOfCritters { get; set; } = true;
+
+    [DefaultValue(true)]
+    public bool ShowTypesOfTownNPCs { get; set; } = true;
 }
