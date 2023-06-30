@@ -19,6 +19,9 @@ Special thanks to all the people that helped me with this mod.
 
 Version History:
 
+v0.2.1.1
+ - Made Silver Powder drop from critters instead of the Twisted Spoon
+
 v0.2.1.0
  - Support for Terraria version 1.4.4.9.
  - Made some changes to types.

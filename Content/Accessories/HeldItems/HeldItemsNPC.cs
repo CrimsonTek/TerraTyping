@@ -86,7 +86,7 @@ namespace TerraTyping.Content.Accessories.HeldItems
         {
             if (npc.catchItem != 0)
             {
-                npcLoot.Add(ItemDropRule.Common(TwistedSpoon.Type, 25));
+                npcLoot.Add(ItemDropRule.Common(SilverPowder.Type, 25));
             }
         }
 
