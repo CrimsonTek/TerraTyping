@@ -144,7 +144,7 @@ public class SpecialTooltip
 
     internal static void StaticLoad()
     {
-        DelayedTooltips = new Stack<DelayedTooltip>();
+        DelayedTooltips ??= new Stack<DelayedTooltip>();
     }
 
     internal static void StaticUnload()
