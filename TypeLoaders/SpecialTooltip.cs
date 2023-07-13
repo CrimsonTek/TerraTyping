@@ -14,6 +14,12 @@ public class SpecialTooltip
 {
     private static Stack<DelayedTooltip> delayedTooltips;
 
+    private static Stack<DelayedTooltip> DelayedTooltips
+    {
+        get => (delayedTooltips ??= new Stack<DelayedTooltip>());
+        set => delayedTooltips = value;
+    }
+
     public string TooltipString { get; private set; }
 
     public Color[] Colors { get; private set; }
@@ -105,14 +111,14 @@ public class SpecialTooltip
 
         DelayedTooltip delayedTooltip = jToken.ToObject<DelayedTooltip>();
         delayedTooltip.specialTooltip = specialTooltip;
-        delayedTooltips.Push(delayedTooltip);
+        DelayedTooltips.Push(delayedTooltip);
 
         return specialTooltip;
     }
 
     internal static void Finish()
     {
-        while (delayedTooltips.TryPop(out var result))
+        while (DelayedTooltips.TryPop(out var result))
         {
             if (result.TypeFrom is TypeFrom typeFrom)
             {
@@ -132,17 +138,17 @@ public class SpecialTooltip
             }
         }
 
-        delayedTooltips = null;
+        DelayedTooltips = null;
     }
 
     internal static void StaticLoad()
     {
-        delayedTooltips = new Stack<DelayedTooltip>();
+        DelayedTooltips = new Stack<DelayedTooltip>();
     }
 
     internal static void StaticUnload()
     {
-        delayedTooltips = null;
+        DelayedTooltips = null;
     }
 
     internal class DelayedTooltip
