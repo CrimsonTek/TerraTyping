@@ -19,6 +19,9 @@ Special thanks to all the people that helped me with this mod.
 
 Version History:
 
+v0.2.1.3
+ - Attempted to fix a bug with tooltips.
+
 v0.2.1.2
  - Attempted to fix a bug with other mods adding types.
 

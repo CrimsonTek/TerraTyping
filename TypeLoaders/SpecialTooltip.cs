@@ -13,6 +13,7 @@ namespace TerraTyping.TypeLoaders;
 public class SpecialTooltip
 {
     private static Stack<DelayedTooltip> delayedTooltips;
+    private Color[] colors;
 
     private static Stack<DelayedTooltip> DelayedTooltips
     {
@@ -22,7 +23,7 @@ public class SpecialTooltip
 
     public string TooltipString { get; private set; }
 
-    public Color[] Colors { get; private set; }
+    public Color[] Colors { get => colors ?? Array.Empty<Color>(); private set => colors = value; }
 
     public static SpecialTooltip[] Parse(string input, out bool overrideSpecialTooltip)
     {
