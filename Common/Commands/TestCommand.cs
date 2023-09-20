@@ -23,16 +23,10 @@ public class TestCommand : ModCommand
 
     public override void Action(CommandCaller caller, string input, string[] args)
     {
-        string path = $"{Directory.GetCurrentDirectory()}\\testing.txt";
-        using FileStream fileStream = File.Create(path);
-        using StreamWriter streamWriter = new StreamWriter(fileStream);
-        streamWriter.AutoFlush = true;
-
-        Item item = new Item();
-        for (int i = 0; i < ItemLoader.ItemCount; i++)
+        NPC npc = FindNPCNearCursor();
+        if (npc is not null)
         {
-            item.SetDefaults(i);
-            streamWriter.WriteLine($"{i},{item.Name},{item.ammo},{item.useAmmo}");
+            caller.Reply($"{npc.TypeName}: {npc.type}/{npc.netID}");
         }
     }
 

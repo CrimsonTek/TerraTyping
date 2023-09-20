@@ -5,6 +5,7 @@ using TerraTyping.DataTypes;
 using TerraTyping.Helpers;
 using TerraTyping.Core;
 using Terraria.ID;
+using System.Runtime.CompilerServices;
 
 namespace TerraTyping.TypeLoaders;
 
@@ -135,7 +136,7 @@ public class NPCTypeLoader : TypeLoader
             hiddenAbilityStrings = Context.Cells.SafeGet(hiddenAbiltyRange);
         }
 
-        typeInfos[modNPC.NPC.netID] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
+        typeInfos[modNPC.Type] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
         return true;
     }
     private ModifyTypeByEnvironment GetModifyTypeDelegate(LineParser lineParser)
@@ -262,23 +263,12 @@ public class NPCTypeLoader : TypeLoader
 
     private class OffsetNPCTypeInfoArray
     {
-        readonly int upperBound;
         readonly NPCTypeInfo[] npcTypeInfos;
         const int offset = 65;
 
-        /// <summary>
-        /// Inclusive upper bounnd.
-        /// </summary>
-        public int UpperBound => upperBound;
-        /// <summary>
-        /// Inclusive lower bound.
-        /// </summary>
-        public int LowerBound => -offset;
-
         public OffsetNPCTypeInfoArray()
         {
-            upperBound = NPCLoader.NPCCount - 1;
-            npcTypeInfos = new NPCTypeInfo[NPCLoader.NPCCount + offset];
+            npcTypeInfos = new NPCTypeInfo[NPCLoader.NPCCount + offset + 1];
         }
 
         public NPCTypeInfo this[int npcType]
@@ -287,9 +277,10 @@ public class NPCTypeLoader : TypeLoader
             set => npcTypeInfos[npcType + offset] = value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool InRange(int i)
         {
-            return i >= LowerBound && i <= upperBound;
+            return (i + offset) >= 0 && (i + offset) < npcTypeInfos.Length;
         }
     }
 }

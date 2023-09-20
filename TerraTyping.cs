@@ -27,17 +27,17 @@ namespace TerraTyping
             ElementArray.Load();
 
             TypeLoader.Logger = Logger;
+        }
 
+        public override void PostSetupContent()
+        {
             NPCTypeLoader.Instance.InitTypeInfoCollection();
             WeaponTypeLoader.Instance.InitTypeInfoCollection();
             AmmoTypeLoader.Instance.InitTypeInfoCollection();
             ArmorTypeLoader.Instance.InitTypeInfoCollection();
             ProjectileTypeLoader.Instance.InitTypeInfoCollection();
             SpecialItemTypeLoader.Instance.InitTypeInfoCollection();
-        }
 
-        public override void PostSetupContent()
-        {
             TypeLoader.Logger = Logger;
             Table.Load();
             Calc.Load();
