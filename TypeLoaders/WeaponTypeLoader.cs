@@ -11,12 +11,17 @@ public class WeaponTypeLoader : TypeLoader
 {
     Dictionary<int, WeaponTypeInfo> typeInfos;
 
+    private Dictionary<int, WeaponTypeInfo> TypeInfos
+    {
+        get => typeInfos ??= new Dictionary<int, WeaponTypeInfo>();
+        set => typeInfos = value;
+    }
     protected override string CSVFileName => CSVFileNames.Weapons;
     public static WeaponTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out WeaponTypeInfo weaponTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out WeaponTypeInfo weaponTypeInfo))
         {
             return weaponTypeInfo.elements;
         }
@@ -27,7 +32,7 @@ public class WeaponTypeLoader : TypeLoader
     }
     public static ElementArray GetElements(int itemType)
     {
-        if (Instance.typeInfos.TryGetValue(itemType, out WeaponTypeInfo weaponTypeInfo))
+        if (Instance.TypeInfos.TryGetValue(itemType, out WeaponTypeInfo weaponTypeInfo))
         {
             return weaponTypeInfo.elements;
         }
@@ -38,7 +43,7 @@ public class WeaponTypeLoader : TypeLoader
     }
     public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out WeaponTypeInfo weaponTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out WeaponTypeInfo weaponTypeInfo))
         {
             overrideTypeTooltip = weaponTypeInfo.overrideTypeTooltip;
             return weaponTypeInfo.specialTooltips;
@@ -51,11 +56,11 @@ public class WeaponTypeLoader : TypeLoader
     }
     public static bool GetsStab(Item item)
     {
-        return item is not null && Instance.typeInfos.ContainsKey(item.type);
+        return item is not null && Instance.TypeInfos.ContainsKey(item.type);
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new Dictionary<int, WeaponTypeInfo>();
+        TypeInfos ??= new Dictionary<int, WeaponTypeInfo>();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -74,7 +79,7 @@ public class WeaponTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.SpecialTooltip)));
-        typeInfos[itemID] = new WeaponTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[itemID] = new WeaponTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
 
         return true;
     }
@@ -86,7 +91,7 @@ public class WeaponTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = GetSpecialTooltips(Context.Cells, lineParser);
-        typeInfos[modItem.Item.type] = new WeaponTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[modItem.Item.type] = new WeaponTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
 
         return true;
     }

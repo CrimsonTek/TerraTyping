@@ -11,12 +11,13 @@ public class SpecialItemTypeLoader : TypeLoader
 {
     Dictionary<int, ItemTypeInfo> typeInfos;
 
+    private Dictionary<int, ItemTypeInfo> TypeInfos { get => typeInfos ??= new Dictionary<int, ItemTypeInfo>(); set => typeInfos = value; }
     protected override string CSVFileName => CSVFileNames.SpecialItems;
     public static SpecialItemTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
         {
             return itemTypeInfo.elements;
         }
@@ -27,7 +28,7 @@ public class SpecialItemTypeLoader : TypeLoader
     }
     public static ElementArray GetElements(int itemType)
     {
-        if (Instance.typeInfos.TryGetValue(itemType, out ItemTypeInfo itemTypeInfo))
+        if (Instance.TypeInfos.TryGetValue(itemType, out ItemTypeInfo itemTypeInfo))
         {
             return itemTypeInfo.elements;
         }
@@ -38,7 +39,7 @@ public class SpecialItemTypeLoader : TypeLoader
     }
     public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out ItemTypeInfo itemTypeInfo))
         {
             overrideTypeTooltip = itemTypeInfo.overrideTypeTooltip;
             return itemTypeInfo.specialTooltips;
@@ -51,7 +52,7 @@ public class SpecialItemTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new Dictionary<int, ItemTypeInfo>();
+        TypeInfos ??= new Dictionary<int, ItemTypeInfo>();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -70,7 +71,7 @@ public class SpecialItemTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.SpecialTooltip)));
-        typeInfos[itemID] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[itemID] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
         return true;
     }
     protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
@@ -81,7 +82,7 @@ public class SpecialItemTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = ItemTypeLoaderUtils.GetSpecialTooltips(Context.Cells.SafeGet(lineParser.GetIndex(HeaderKeys.SpecialTooltip)));
-        typeInfos[modItem.Item.type] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[modItem.Item.type] = new ItemTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
         return true;
     }
     public override void Load()

@@ -13,6 +13,7 @@ public class NPCTypeLoader : TypeLoader
 {
     OffsetNPCTypeInfoArray typeInfos;
 
+    private OffsetNPCTypeInfoArray TypeInfos { get => typeInfos ??= new(); set => typeInfos = value; }
     protected override string CSVFileName => CSVFileNames.NPCs;
     public static NPCTypeLoader Instance { get; private set; }
 
@@ -24,9 +25,9 @@ public class NPCTypeLoader : TypeLoader
             throw new ArgumentNullException(nameof(npc));
         }
 
-        if (Instance.typeInfos.InRange(npc.netID))
+        if (Instance.TypeInfos.InRange(npc.netID))
         {
-            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.netID];
+            NPCTypeInfo npcTypeInfo = Instance.TypeInfos[npc.netID];
             if (npcTypeInfo is not null)
             {
                 return npcTypeInfo.GetDefensiveElements(npc);
@@ -43,9 +44,9 @@ public class NPCTypeLoader : TypeLoader
             throw new ArgumentNullException(nameof(npc));
         }
 
-        if (Instance.typeInfos.InRange(npc.netID))
+        if (Instance.TypeInfos.InRange(npc.netID))
         {
-            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npc.netID];
+            NPCTypeInfo npcTypeInfo = Instance.TypeInfos[npc.netID];
             if (npcTypeInfo is not null)
             {
                 return npcTypeInfo.GetOffensiveElements(npc);
@@ -59,9 +60,9 @@ public class NPCTypeLoader : TypeLoader
     /// </summary>
     public static AbilityContainer GetAbilities(int npcType)
     {
-        if (Instance.typeInfos.InRange(npcType))
+        if (Instance.TypeInfos.InRange(npcType))
         {
-            NPCTypeInfo npcTypeInfo = Instance.typeInfos[npcType];
+            NPCTypeInfo npcTypeInfo = Instance.TypeInfos[npcType];
             if (npcTypeInfo is not null)
             {
                 return npcTypeInfo.abilities;
@@ -71,7 +72,7 @@ public class NPCTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new OffsetNPCTypeInfoArray();
+        TypeInfos ??= new OffsetNPCTypeInfoArray();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -108,7 +109,7 @@ public class NPCTypeLoader : TypeLoader
             hiddenAbilityStrings = Context.Cells.SafeGet(hiddenAbiltyRange);
         }
 
-        typeInfos[npcID] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
+        TypeInfos[npcID] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
         return true;
     }
     protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
@@ -136,7 +137,7 @@ public class NPCTypeLoader : TypeLoader
             hiddenAbilityStrings = Context.Cells.SafeGet(hiddenAbiltyRange);
         }
 
-        typeInfos[modNPC.Type] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
+        TypeInfos[modNPC.Type] = new NPCTypeInfo(defenseElements, offenseElements, ParseAbilities(basicAbilityStrings, hiddenAbilityStrings), GetModifyTypeDelegate(lineParser));
         return true;
     }
     private ModifyTypeByEnvironment GetModifyTypeDelegate(LineParser lineParser)

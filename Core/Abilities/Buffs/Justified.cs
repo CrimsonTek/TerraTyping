@@ -34,7 +34,7 @@ namespace TerraTyping.Core.Abilities.Buffs
         {
             if (player.TryGetModPlayer(out PlayerTyping playerTyping))
             {
-                playerTyping.boostsToEachTypeByAbilities[(int)Element.water].Add(new Boost(damageBoostPlayer, DisplayName.Value));
+                playerTyping.boostsToAllDamageByAbilities.Add(new Boost(damageBoostPlayer, DisplayName.Value));
             }
         }
     }

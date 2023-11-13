@@ -10,12 +10,13 @@ public class AmmoTypeLoader : TypeLoader
 {
     Dictionary<int, AmmoTypeInfo> typeInfos;
 
+    private Dictionary<int, AmmoTypeInfo> TypeInfos { get => typeInfos ??= new Dictionary<int, AmmoTypeInfo>(); set => typeInfos = value; }
     protected override string CSVFileName => CSVFileNames.Ammo;
     public static AmmoTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out AmmoTypeInfo ammoTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out AmmoTypeInfo ammoTypeInfo))
         {
             return ammoTypeInfo.elements;
         }
@@ -26,7 +27,7 @@ public class AmmoTypeLoader : TypeLoader
     }
     public static ElementArray GetElements(int itemType)
     {
-        if (Instance.typeInfos.TryGetValue(itemType, out AmmoTypeInfo ammoTypeInfo))
+        if (Instance.TypeInfos.TryGetValue(itemType, out AmmoTypeInfo ammoTypeInfo))
         {
             return ammoTypeInfo.elements;
         }
@@ -37,7 +38,7 @@ public class AmmoTypeLoader : TypeLoader
     }
     public static SpecialTooltip[] GetSpecialTooltips(Item item, out bool overrideTypeTooltip)
     {
-        if (item is not null && Instance.typeInfos.TryGetValue(item.type, out AmmoTypeInfo weaponTypeInfo))
+        if (item is not null && Instance.TypeInfos.TryGetValue(item.type, out AmmoTypeInfo weaponTypeInfo))
         {
             overrideTypeTooltip = weaponTypeInfo.overrideTypeTooltip;
             return weaponTypeInfo.specialTooltips;
@@ -50,7 +51,7 @@ public class AmmoTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new Dictionary<int, AmmoTypeInfo>();
+        TypeInfos ??= new Dictionary<int, AmmoTypeInfo>();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -73,7 +74,7 @@ public class AmmoTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = GetSpecialTooltips(Context.Cells, lineParser);
-        typeInfos[itemID] = new AmmoTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[itemID] = new AmmoTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
         return true;
     }
     protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
@@ -84,7 +85,7 @@ public class AmmoTypeLoader : TypeLoader
         }
 
         (SpecialTooltip[] specialTooltips, bool overrideSpecialTooltip) = GetSpecialTooltips(Context.Cells, lineParser);
-        typeInfos[modItem.Item.type] = new AmmoTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
+        TypeInfos[modItem.Item.type] = new AmmoTypeInfo(elements, specialTooltips, overrideSpecialTooltip);
 
         return true;
     }

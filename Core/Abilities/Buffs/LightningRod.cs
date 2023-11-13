@@ -12,8 +12,8 @@ namespace TerraTyping.Core.Abilities.Buffs
 
         public override void Load()
         {
-            damageBoostNPC = ServerConfig.Instance.AbilityConfigInstance.StormDrainDamageBoostNPC;
-            damageBoostPlayer = ServerConfig.Instance.AbilityConfigInstance.StormDrainDamageBoostPlayer;
+            damageBoostNPC = ServerConfig.Instance.AbilityConfigInstance.LightningRodDamageBoostNPC;
+            damageBoostPlayer = ServerConfig.Instance.AbilityConfigInstance.LightningRodDamageBoostPlayer;
         }
 
         public override void SetStaticDefaults()
@@ -34,7 +34,7 @@ namespace TerraTyping.Core.Abilities.Buffs
         {
             if (player.TryGetModPlayer(out PlayerTyping playerTyping))
             {
-                playerTyping.boostsToEachTypeByAbilities[(int)Element.water].Add(new Boost(damageBoostPlayer, DisplayName.Value));
+                playerTyping.boostsToEachTypeByAbilities[(int)Element.electric].Add(new Boost(damageBoostPlayer, DisplayName.Value));
             }
         }
     }

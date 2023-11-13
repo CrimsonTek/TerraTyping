@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 using TerraTyping.Core;
 using TerraTyping.DataTypes;
@@ -8,16 +9,17 @@ namespace TerraTyping.TypeLoaders;
 
 public class ProjectileTypeLoader : TypeLoader
 {
-    ProjectileTypeInfo[] typeInfos;
+    Dictionary<int, ProjectileTypeInfo> newTypeInfos;
     ElementArray[] pewmaticHornElements;
     ElementArray[] deerclopsDebrisElements;
 
+    private Dictionary<int, ProjectileTypeInfo> NewTypeInfos { get => newTypeInfos ??= new Dictionary<int, ProjectileTypeInfo>(); set => newTypeInfos = value; }
     protected override string CSVFileName => CSVFileNames.Projectiles;    
     public static ProjectileTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Projectile projectile)
     {
-        ProjectileTypeInfo projectileTypeInfo = Instance.typeInfos[projectile.type];
+        ProjectileTypeInfo projectileTypeInfo = Instance.NewTypeInfos.GetValueOrDefault(projectile.type);
         if (projectileTypeInfo is null)
         {
             return ElementArray.Default;
@@ -40,7 +42,7 @@ public class ProjectileTypeLoader : TypeLoader
     /// <param name="projectileType">Use the actual projID whenever possible.</param>
     public static ElementArray GetElements(int projectileType)
     {
-        ProjectileTypeInfo projectileTypeInfo = Instance.typeInfos[projectileType];
+        ProjectileTypeInfo projectileTypeInfo = Instance.NewTypeInfos.GetValueOrDefault(projectileType);
         if (projectileTypeInfo is null)
         {
             return ElementArray.Default;
@@ -55,7 +57,7 @@ public class ProjectileTypeLoader : TypeLoader
     /// </summary>
     public static void ModifyEffectiveness(ref float baseEffectiveness, Element offensiveElement, Element defensiveElement, Projectile projectile)
     {
-        ProjectileTypeInfo projectileTypeInfo = Instance.typeInfos[projectile.type];
+        ProjectileTypeInfo projectileTypeInfo = Instance.NewTypeInfos.GetValueOrDefault(projectile.type);
         if (projectileTypeInfo is not null)
         {
             projectileTypeInfo.modifyEffectiveness?.Invoke(ref baseEffectiveness, offensiveElement, defensiveElement);
@@ -63,7 +65,7 @@ public class ProjectileTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new ProjectileTypeInfo[ProjectileLoader.ProjectileCount];
+        NewTypeInfos ??= new Dictionary<int, ProjectileTypeInfo>();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -85,7 +87,7 @@ public class ProjectileTypeLoader : TypeLoader
         (ModifyTypeDelegate<Projectile> modifyTypeDelegate,
             ModifyEffectivenessDelegate modifyEffectivenessDelegate) = GetModifyDelegates(lineParser);
 
-        typeInfos[projID] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
+        NewTypeInfos[projID] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
         return true;
     }
     protected override bool ParseLineMod(Mod modToGiveTypes, LineParser lineParser)
@@ -98,7 +100,7 @@ public class ProjectileTypeLoader : TypeLoader
         (ModifyTypeDelegate<Projectile> modifyTypeDelegate,
             ModifyEffectivenessDelegate modifyEffectivenessDelegate) = GetModifyDelegates(lineParser);
 
-        typeInfos[modProjectile.Projectile.type] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
+        NewTypeInfos[modProjectile.Projectile.type] = ProjectileTypeInfo.Get(elements, modifyTypeDelegate, modifyEffectivenessDelegate);
         return true;
     }
     private static ModifyEffectivenessDelegate GetModifyEffectivenessDelegate(string effectivenessDelegateName)

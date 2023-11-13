@@ -11,12 +11,13 @@ public class ArmorTypeLoader : TypeLoader
 {
     Dictionary<int, ArmorTypeInfo> typeInfos;
 
+    private Dictionary<int, ArmorTypeInfo> TypeInfos { get => typeInfos ??= new Dictionary<int, ArmorTypeInfo>(); set => typeInfos = value; }
     protected override string CSVFileName => CSVFileNames.Armor;
     public static ArmorTypeLoader Instance { get; private set; }
 
     public static ElementArray GetElements(Item item)
     {
-        if (item is null || !Instance.typeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
+        if (item is null || !Instance.TypeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
         {
             return ElementArray.Default;
         }
@@ -25,7 +26,7 @@ public class ArmorTypeLoader : TypeLoader
     }
     public static Ability GetAbility(Item item)
     {
-        if (item is null || !Instance.typeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
+        if (item is null || !Instance.TypeInfos.TryGetValue(item.type, out ArmorTypeInfo armorTypeInfo))
         {
             return Ability.None;
         }
@@ -34,7 +35,7 @@ public class ArmorTypeLoader : TypeLoader
     }
     public override void InitTypeInfoCollection()
     {
-        typeInfos = new Dictionary<int, ArmorTypeInfo>();
+        TypeInfos ??= new Dictionary<int, ArmorTypeInfo>();
     }
     protected override bool ParseHeader(string[] cells, string fileName, out LineParser lineParser)
     {
@@ -62,7 +63,7 @@ public class ArmorTypeLoader : TypeLoader
             }
         }
 
-        typeInfos[itemID] = new ArmorTypeInfo(ParseAtLeastOneElement(Context.Cells[lineParser.GetRange(HeaderKeys.GenericElement)]), abilityID);
+        TypeInfos[itemID] = new ArmorTypeInfo(ParseAtLeastOneElement(Context.Cells[lineParser.GetRange(HeaderKeys.GenericElement)]), abilityID);
 
         return true;
     }
@@ -83,7 +84,7 @@ public class ArmorTypeLoader : TypeLoader
             }
         }
 
-        typeInfos[modItem.Item.type] = new ArmorTypeInfo(elements, abilityID);
+        TypeInfos[modItem.Item.type] = new ArmorTypeInfo(elements, abilityID);
         return true;
     }
     public override void Load()
