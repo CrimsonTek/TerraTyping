@@ -11,6 +11,9 @@ namespace TerraTyping
 {
     class TerraTyping : Mod
     {
+        private bool typesLoaded = false;
+        private List<object[]> calls = new List<object[]>();
+
         private static TerraTyping instance;
 
         public static TerraTyping Instance
@@ -21,6 +24,8 @@ namespace TerraTyping
 
         public override void Load()
         {
+            typesLoaded = false;
+            calls = new List<object[]>();
             Instance = this;
 
             ElementHelper.Load();
@@ -47,6 +52,11 @@ namespace TerraTyping
             TypeLoader.SetupAllDefaultVanillaTypes();
             TypeLoader.SetupAllDefaultModTypes();
             TypeLoader.SetupAllUserOverrides();
+            typesLoaded = true;
+            for (int i = 0; i < calls.Count; i++)
+            {
+                Call(calls[i]);
+            }
 
             ProjectileWrapper.PostSetupContent();
 
@@ -68,11 +78,20 @@ namespace TerraTyping
             Table.Unload();
 
             SpecialTooltip.StaticUnload();
+
+            calls.Clear();
+            typesLoaded = false;
             Instance = null;
         }
 
         public override object Call(params object[] args)
         {
+            if (!typesLoaded)
+            {
+                calls.Add(args);
+                return null;
+            }
+
             if (args.Length != 1)
             {
                 LogHelper.Log(Logger, Verbosity.Warn, "Call", "Invoked Call(object[]) with too many or too few arguments. Expected 1 argument. Please use an IDictionary<string, object> to pass your arguments.");
