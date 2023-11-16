@@ -160,6 +160,18 @@ namespace TerraTyping
                 {
                     modTarget = null;
                 }
+                else if (modTargetObj is string str)
+                {
+                    if (string.IsNullOrWhiteSpace(str) || str.Equals("Terraria", StringComparison.OrdinalIgnoreCase) || str.Equals("Vanilla", StringComparison.OrdinalIgnoreCase))
+                    {
+                        modTarget = null;
+                    }
+                    else
+                    {
+                        LogHelper.Log(Logger, Verbosity.Warn, "Call", $"Argument named {ModTargetKey} was cast to string, but did not match an existing mod or the keyword 'Terraria'. To override an existing mod, pass the mod here. To override vanilla types, use the keyword 'Terraria'");
+                        return;
+                    }
+                }
                 else if (modTargetObj is Mod mod)
                 {
                     modTarget = mod;
