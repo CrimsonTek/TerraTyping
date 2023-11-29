@@ -55,6 +55,7 @@ Mods: {
 		}
 
 		Common.DamageBoostHeldItem: Boosts {0} type moves by {1}%
+		Flavor.WelcomeMessage: Welcome to TerraTyping version {0}. Use '/TerraTyping' for more info.
 
 		Tooltip: {
 			Bonus: "{0} bonus: {1}%"
@@ -222,6 +223,8 @@ Mods: {
 
 		Configs: {
 			ServerConfig: {
+				DisplayName: Server Config
+
 				WeatherMultiplier: {
 					Tooltip:
 						'''
@@ -250,8 +253,6 @@ Mods: {
 					Tooltip: The increased damage of super effective moves.
 					Label: Multiplier
 				}
-
-				DisplayName: Server Config
 
 				WeatherMultOnlyExpert: {
 					Label: Weather Multiplier in Expert Only
@@ -288,27 +289,34 @@ Mods: {
 					Label: Knockback Scaling
 				}
 
+				AmmoSTAB: {
+					Tooltip: ""
+					Label: Ammo STAB
+				}
+
+				RangedSTAB: {
+					Tooltip: ""
+					Label: Ranged STAB
+				}
+
 				AbilityConfigInstance: {
 					Label: Ability Config
 					Tooltip:
 						'''
 						The values used for abilities.
-						"Note: some values may not currently be used."
+						Note: some values may not currently be used.
 						'''
 				}
 
-				AmmoSTAB: {
+				BalanceConfigInstance: {
+					Label: Balance Config
 					Tooltip: ""
-					Label: Ammo S T A B
-				}
-
-				RangedSTAB: {
-					Tooltip: ""
-					Label: Ranged S T A B
 				}
 			}
 
 			ClientConfig: {
+				DisplayName: Client Config
+
 				WelcomeMessage: {
 					Tooltip: Whether or not a welcome message will be displayed when entering a world.
 					Label: Welcome Message
@@ -323,12 +331,23 @@ Mods: {
 					Tooltip: Whether or not to show the types of town npcs.
 					Label: Show Types of Town NPCs
 				}
-
-				DisplayName: Client Config
 			}
 
 			AbilityConfig: {
-				Tooltip: ""
+				Tooltip: Tooltip
+
+				Headers: {
+					LightningRodHeader: Lightning Rod
+					StormDrainHeader: Storm Drain
+					FlashFireHeader: Flash Fire
+					MotorDriveHeader: Motor Drive
+					JustifiedHeader: Justified
+					WaterCompactionHeader: Water Compaction
+					SteamEngineHeader: Steam Engine
+					MummyHeader: Mummy
+					ColorChangeHeader: Color Change
+					SandForceHeader: Sand Force
+				}
 
 				LightningRodDamageBoostPlayer: {
 					Label: Lightning Rod Damage Boost (Player)
@@ -498,6 +517,30 @@ Mods: {
 				SandForceDamageBoostNPC: {
 					Label: Sand Force Damage Boost (NPC)
 					Tooltip: The damage boost an NPC will receive from the ability Sand Force.
+				}
+			}
+
+			BalanceConfig: {
+				Tooltip: ""
+
+				AllWeaponScaling: {
+					Label: All Weapon Scaling
+					Tooltip: Scales the damage of all weapons.
+				}
+
+				EnemyContactDamageScaling: {
+					Label: Enemy Contact Damage Scaling
+					Tooltip: Scales the contact damage of enemies.
+				}
+
+				EnemyProjectileDamageScaling: {
+					Label: Enemy Projectile Damage Scaling
+					Tooltip: Scales the damage of enemy projectiles.
+				}
+
+				EnemyHealthScaling: {
+					Label: Enemy Health Scaling
+					Tooltip: Scales the health of NPCs.
 				}
 			}
 		}

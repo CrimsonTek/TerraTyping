@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraTyping.Common.Configs;
 using TerraTyping.Core.Abilities;
 using TerraTyping.DataTypes;
 
@@ -13,6 +14,8 @@ namespace TerraTyping.Common.TModLoaderGlobals
     {
         private const int homeRange = 250;
         private const double maxRotateSpeed = 0.08;
+
+        public override bool InstancePerEntity => true;
 
         public override bool PreAI(Projectile projectile)
         {
@@ -106,7 +109,16 @@ namespace TerraTyping.Common.TModLoaderGlobals
             }
         }
 
-        public override void OnSpawn(Projectile projectile, IEntitySource source) { }
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            ProjectileWrapper wrapper = ProjectileWrapper.GetWrapper(projectile);
+            wrapper.OnSpawn(projectile, source);
+        }
+
+        public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
+        {
+            modifiers.SourceDamage *= ServerConfig.Instance.BalanceConfigInstance.EnemyProjectileDamageScaling;
+        }
 
         struct ClosestTarget
         {

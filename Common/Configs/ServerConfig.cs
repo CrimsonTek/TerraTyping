@@ -116,9 +116,12 @@ public class ServerConfig : ModConfig
     [SeparatePage]
     public AbilityConfig AbilityConfigInstance { get; set; } = new AbilityConfig();
 
+    [SeparatePage]
+    public BalanceConfig BalanceConfigInstance { get; set; } = new BalanceConfig();
+
     public class AbilityConfig
     {
-        [Header("$Config.Header.LightningRod")]
+        [Header("LightningRodHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -144,7 +147,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float LightningRodDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.StormDrain")]
+        [Header("StormDrainHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -170,7 +173,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float StormDrainDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.FlashFire")]
+        [Header("FlashFireHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -196,7 +199,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float FlashFireDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.MotorDrive")]
+        [Header("MotorDriveHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -222,7 +225,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float MotorDriveDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.Justified")]
+        [Header("JustifiedHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -248,7 +251,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float JustifiedDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.WaterCompaction")]
+        [Header("WaterCompactionHeader")]
 
         [ReloadRequired]
         [Range(1, 40)]
@@ -276,7 +279,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float WaterCompactionDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.SteamEngine")]
+        [Header("SteamEngineHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -302,7 +305,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(6f)]
         public float SteamEngineDurationNPC { get; set; } = 6f;
 
-        [Header("$Config.Header.Mummy")]
+        [Header("MummyHeader")]
 
         [ReloadRequired]
         [Range(0f, 20f)]
@@ -316,7 +319,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(15f)]
         public float MummyDurationNPC { get; set; } = 15f;
 
-        [Header("$Config.Header.ColorChange")]
+        [Header("ColorChangeHeader")]
 
         [ReloadRequired]
         [Range(0f, 20f)]
@@ -330,7 +333,7 @@ public class ServerConfig : ModConfig
         [DefaultValue(10)]
         public float ColorChangeDurationNPC { get; set; } = 10;
 
-        [Header("$Config.Header.SandForce")]
+        [Header("SandForceHeader")]
 
         [ReloadRequired]
         [Range(1f, 2f)]
@@ -343,5 +346,28 @@ public class ServerConfig : ModConfig
         [Increment(0.05f)]
         [DefaultValue(1.3f)]
         public float SandForceDamageBoostNPC { get; set; } = 1.3f;
+    }
+
+    public class BalanceConfig
+    {
+        [Range(0.1f, 2f)]
+        [Increment(0.05f)]
+        [DefaultValue(1f)]
+        public float AllWeaponScaling { get; set; } = 1f;
+
+        [Range(0.1f, 2f)]
+        [Increment(0.05f)]
+        [DefaultValue(1f)]
+        public float EnemyContactDamageScaling { get; set; } = 1f;
+
+        [Range(0.1f, 2f)]
+        [Increment(0.05f)]
+        [DefaultValue(1f)]
+        public float EnemyProjectileDamageScaling { get; set; } = 1f;
+
+        [Range(0.1f, 2f)]
+        [Increment(0.05f)]
+        [DefaultValue(1f)]
+        public float EnemyHealthScaling { get; set; } = 1f;
     }
 }

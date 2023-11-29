@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using TerraTyping.Common.Configs;
 using TerraTyping.Content.Accessories.AbilityAccessories;
@@ -120,7 +121,8 @@ namespace TerraTyping.Common.TModLoaderGlobals
         {
             if (ClientConfig.Instance.WelcomeMessage)
             {
-                Main.NewText($"Welcome to TerraTyping version {TerraTyping.Instance.Version}. Use '/TerraTyping' for more info.");
+                LocalizedText localizedText = Language.GetOrRegister("Mods.TerraTyping.Flavor.WelcomeMessage");
+                Main.NewText(localizedText.Format(TerraTyping.Instance.Version));
             }
         }
 

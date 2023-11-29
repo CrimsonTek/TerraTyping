@@ -8,6 +8,7 @@ using TerraTyping.Helpers;
 using TerraTyping.Core;
 using Terraria.Localization;
 using Terraria.ID;
+using TerraTyping.Common.Configs;
 
 namespace TerraTyping.Common.TModLoaderGlobals
 {
@@ -38,6 +39,11 @@ namespace TerraTyping.Common.TModLoaderGlobals
 
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
+            if (item.ammo == AmmoID.None)
+            {
+                damage *= ServerConfig.Instance.BalanceConfigInstance.AllWeaponScaling;
+            }
+
             WeaponWrapper offensiveType = new WeaponWrapper(item, player);
             float STAB = GetSTAB(offensiveType);
             damage = damage.CombineWith(new StatModifier(1f, STAB));
@@ -88,10 +94,10 @@ namespace TerraTyping.Common.TModLoaderGlobals
             }
 
             WeaponWrapper offensiveType = new WeaponWrapper(item, Main.LocalPlayer);
-            float stab = GetSTAB(offensiveType);
-            if (stab != 1)
+            float STAB = GetSTAB(offensiveType);
+            if (STAB != 1)
             {
-                string tooltip = Language.GetText("Mods.TerraTyping.Tooltip.STAB").Format(stab.ToString("P0"));
+                string tooltip = Language.GetText("Mods.TerraTyping.Tooltip.STAB").Format(STAB.ToString("P0"));
                 tooltips.Add(new TooltipLine(Mod, "STABTooltip", tooltip));
             }
         }

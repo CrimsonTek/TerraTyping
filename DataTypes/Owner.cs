@@ -3,7 +3,7 @@
     public enum Owner
     {
         Unknown,
-        NPC,
+        EnemyNPC,
         TownsPerson,
         Player,
     }

@@ -6,6 +6,7 @@ using TerraTyping.Helpers;
 using TerraTyping.Common.Configs;
 using TerraTyping.Core;
 using TerraTyping.Core.Abilities;
+using System;
 
 namespace TerraTyping.Common.TModLoaderGlobals
 {
@@ -45,6 +46,8 @@ namespace TerraTyping.Common.TModLoaderGlobals
 
         public bool waterCompactionBuff;
 
+        public event Action<NPC> OnKillEvent;
+
         public NPC NPC { get; internal set; }
 
         public AbilityFlyweight GetAbility => AbilityLookup.GetAbility(AbilityID);
@@ -57,6 +60,7 @@ namespace TerraTyping.Common.TModLoaderGlobals
         {
             NPC = npc;
             initialized = false;
+            npc.lifeMax = (int)(npc.lifeMax * ServerConfig.Instance.BalanceConfigInstance.EnemyHealthScaling);
         }
 
         public override void ResetEffects(NPC npc)
@@ -158,6 +162,21 @@ namespace TerraTyping.Common.TModLoaderGlobals
         public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             Calc.OnHit(ProjectileWrapper.GetWrapper(projectile), NPCWrapper.GetWrapper(npc), hit);
+        }
+
+        public override void ModifyHitPlayer(NPC npc, Player target, ref Player.HurtModifiers modifiers)
+        {
+            modifiers.SourceDamage *= ServerConfig.Instance.BalanceConfigInstance.EnemyContactDamageScaling;
+        }
+
+        public override void ModifyHitNPC(NPC npc, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            modifiers.SourceDamage *= ServerConfig.Instance.BalanceConfigInstance.EnemyContactDamageScaling;
+        }
+
+        public override void OnKill(NPC npc)
+        {
+            OnKillEvent?.Invoke(npc);
         }
 
         #region CombatTextCooldown
