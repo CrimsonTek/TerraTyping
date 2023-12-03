@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Terraria.ModLoader;
 using TerraTyping.Core;
 using TerraTyping.Helpers;
 
@@ -117,21 +118,45 @@ public class SpecialTooltip
         return specialTooltip;
     }
 
+    private static SpecialTooltip ParseJToken2(JToken jToken)
+    {
+        SpecialTooltip specialTooltip = new SpecialTooltip();
+
+        DelayedTooltip delayedTooltip = jToken.ToObject<DelayedTooltip>();
+
+        List<Element> elements = new List<Element>();
+        string elementString = jToken.Value<string>("Element");
+        if (Enum.TryParse(elementString, true, out Element result))
+        {
+            elements.Add(result);
+        }
+        IEnumerable<string> elementStrings = jToken.Values<string>("Elements");
+        foreach (string str in elementStrings)
+        {
+            if (Enum.TryParse(str, true, out Element result1))
+            {
+                elements.Add(result1);
+            }
+        }
+
+
+        delayedTooltip.specialTooltip = specialTooltip;
+        DelayedTooltips.Push(delayedTooltip);
+
+        return specialTooltip;
+    }
+
     internal static void Finish()
     {
         while (DelayedTooltips.TryPop(out var result))
         {
             if (result.TypeFrom is TypeFrom typeFrom)
             {
-                ElementArray elements = typeFrom switch
-                {
-                    TypeFrom.Projectile => ProjectileTypeLoader.GetElements(result.Id),
-                    TypeFrom.Item => WeaponTypeLoader.GetElements(result.Id),
-                    _ => throw new Exception($"Unexpected switch case: {typeFrom}."),
-                };
+                ElementArray elements = ElementArray.Default;
+                elements = result.GetElements();
 
                 result.specialTooltip.TooltipString = string.Format(result.Tooltip, string.Join(", ", elements));
-                result.specialTooltip.Colors = elements.Select(element => TerraTypingColors.GetColor(element)).ToArray();
+                result.specialTooltip.Colors = elements.Select(TerraTypingColors.GetColor).ToArray();
             }
             else
             {
@@ -159,11 +184,54 @@ public class SpecialTooltip
         public int Id = -1;
         public TypeFrom? TypeFrom = null;
         public string Tooltip = string.Empty;
+        public string Mod;
+        public string Name;
+
+        public ElementArray GetElements()
+        {
+            if (TypeFrom is TypeFrom typeFromNotNull)
+            {
+                if (Id >= 0)
+                {
+                    return typeFromNotNull switch
+                    {
+                        SpecialTooltip.TypeFrom.Projectile => ProjectileTypeLoader.GetElements(Id),
+                        SpecialTooltip.TypeFrom.Item => WeaponTypeLoader.GetElements(Id),
+                        _ => ElementArray.Default,
+                    };
+                }
+                else if ((!string.IsNullOrWhiteSpace(Mod)) && (!string.IsNullOrEmpty(Name)))
+                {
+                    if (ModLoader.TryGetMod(Mod, out Mod mod))
+                    {
+                        switch (typeFromNotNull)
+                        {
+                            case SpecialTooltip.TypeFrom.Projectile:
+                                if (mod.TryFind(Name, out ModProjectile modProjectile))
+                                {
+                                    return ProjectileTypeLoader.GetElements(modProjectile.Type);
+                                }
+                                break;
+
+                            case SpecialTooltip.TypeFrom.Item:
+                                if (mod.TryFind(Name, out ModItem modItem))
+                                {
+                                    return WeaponTypeLoader.GetElements(modItem.Type);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return ElementArray.Default;
+        }
     }
 
     internal enum TypeFrom
     {
         Projectile,
         Item,
+
     }
 }

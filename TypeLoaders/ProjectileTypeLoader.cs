@@ -37,9 +37,9 @@ public class ProjectileTypeLoader : TypeLoader
         }
     }
     /// <summary>
-    /// Use the actual projID whenever possible.
+    /// Use the actual projectile whenever possible.
     /// </summary>
-    /// <param name="projectileType">Use the actual projID whenever possible.</param>
+    /// <param name="projectileType">Use the actual projectile whenever possible.</param>
     public static ElementArray GetElements(int projectileType)
     {
         ProjectileTypeInfo projectileTypeInfo = Instance.NewTypeInfos.GetValueOrDefault(projectileType);

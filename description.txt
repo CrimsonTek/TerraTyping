@@ -19,6 +19,9 @@ Special thanks to all the people that helped me with this mod.
 
 Version History:
 
+v0.2.1.14:
+ - Made a small addition to how Tooltip Overrides work.
+
 v0.2.1.13:
  - Added a new "Balance Config" to balance damage and HP of enemies. The player has quite the advantage being able to select the most optimal type for any situation, so you may use this to make it tougher (or easier if you choose).
 
