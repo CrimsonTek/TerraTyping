@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -150,13 +151,11 @@ public class SpecialTooltip
     {
         while (DelayedTooltips.TryPop(out var result))
         {
-            if (result.TypeFrom is TypeFrom typeFrom)
+            ElementArray elementArray = result.GetElements();
+            if (!elementArray.Empty)
             {
-                ElementArray elements = ElementArray.Default;
-                elements = result.GetElements();
-
-                result.specialTooltip.TooltipString = string.Format(result.Tooltip, string.Join(", ", elements));
-                result.specialTooltip.Colors = elements.Select(TerraTypingColors.GetColor).ToArray();
+                result.specialTooltip.TooltipString = string.Format(result.Tooltip, string.Join(", ", elementArray));
+                result.specialTooltip.Colors = elementArray.Select(TerraTypingColors.GetColor).ToArray();
             }
             else
             {
@@ -186,6 +185,7 @@ public class SpecialTooltip
         public string Tooltip = string.Empty;
         public string Mod;
         public string Name;
+        public string Type;
 
         public ElementArray GetElements()
         {
@@ -222,6 +222,20 @@ public class SpecialTooltip
                         }
                     }
                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(Type))
+            {
+                string[] strings = Type.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                List<Element> elements = new List<Element>();
+                foreach (string str in strings)
+                {
+                    if (Enum.TryParse(str, true, out Element element))
+                    {
+                        elements.Add(element);
+                    }
+                }
+                return ElementArray.Get(elements.ToArray());
             }
 
             return ElementArray.Default;

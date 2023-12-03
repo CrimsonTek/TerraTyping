@@ -9,6 +9,7 @@ using TerraTyping.Core;
 using Terraria.Localization;
 using Terraria.ID;
 using TerraTyping.Common.Configs;
+using System;
 
 namespace TerraTyping.Common.TModLoaderGlobals
 {
@@ -177,8 +178,29 @@ namespace TerraTyping.Common.TModLoaderGlobals
             {
                 0 or null => Color.White,
                 1 => colors[0],
-                _ => colors[(int)(Main.timeForVisualEffects * CycleSpeed % colors.Length)],
+                _ => GetFancyColor(colors),
             };
+        }
+
+        private static Color GetFancyColor(Color[] colors)
+        {
+            double scaledTime = (Main.timeForVisualEffects / 60) * CycleSpeed;
+            int i = (int)scaledTime;
+            Color a = colors[i % colors.Length];
+            Color b = colors[(i + 1) % colors.Length];
+
+            double x = scaledTime % 1;
+            float y;
+            if (x < 0.5)
+            {
+                y = (float)(1 - Math.Sqrt(1 - Math.Pow(2 * x, 2))) / 2;
+            }
+            else
+            {
+                y = (float)(Math.Sqrt(1 - Math.Pow(-2 * x + 2, 2)) + 1) / 2;
+            }
+
+            return Color.Lerp(a, b, y);
         }
 
         private void AddTooltipsForElementArray(List<TooltipLine> tooltips, ElementArray elementArray)
